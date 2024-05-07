@@ -9,7 +9,10 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="">
+<h1 class="sr-only">{{$h1}} </h1>
 {{ $slot }}
 </body>
+{{--mettre le footer--}}
 </html>

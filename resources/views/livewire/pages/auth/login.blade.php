@@ -22,20 +22,6 @@ $login = function () {
 
 ?>
 
-    <!--
-  This example requires some changes to your config:
-
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
 <!--
   This example requires updating your template:
 
@@ -45,10 +31,13 @@ $login = function () {
   ```
 -->
 <div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+<x-slot name="h1">
+    Connectez-vous
+</x-slot>
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
-        <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Connectez-Vous</h2>
+        <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Connectez-Vous</p>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
