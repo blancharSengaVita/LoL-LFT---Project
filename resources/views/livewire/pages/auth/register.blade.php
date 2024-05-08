@@ -20,7 +20,12 @@ state([
 
 rules([
     'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-    'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+    'password' => [
+        'required',
+        'string',
+        'confirmed',
+        Rules\Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised()
+    ],
 ]);
 
 $register = function () {
@@ -112,7 +117,7 @@ $register = function () {
         </div>
         <p class="mt-10 text-center text-sm text-gray-500">
             DéJà inscrit ?
-            <a href="{{ route('register') }}" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Connectez-vous</a>
+            <a href="{{ route('login') }}" wire:navigate class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Connectez-vous</a>
         </p>
     </div>
 </div>

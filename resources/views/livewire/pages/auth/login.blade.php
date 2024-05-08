@@ -27,13 +27,13 @@ $login = function () {
     Connectez-vous
 </x-slot>
     <livewire:auth-header/>
-    <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
         <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Connectez-Vous</p>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <x-auth-session-status class="mb-4" :status="session('status')" />
         <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form wire:submit="login" class="space-y-6" >
                 <div>
@@ -100,7 +100,7 @@ $login = function () {
         </div>
         <p class="mt-10 text-center text-sm text-gray-500">
             Pas encore inscrit ?
-            <a href="{{ route('register') }}" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Rejoins-nous</a>
+            <a href="{{ route('register') }}" wire:navigate class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Rejoins-nous</a>
         </p>
     </div>
 </div>

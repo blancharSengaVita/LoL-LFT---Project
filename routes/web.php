@@ -10,6 +10,7 @@ Volt::route('home', 'home')
     ->middleware(['guest'])
     ->name('home');
 
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
