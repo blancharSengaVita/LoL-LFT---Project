@@ -100,7 +100,7 @@ $login = function () {
         </div>
         <p class="mt-10 text-center text-sm text-gray-500">
             Pas encore inscrit ?
-            <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Rejoins-nous</a>
+            <a href="{{ route('register') }}" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Rejoins-nous</a>
         </p>
     </div>
 </div>
