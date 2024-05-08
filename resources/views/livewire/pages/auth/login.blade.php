@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Session;
 use function Livewire\Volt\form;
 use function Livewire\Volt\layout;
 
-layout('layouts.guest');
+layout('layouts.auth');
 
 form(LoginForm::class);
 
@@ -22,18 +22,11 @@ $login = function () {
 
 ?>
 
-<!--
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-gray-50">
-  <body class="h-full">
-  ```
--->
-<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="flex min-h-full flex-col justify-center py-16 sm:px-6 lg:px-8">
 <x-slot name="h1">
     Connectez-vous
 </x-slot>
+    <livewire:auth-header/>
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
@@ -62,7 +55,7 @@ $login = function () {
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-                        <label for="remember-me" class="ml-3 block text-sm leading-6 text-gray-900">Ne pas m'oublier</label>
+                        <label for="remember-me" class="ml-3 block text-sm leading-6 text-gray-900">Se souvenir de moi</label>
                     </div>
 
                     <div class="text-sm leading-6">
@@ -105,5 +98,9 @@ $login = function () {
                 </div>
             </div>
         </div>
+        <p class="mt-10 text-center text-sm text-gray-500">
+            Pas encore inscrit ?
+            <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Rejoins-nous</a>
+        </p>
     </div>
 </div>

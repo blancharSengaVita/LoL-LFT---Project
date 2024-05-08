@@ -6,7 +6,9 @@ use Livewire\Volt\Volt;
 Route::view('/', 'welcome');
 
 //Route::view('/home', 'home');
-Volt::route('home', 'home');
+Volt::route('home', 'home')
+    ->middleware(['guest'])
+    ->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
