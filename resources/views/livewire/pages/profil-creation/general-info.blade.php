@@ -1,9 +1,52 @@
 <?php
 
-use function Livewire\Volt\{state};
-use function Livewire\Volt\layout;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
 
-layout('layouts.auth')
+use function Livewire\Volt\{state, rules, layout};
+
+layout('layouts.auth');
+
+// faire un trim ici
+state([
+    'firstname' => '',
+    'lastname' => '',
+    'pseudo' => '',
+    'birthday' => '',
+]);
+
+rules([
+    'firstname' => 'required|string',
+    'lastname' => 'required|string',
+    'pseudo' => 'required|string',
+    'birthday' => 'required|date',
+])->messages([
+    'firstname.required' => 'Votre prénom est requis',
+    'firstname.string' => 'Votre prénom doit être composé de lettre',
+    'lastname.required' => 'Votre nom est requis',
+    'lastname.string' => 'Votre nom doit être composé de lettre',
+    'pseudo.required' => 'Votre pseudo est requis',
+    'pseudo.string' => 'Votre pseudo doit être composé de lettre',
+    'birthday.required' => 'Votre date de naissance est requis',
+    'birthday.date' => 'Votre date de naissance ne correspond pas au format',
+]);
+
+$save = function () {
+    $validated = $this->validate();
+    $user = Auth::user();
+    $user->firstname = $this->firstname;
+    $user->lastname = $this->lastname;
+    $user->pseudo = $this->pseudo;
+    $user->birthday = $this->birthday;
+    $user->setup_completed = true;
+    $user->save();
+
+//    $user->firstname = $validated['firstname'];
+//    $user->update();
+
+//    $this->redirect(route('pages.profil-creation.general-info', absolute: false), navigate: true);
+};
 
 ?>
 
@@ -50,7 +93,8 @@ layout('layouts.auth')
                 </li>
             </ol>
         </nav>
-        <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Etape 2 : Pouvez-vous vous présentez ?</p>
+        <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Etape 2 : Pouvez-vous vous
+            présentez ?</p>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
@@ -61,30 +105,45 @@ layout('layouts.auth')
                 <div>
                     <label for="firstname" class="block text-sm font-medium leading-6 text-gray-900">Prénom</label>
                     <div class="mt-2">
-                        <input type="text" name="firstname" id="firstname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Lee">
+                        <input wire:model="firstname" type="text" name="firstname" id="firstname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Lee">
                     </div>
+                    @error('firstname')
+                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>
-                    <label for="surname" class="block text-sm font-medium leading-6 text-gray-900">Nom de famille</label>
+                    <label for="surname" class="block text-sm font-medium leading-6 text-gray-900">Nom de
+                        famille</label>
                     <div class="mt-2">
-                        <input type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
+                        <input wire:model="lastname" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
                     </div>
+                    @error('lastname')
+                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                    @enderror
                 </div>
+
                 <div>
-                    <label for="Pseudo" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
+                    <label for="pseudo" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
                     <div class="mt-2">
-                        <input type="text" name="Pseudo" id="Pseudo" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
+                        <input type="text" wire:model="pseudo" name="pseudo" id="pseudo" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
                     </div>
-                    <p class="mt-2 text-sm text-gray-500" id="password-description">Celui-ci sera votre pseudo de scène, choisissez le bien</p>
+                    @error('pseudo')
+                    <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
+                    @enderror
+                    <p class="mt-1 text-sm text-gray-500" id="password-description">Celui-ci sera votre pseudo de scène,
+                        choisissez le bien</p>
                 </div>
 
 
                 <div>
                     <label for="birthday" class="block text-sm font-medium leading-6 text-gray-900">Date de naissance</label>
                     <div class="mt-2">
-                        <input type="date" name="birthday" id="birthday" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="">
+                        <input wire:model="birthday" type="date" name="birthday" id="birthday" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="">
                     </div>
+                    @error('birthday')
+                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div>

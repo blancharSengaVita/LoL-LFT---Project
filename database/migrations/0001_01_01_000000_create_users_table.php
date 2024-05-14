@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('Pseudo')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->timestamp('birthday')->nullable();
+            $table->date('birthday')->nullable();
             $table->string('nationality')->nullable();
             $table->text('bio')->nullable();
             $table->string('region')->nullable();
