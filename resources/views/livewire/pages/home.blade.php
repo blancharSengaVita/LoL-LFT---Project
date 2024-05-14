@@ -12,7 +12,7 @@ layout('layouts.guest');
     <x-slot name="h1">
         Lol LFT
     </x-slot>
-    <livewire:guest-header/>
+    <livewire:partials.guest-header/>
     <main>
         <div
             x-data="{showMobileMenu : false}"
@@ -116,5 +116,5 @@ layout('layouts.guest');
         </div>
 
     </main>
-    <livewire:footer/>
+    <livewire:partials.footer/>
 </div>

@@ -26,7 +26,7 @@ $login = function () {
 <x-slot name="h1">
     Connectez-vous
 </x-slot>
-    <livewire:auth-header/>
+    <livewire:partials.auth-header/>
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
         <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Connectez-Vous</p>

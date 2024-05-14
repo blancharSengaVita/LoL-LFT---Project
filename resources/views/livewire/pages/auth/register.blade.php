@@ -19,7 +19,7 @@ state([
 ]);
 
 rules([
-    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+    'email' => ['required', 'string', 'lowercase', 'email:strict', 'max:255', 'unique:' . User::class],
     'password' => [
         'required',
         'string',
@@ -36,8 +36,9 @@ $register = function () {
     event(new Registered($user = User::create($validated)));
 
     Auth::login($user);
+    dd('azer');
 
-    $this->redirect(route('dashboard', absolute: false), navigate: true);
+    $this->redirect(route('profil-creation.general-info', absolute: false), navigate: true);
 };
 
 ?>
@@ -46,7 +47,7 @@ $register = function () {
     <x-slot name="h1">
         Inscrivez-vous
     </x-slot>
-    <livewire:auth-header/>
+    <livewire:partials.auth-header/>
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
@@ -69,6 +70,7 @@ $register = function () {
                     <div class="mt-2">
                         <input wire:model="password" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
+                    <p class="mt-2 text-sm text-gray-500" id="password-description">Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et un symbole. </p>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
@@ -78,6 +80,7 @@ $register = function () {
                         <input wire:model="password_confirmation" id="password_confirmation" name="password_confirmation" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                     </div>
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+
                 </div>
 
                 <div>
