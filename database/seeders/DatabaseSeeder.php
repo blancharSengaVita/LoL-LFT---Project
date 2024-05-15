@@ -18,5 +18,19 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'email' => 'test@example.com',
         ]);
+
+        User::factory()->create([
+            'email' => 'anchar2107@gmail.com',
+            'game_name' => 'SparklesSupa',
+            'display_name' => 'SparklesSupa',
+            'firstname' => 'Blanchar',
+            'lastname' => 'Senga-Vita',
+            'account_type' => 'player',
+            'birthday' => '2000-07-21',
+            'nationality' => 'belgian',
+            'region' => 'EUW',
+            'job' => 'Undefined',
+            'bio' => 'Salut',
+        ]);
     }
 }

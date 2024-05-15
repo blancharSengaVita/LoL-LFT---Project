@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
-            $table->string('Pseudo')->nullable();
+            $table->string('game_name')->nullable();
+            $table->string('display_name')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->date('birthday')->nullable();

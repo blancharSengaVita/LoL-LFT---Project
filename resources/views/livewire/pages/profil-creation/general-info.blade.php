@@ -3,7 +3,6 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
-
 use function Livewire\Volt\{state, rules, layout};
 
 layout('layouts.auth');
@@ -12,22 +11,22 @@ layout('layouts.auth');
 state([
     'firstname' => '',
     'lastname' => '',
-    'pseudo' => '',
+    'gamename' => '',
     'birthday' => '',
 ]);
 
 rules([
     'firstname' => 'required|string',
     'lastname' => 'required|string',
-    'pseudo' => 'required|string',
+    'game_name' => 'required|string',
     'birthday' => 'required|date',
 ])->messages([
     'firstname.required' => 'Votre prénom est requis',
     'firstname.string' => 'Votre prénom doit être composé de lettre',
     'lastname.required' => 'Votre nom est requis',
     'lastname.string' => 'Votre nom doit être composé de lettre',
-    'pseudo.required' => 'Votre pseudo est requis',
-    'pseudo.string' => 'Votre pseudo doit être composé de lettre',
+    'game_name.required' => 'Votre pseudo est requis',
+    'game_name.string' => 'Votre pseudo doit être composé de lettre',
     'birthday.required' => 'Votre date de naissance est requis',
     'birthday.date' => 'Votre date de naissance ne correspond pas au format',
 ]);
@@ -37,15 +36,13 @@ $save = function () {
     $user = Auth::user();
     $user->firstname = $this->firstname;
     $user->lastname = $this->lastname;
-    $user->pseudo = $this->pseudo;
+    $user->game_name = $this->game_name;
     $user->birthday = $this->birthday;
     $user->setup_completed = true;
     $user->save();
 
-//    $user->firstname = $validated['firstname'];
-//    $user->update();
 
-//    $this->redirect(route('pages.profil-creation.general-info', absolute: false), navigate: true);
+    $this->redirect(route('pages.profil-creation.additional-info', absolute: false), navigate: true);
 };
 
 ?>
@@ -124,11 +121,11 @@ $save = function () {
                 </div>
 
                 <div>
-                    <label for="pseudo" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
+                    <label for="game_name" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
                     <div class="mt-2">
-                        <input type="text" wire:model="pseudo" name="pseudo" id="pseudo" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
+                        <input type="text" wire:model="game_name" name="game_name" id="game_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
                     </div>
-                    @error('pseudo')
+                    @error('game_name')
                     <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
                     @enderror
                     <p class="mt-1 text-sm text-gray-500" id="password-description">Celui-ci sera votre pseudo de scène,

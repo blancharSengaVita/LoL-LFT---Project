@@ -1,23 +1,75 @@
 <?php
 
-use function Livewire\Volt\{state};
-use function Livewire\Volt\layout;
-use function Livewire\Volt\{usesFileUploads};
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
+use function Livewire\Volt\{
+	state,
+    rules,
+    computed,
+    layout,
+    usesFileUploads,
+    mount
+};
 
 usesFileUploads();
 
 state([
+    'displayNames' => [],
+    'nationalities' => [],
+    'jobs' => [],
+    'regions' => [],
+    'displayName' => 'azer',
     'profilPictureLabel' => 'importer une photo de profil',
     'image' => '',
-    'nationalities' => require __DIR__ . '/../../../../../app/enum/nationalities.php',
-    'regions' => require __DIR__ . '/../../../../../app/enum/regions.php',
-    'roles' => require __DIR__ . '/../../../../../app/enum/roles.php',
+    'nationality' => 'zaer',
+    'bio' => 'zaer',
+    'job' => 'zaer',
+    'region' => 'zaer',
+]);
+
+mount(function () {
+    $user = Auth::user();
+    $this->displayNames = [$user->game_name, $user->firstname . ' ' .$user->lastname, $user->firstname . ' "' . $user->game_name. '" ' .$user->lastname];
+	$this->nationalities = require __DIR__ . '/../../../../../app/enum/nationalities.php';
+	$this->jobs = require __DIR__ . '/../../../../../app/enum/jobs.php';
+	$this->regions = require __DIR__ . '/../../../../../app/enum/regions.php';
+});
+
+rules([
+    'displayName' => 'required',
+    'image' => '',
+    'nationality' => 'required',
+    'bio' => 'required',
+    'job' => 'required',
+    'region' => 'required',
+])->messages([
+    'displayName.required' => 'Votre nom affiché est requis',
+    'nationality.required' => 'Votre nationalité est requis',
+    'bio.required' => 'Votre bio est requis',
+    'job.required' => 'Votre job est requis',
+    'region.required' => 'Votre region est requis',
 ]);
 
 layout('layouts.auth');
 
-?>
 
+$save = function () {
+    $validated = $this->validate();
+
+    $user = Auth::user();
+    $user->display_name = $this->displayName;
+//    $user->image = $this->image;
+    $user->nationality = $this->nationality;
+    $user->bio = $this->bio;
+    $user->job = $this->job;
+    $user->region = $this->region;
+    $user->save();
+
+//    $this->redirect(route('pages.profil-creation.additional-info', absolute: false), navigate: true);
+};
+
+?>
 <div class="flex min-h-full flex-col items-center py-16 sm:px-6 lg:px-8">
     <x-slot name="h1">
         Choix du type de compte
@@ -25,43 +77,43 @@ layout('layouts.auth');
     <livewire:partials.auth-header/>
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <nav aria-label="Progress">
-                <ol role="list" class="flex justify-center items-center">
-                    <li class="relative pr-8 sm:pr-20">
-                        <!-- Completed Step -->
-                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                            <div class="h-0.5 w-full bg-indigo-600"></div>
-                        </div>
-                        <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
-                            <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
-                            </svg>
-                            <span class="sr-only">Étape 1</span>
-                        </a>
-                    </li>
-                    <li class="relative pr-8 sm:pr-20">
-                        <!-- Completed Step -->
-                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                            <div class="h-0.5 w-full bg-indigo-600"></div>
-                        </div>
-                        <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
-                            <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
-                            </svg>
-                            <span class="sr-only">Étape 2</span>
-                        </a>
-                    </li>
-                    <li class="relative">
+            <ol job="list" class="flex justify-center items-center">
+                <li class="relative pr-8 sm:pr-20">
+                    <!-- Completed Step -->
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="h-0.5 w-full bg-indigo-600"></div>
+                    </div>
+                    <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
+                        <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="sr-only">Étape 1</span>
+                    </a>
+                </li>
+                <li class="relative pr-8 sm:pr-20">
+                    <!-- Completed Step -->
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="h-0.5 w-full bg-indigo-600"></div>
+                    </div>
+                    <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
+                        <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="sr-only">Étape 2</span>
+                    </a>
+                </li>
+                <li class="relative">
                     <!-- Current Step -->
-                        <div class="absolute flex items-center" aria-hidden="true">
-                            <div class="h-0.5 w-full bg-gray-200"></div>
-                        </div>
-                        <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white" aria-current="step">
-                            <span class="h-2.5 w-2.5 rounded-full bg-indigo-600" aria-hidden="true"></span>
-                            <span class="sr-only">Étape 3</span>
-                        </a>
-                    </li>
-                </ol>
-            </nav>
+                    <div class="absolute flex items-center" aria-hidden="true">
+                        <div class="h-0.5 w-full bg-gray-200"></div>
+                    </div>
+                    <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white" aria-current="step">
+                        <span class="h-2.5 w-2.5 rounded-full bg-indigo-600" aria-hidden="true"></span>
+                        <span class="sr-only">Étape 3</span>
+                    </a>
+                </li>
+            </ol>
+        </nav>
         <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Etape 3 : Dites-moi en
             plus sur vous</p>
     </div>
@@ -73,19 +125,31 @@ layout('layouts.auth');
                 <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="col-span-3">
                         <div class="col-span-3 mb-8">
-                            <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Nom affiché</label>
-                            <select id="location" name="location" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <label for="displayName" class="block text-sm font-medium leading-6 text-gray-900">Nom
+                                affiché </label>
+                            <select wire:model="displayName" id="displayName" name="displayName" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <option value="">-- choisissez votre nom affiché --</option>
+                                @foreach($this->displayNames as $name)
+                                    <option value="{{ $name }}">{{ $name }}</option>
+                                @endforeach
                             </select>
+                            @error('displayName')
+                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                            @enderror
                         </div>
+
 
                         <div class="col-span-3">
                             <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>
-                            <select  id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <option value="">-- choisissez votre nationalité --</option>
                                 @foreach($nationalities as $nationality)
                                     <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
                                 @endforeach
                             </select>
+                            @error('nationality')
+                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                            @enderror
                         </div>
 
                     </div>
@@ -112,40 +176,49 @@ layout('layouts.auth');
 
 
                     <div class="col-span-full">
-                        <label for="about" class="block text-sm font-medium leading-6 text-gray-900">About</label>
+                        <label for="bio" class="block text-sm font-medium leading-6 text-gray-900">Bio</label>
                         <div class="mt-2">
-                            <textarea id="about" name="about" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                            <textarea wire:model="bio" id="bio" name="bio" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
                         </div>
-                        <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
+                        @error('bio')
+                        <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
+                        @enderror
+                        <p class="mt-1 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
                     </div>
 
                     <div class="col-span-3">
-                        <label for="role" class="block text-sm font-medium leading-6 text-gray-900">Rôle</label>
-                        <select id="role" name="role" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Rôle</label>
+                        <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             <option value="">-- choisissez votre rôle --</option>
-                            @foreach($roles as $role)
-                                <option value="{{ $role }}">{{ __('roles.'.$role) }}</option>
+                            @foreach($jobs['player'] as $job)
+                                <option value="{{ $job }}">{{ __($job) }}</option>
                             @endforeach
                         </select>
+                        @error('job')
+                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                        @enderror
                     </div>
 
-{{--                    <div class="col-span-3">--}}
-{{--                        <label for="ambition" class="block text-sm font-medium leading-6 text-gray-900">Ambition</label>--}}
-{{--                        <select id="ambition" name="ambition" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
-{{--                            <option>United States</option>--}}
-{{--                            <option selected>Canada</option>--}}
-{{--                            <option>Mexico</option>--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="col-span-3">--}}
+                    {{--                        <label for="ambition" class="block text-sm font-medium leading-6 text-gray-900">Ambition</label>--}}
+                    {{--                        <select id="ambition" name="ambition" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
+                    {{--                            <option>United States</option>--}}
+                    {{--                            <option selected>Canada</option>--}}
+                    {{--                            <option>Mexico</option>--}}
+                    {{--                        </select>--}}
+                    {{--                    </div>--}}
 
                     <div class="col-span-3 mb-8">
                         <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région</label>
-                        <select id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                            <option value="" >-- choisissez votre region --</option>
+                        <select wire:model="region"  id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <option value="">-- choisissez votre region --</option>
                             @foreach($regions as $region)
                                 <option value="{{ $region }}">{{ $region }}</option>
                             @endforeach
                         </select>
+                        @error('region')
+                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <div class="justify-center flex">
