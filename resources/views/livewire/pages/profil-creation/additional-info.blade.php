@@ -21,7 +21,7 @@ state([
     'regions' => [],
     'displayName' => 'azer',
     'profilPictureLabel' => 'importer une photo de profil',
-    'image' => '',
+    'profilPicture',
     'nationality' => 'zaer',
     'bio' => 'zaer',
     'job' => 'zaer',
@@ -38,33 +38,40 @@ mount(function () {
 
 rules([
     'displayName' => 'required',
-    'image' => '',
     'nationality' => 'required',
     'bio' => 'required',
     'job' => 'required',
     'region' => 'required',
+    'profilPicture' => 'image|max:10240',
 ])->messages([
     'displayName.required' => 'Votre nom affiché est requis',
     'nationality.required' => 'Votre nationalité est requis',
     'bio.required' => 'Votre bio est requis',
     'job.required' => 'Votre job est requis',
     'region.required' => 'Votre region est requis',
+    'profilPicture.image' => 'Le fichier n\'est pas une image',
+    'profilPicture.max' => 'l\'image est trop volumineuse',
 ]);
 
 layout('layouts.auth');
 
 
 $save = function () {
-    $validated = $this->validate();
+    // Obtenez le nom de fichier d'origine
+    $originalFilename = $this->profilPicture->getClientOriginalName();
+    // Obtenez un nom de fichier hashé
+    $hashedFilename = $this->profilPicture->hashName();
 
+    $validated = $this->validate();
     $user = Auth::user();
     $user->display_name = $this->displayName;
-//    $user->image = $this->image;
+//    $user->profil_picture = $this->profilPicture->getClientOriginalName();
     $user->nationality = $this->nationality;
     $user->bio = $this->bio;
     $user->job = $this->job;
     $user->region = $this->region;
     $user->save();
+    $this->profilPicture->store('public/images');
 
 //    $this->redirect(route('pages.profil-creation.additional-info', absolute: false), navigate: true);
 };
@@ -164,16 +171,21 @@ $save = function () {
                                     <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd"/>
                                 </svg>
                                 <div class="mt-4 justify-center flex text-sm leading-6 text-gray-600">
-                                    <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                    <label for="profilePicture" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                         <span>{{ $profilPictureLabel }}</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                        <input wire:model="profilPicture" id="profilePicture" name="profilePicture" type="file" class="sr-only">
                                     </label>
                                 </div>
                                 <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF en-dessous de 10MB</p>
                             </div>
                         </div>
                     </div>
-
+                    @if ($profilPicture)
+                        <img alt="" src="{{ $profilPicture->temporaryUrl() }}">
+                    @endif
+                    @error('profilPicture')
+                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                    @enderror
 
                     <div class="col-span-full">
                         <label for="bio" class="block text-sm font-medium leading-6 text-gray-900">Bio</label>
@@ -198,6 +210,8 @@ $save = function () {
                         <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                         @enderror
                     </div>
+
+
 
                     {{--                    <div class="col-span-3">--}}
                     {{--                        <label for="ambition" class="block text-sm font-medium leading-6 text-gray-900">Ambition</label>--}}
@@ -247,47 +261,47 @@ $save = function () {
     const profilPictureIcon = document.querySelector('.profil-picture-icon');
     const profilPicture = document.querySelector('.profil-picture');
 
-    profilPictureInput.addEventListener('change', () => {
-        const file = profilPictureInput.files[0];
-        console.log(file);
-        if (validFileType(file)) {
-            $wire.profilPictureLabel = `${file.name}`;
-
-            const div = document.createElement('div');
-            div.className = 'mx-auto h-12 w-12 flex justify-center';
-
-            const image = document.createElement('img');
-            image.src = URL.createObjectURL(file);
-            image.alt = 'l\'image importé';
-            image.width = 50;
-            image.height = 50;
-            image.className = 'flex justify-center';
-
-            profilPictureIcon.remove();
-            profilPicture.insertAdjacentElement('afterbegin', image);
-            console.log(image);
-        }
-    });
-
-    const fileTypes = [
-        'image/jpg',
-        'image/jpeg',
-        'image/png',
-    ];
-
-    function validFileType (file) {
-        return fileTypes.includes(file.type);
-    }
-
-    function returnFileSize (number) {
-        if (number < 1024) {
-            return `${number} bytes`;
-        } else if (number >= 1024 && number < 1048576) {
-            return `${(number / 1024).toFixed(1)} KB`;
-        } else if (number >= 1048576) {
-            return `${(number / 1048576).toFixed(1)} MB`;
-        }
-    }
+    // profilPictureInput.addEventListener('change', () => {
+    //     const file = profilPictureInput.files[0];
+    //     console.log(file);
+    //     if (validFileType(file)) {
+    //         $wire.profilPictureLabel = `${file.name}`;
+    //
+    //         const div = document.createElement('div');
+    //         div.className = 'mx-auto h-12 w-12 flex justify-center';
+    //
+    //         const image = document.createElement('img');
+    //         image.src = URL.createObjectURL(file);
+    //         image.alt = 'l\'image importé';
+    //         image.width = 50;
+    //         image.height = 50;
+    //         image.className = 'flex justify-center';
+    //
+    //         profilPictureIcon.remove();
+    //         profilPicture.insertAdjacentElement('afterbegin', image);
+    //         console.log(image);
+    //     }
+    // });
+    //
+    // const fileTypes = [
+    //     'image/jpg',
+    //     'image/jpeg',
+    //     'image/png',
+    // ];
+    //
+    // function validFileType (file) {
+    //     return fileTypes.includes(file.type);
+    // }
+    //
+    // function returnFileSize (number) {
+    //     if (number < 1024) {
+    //         return `${number} bytes`;
+    //     } else if (number >= 1024 && number < 1048576) {
+    //         return `${(number / 1024).toFixed(1)} KB`;
+    //     } else if (number >= 1048576) {
+    //         return `${(number / 1048576).toFixed(1)} MB`;
+    //     }
+    // }
 
 </script>
 @endscript
