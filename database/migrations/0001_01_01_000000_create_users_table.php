@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('region')->nullable();
             $table->enum('account_type', ['player', 'staff', 'team'])->nullable();
             $table->string('job')->nullable();
+            $table->string('profil_picture')->nullable();
             $table->boolean('setup_completed')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

@@ -65,7 +65,7 @@ $resetPassword = function () {
     <x-slot name="h1">
         Réinitialiser le mot de passe
     </x-slot>
-    <livewire:auth-header/>
+    <livewire:partials.auth-header/>
 
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">

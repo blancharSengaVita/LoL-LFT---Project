@@ -10,7 +10,6 @@ use function Livewire\Volt\{
 
 layout('layouts.dashboard');
 
-
 state([
     'openMobileMenu' => false,
 ]);
@@ -27,20 +26,10 @@ $logout = function (Logout $logout) {
 
 ?>
 
-
-
-
-
-
-<main class="lg:pl-72"
-      x-data="{
-    openMobileMenu: $wire.entangle('openMobileMenu'),
-    openDropdownMenu: false,
-      }">
-    {{--    <x-slot name="h1">--}}
-    {{--        Dashboard--}}
-    {{--    </x-slot>--}}
-    <!--
+{{--    <x-slot name="h1">--}}
+{{--        Dashboard--}}
+{{--    </x-slot>--}}
+<!--
     This example requires updating your template:
 
     ```
@@ -48,8 +37,14 @@ $logout = function (Logout $logout) {
 
     ```
     -->
-    <!-- Static sidebar for desktop -->
+<!-- Static sidebar for desktop -->
 
+
+<main class="lg:pl-72"
+      x-data="{
+    openMobileMenu: $wire.entangle('openMobileMenu'),
+    openDropdownMenu: false,
+      }">
     <div class="xl:pr-96">
 
         <!-- Main area -->
@@ -96,7 +91,6 @@ $logout = function (Logout $logout) {
                                             <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z"/>
                                         </svg>
                                     </button>
-
                                     <!--
                                       Dropdown panel, show/hide based on dropdown state.
 
@@ -107,6 +101,7 @@ $logout = function (Logout $logout) {
                                         From: "transform opacity-100 scale-100"
                                         To: "transform opacity-0 scale-95"
                                     -->
+
                                     <div x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
                                         <div class="py-1" role="none">
                                             <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
@@ -159,9 +154,3 @@ $logout = function (Logout $logout) {
         </section>
     </div>
 </main>
-
-
-
-
-
-

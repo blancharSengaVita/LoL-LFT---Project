@@ -131,8 +131,5 @@ $save = function () {
             </form>
         </div>
 
-        <p class="mt-10 text-center text-sm text-gray-500">
-            <a href="{{ route('dashboard') }}" wire:navigate class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Ignorez</a>
-        </p>
     </div>
 </div>

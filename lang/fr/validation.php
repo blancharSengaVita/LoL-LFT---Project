@@ -154,7 +154,7 @@ return [
     'string' => 'Le champ :attribute doit être une chaîne de caractères.',
     'timezone' => 'Le champ :attribute doit être un fuseau horaire valide.',
     'unique' => 'Le :attribute a déjà été pris.',
-    'uploaded' => 'Le chargement du :attribute a échoué.',
+    'uploaded' => 'Le chargement du fichier a échoué.',
     'uppercase' => 'Le champ :attribute doit être en majuscules.',
     'url' => 'Le champ :attribute doit être une URL valide.',
     'ulid' => 'Le champ :attribute doit être un UUID valide.',

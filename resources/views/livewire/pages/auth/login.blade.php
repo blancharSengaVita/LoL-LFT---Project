@@ -2,7 +2,7 @@
 
 use App\Livewire\Forms\LoginForm;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
 use function Livewire\Volt\form;
 use function Livewire\Volt\layout;
 
@@ -16,6 +16,11 @@ $login = function () {
     $this->form->authenticate();
 
     Session::regenerate();
+
+	if (!Auth::user()->setup_completed){
+        $this->redirect(route('pages.profil-creation.account-type', absolute: false), navigate: true);
+        return;
+    }
 
     $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
 };

@@ -11,22 +11,22 @@ layout('layouts.auth');
 state([
     'firstname' => '',
     'lastname' => '',
-    'gamename' => '',
+    'gameName' => '',
     'birthday' => '',
 ]);
 
 rules([
     'firstname' => 'required|string',
     'lastname' => 'required|string',
-    'game_name' => 'required|string',
+    'gameName' => 'required|string',
     'birthday' => 'required|date',
 ])->messages([
     'firstname.required' => 'Votre prénom est requis',
     'firstname.string' => 'Votre prénom doit être composé de lettre',
     'lastname.required' => 'Votre nom est requis',
     'lastname.string' => 'Votre nom doit être composé de lettre',
-    'game_name.required' => 'Votre pseudo est requis',
-    'game_name.string' => 'Votre pseudo doit être composé de lettre',
+    'gameName.required' => 'Votre pseudo est requis',
+    'gameName.string' => 'Votre pseudo doit être composé de lettre',
     'birthday.required' => 'Votre date de naissance est requis',
     'birthday.date' => 'Votre date de naissance ne correspond pas au format',
 ]);
@@ -36,7 +36,7 @@ $save = function () {
     $user = Auth::user();
     $user->firstname = $this->firstname;
     $user->lastname = $this->lastname;
-    $user->game_name = $this->game_name;
+    $user->game_name = $this->gameName;
     $user->birthday = $this->birthday;
     $user->setup_completed = true;
     $user->save();
@@ -121,11 +121,11 @@ $save = function () {
                 </div>
 
                 <div>
-                    <label for="game_name" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
+                    <label for="gameName" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
                     <div class="mt-2">
-                        <input type="text" wire:model="game_name" name="game_name" id="game_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
+                        <input type="text" wire:model="gameName" name="gameName" id="gameName" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
                     </div>
-                    @error('game_name')
+                    @error('gameName')
                     <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
                     @enderror
                     <p class="mt-1 text-sm text-gray-500" id="password-description">Celui-ci sera votre pseudo de scène,
@@ -150,9 +150,5 @@ $save = function () {
                 </div>
             </form>
         </div>
-
-        <p class="mt-10 text-center text-sm text-gray-500">
-            <a href="{{ route('dashboard') }}" wire:navigate class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Ignorez</a>
-        </p>
     </div>
 </div>

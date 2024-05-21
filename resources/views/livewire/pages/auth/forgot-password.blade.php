@@ -40,7 +40,7 @@ $sendPasswordResetLink = function () {
     <x-slot name="h1">
         Mot de passe oublié ?
     </x-slot>
-    <livewire:auth-header/>
+    <livewire:partials.auth-header/>
 
 
 
