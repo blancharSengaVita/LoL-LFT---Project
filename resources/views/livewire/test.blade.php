@@ -54,7 +54,7 @@ $logout = function (Logout $logout) {
           Open: "fixed inset-0 z-40 overflow-y-auto", Closed: ""
         -->
         <livewire:partials.dashboard-header/>
-        <section class="divide-y divide-gray-200">
+        <section class="divide-y divide-gray-200 border-b border-gray-200">
             <div class="pb-6 bg-white">
                 <div class="h-24 bg-indigo-700 sm:h-20 lg:h-28"></div>
                 <div class="-mt-12 flow-root px-4 sm:-mt-8 sm:flex sm:items-end sm:px-6 lg:-mt-16">

@@ -108,7 +108,7 @@ $openMobileMenu = function () {
         </div>
 
         <!-- Mobile menu, show/hide based on menu state. -->
-        <nav x-show='open' class="lg:hidden" aria-label="Global">
+        <nav x-cloak x-show='open' class="lg:hidden" aria-label="Global">
             <h2 class="sr-only" >
                 Menu de navigation principal
             </h2>
