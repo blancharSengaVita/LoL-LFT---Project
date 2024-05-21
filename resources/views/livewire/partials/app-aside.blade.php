@@ -7,7 +7,8 @@ use function Livewire\Volt\{state};
 
 ?>
 
-<aside class="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-2 py-3 sm:px-2 lg:px-4 xl:block ">
+<aside class="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-2 py-3 sm:px-2 lg:px-4 xl:block">
+    <h2 class="sr-only"> Informations Complémentaires </h2>
     <!--  Secondary column (hidden on smaller screens) -->
     <div class="rounded-md font-medium px-3 pt-3 flex grow flex-col gap-y-5 overflow-y-auto border border-gray-200 bg-white">
         <span> Pages recommandés </span>

@@ -109,6 +109,9 @@ $openMobileMenu = function () {
 
         <!-- Mobile menu, show/hide based on menu state. -->
         <nav x-show='open' class="lg:hidden" aria-label="Global">
+            <h2 class="sr-only" >
+                Menu de navigation principal
+            </h2>
             <div class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
                 <!-- Current: "bg-gray-100 text-gray-900", Default: "hover:bg-gray-50" -->
                 <a href="#" aria-current="page" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>

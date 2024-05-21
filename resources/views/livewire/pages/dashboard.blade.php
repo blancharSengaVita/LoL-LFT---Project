@@ -27,11 +27,6 @@ $logout = function (Logout $logout) {
 
 ?>
 
-
-
-
-
-
 <main class="lg:pl-72"
       x-data="{
     openMobileMenu: $wire.entangle('openMobileMenu'),
@@ -73,7 +68,7 @@ $logout = function (Logout $logout) {
                     <div class="mt-6 sm:ml-6 sm:flex-1">
                         <div>
                             <div class="flex items-center">
-                                <p class="text-xl font-bold text-gray-900 sm:text-2xl">Ashley Porter</p>
+                                <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">Ashley Porter</h2>
                                 <span class="ml-2.5 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-400">
                                     <span class="sr-only">Online</span>
                                 </span>

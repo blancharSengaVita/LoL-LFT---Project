@@ -19,8 +19,8 @@ use function Livewire\Volt\{state};
 </head>
 <body class="h-full">
 <h1 class="sr-only">Dashboard</h1>
-<livewire:partials.dashboard-menu/>
+<livewire:partials.app-side-menu/>
 {{ $slot }}
-<livewire:partials.auth-aside/>
+<livewire:partials.app-aside/>
 </body>
 </html>
