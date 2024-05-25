@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Actions\Logout;
 use function Livewire\Volt\{
 	state,
     mount,
@@ -14,8 +15,13 @@ mount(function () {
 $openMobileMenu = function () {
     $this->mobileMenu = !$this->mobileMenu;
     $this->dispatch('openMobileMenu');
-}
+};
 
+$logout = function (Logout $logout) {
+    $logout();
+
+    $this->redirect('/', navigate: true);
+};
 ?>
 
 <header class="bg-white shadow-sm lg:static lg:overflow-y-visible"

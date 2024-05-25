@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Actions\Logout;
+
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -15,35 +15,28 @@ layout('layouts.dashboard');
 
 
 state([
-    'openMobileMenu',
     'user',
-    'birthday',
+    'playerExperiences',
+    'playerExperiencesShow',
+    'playerExperiencesHidden',
 ]);
 
 
-mount(function (){
-	$this->user = Auth::user();
-	$this->openMobileMenu = false;
-	$this->birthday = Carbon::parse($this->user->birthday)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+mount(function () {
+    $this->user = Auth::user();
+    $this->playerExperiences = $this->user->playerExperiences()->get();
+    foreach ($this->playerExperiences as $experience) {
+        $experience->date = Carbon::parse($experience->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+    };
+    $this->playerExperiencesShow = $this->playerExperiences->take(2);
+    $this->playerExperiencesHidden = $this->playerExperiences->skip(2);
 });
 
-on(['openMobileMenu' => function () {
-    $this->openMobileMenu = !$this->openMobileMenu;
-}]);
 
-$logout = function (Logout $logout) {
-    $logout();
-
-    $this->redirect('/', navigate: true);
-};
 
 ?>
 
-<main class="lg:pl-72"
-      x-data="{
-    openMobileMenu: $wire.entangle('openMobileMenu'),
-    openDropdownMenu: false,
-      }">
+<main class="lg:pl-72">
     {{--    <x-slot name="h1">--}}
     {{--        Dashboard--}}
     {{--    </x-slot>--}}
@@ -66,106 +59,72 @@ $logout = function (Logout $logout) {
           Open: "fixed inset-0 z-40 overflow-y-auto", Closed: ""
         -->
         <livewire:partials.dashboard-header/>
-        <section class="divide-y divide-gray-200 border-b ">
-            <div class="pb-6 bg-white">
-                <div class="h-24 bg-indigo-700 sm:h-20 lg:h-28"></div>
-                <div class="-mt-12 flow-root px-4 sm:-mt-8 sm:flex sm:items-end sm:px-6 lg:-mt-16">
-                    <div>
-                        <div class="-m-1 flex">
-                            <div class="inline-flex overflow-hidden rounded-lg border-4 border-white">
-                                <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="https://images.unsplash.com/photo-1501031170107-cfd33f0cbdcc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&h=256&q=80" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-6 sm:ml-6 sm:flex-1">
-                        <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $user->display_name  }}</h2>
-                        <div>{{ $user->job  }}</div>
+        <!-- Hero -->
+        <livewire:partials.dashboard-hero/>
+        <!-- Secondary  Nav -->
+        <livewire:partials.dashboard-nav/>
 
-                        <div>
-{{--                            <div class="flex items-center">--}}
 
-{{--                                <span class="ml-2.5 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-400">--}}
-{{--                                    <span class="sr-only">Online</span>--}}
-{{--                                </span>--}}
-{{--                            </div>--}}
-{{--                            <p class="text-sm text-gray-500">@ashleyporter</p>--}}
-                        </div>
-                        <div class="mt-5 flex flex-wrap space-y-3 sm:space-x-3 sm:space-y-0">
-                            <button type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
-                                Invitation LFT
-                            </button>
-                            <button type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                Message
-                            </button>
-                            <div class="ml-3 inline-flex sm:ml-0">
-                                <div class="relative inline-block text-left">
-                                    <button @click="openDropdownMenu = !openDropdownMenu" type="button" class="relative inline-flex items-center rounded-md bg-white p-2 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="options-menu-button" aria-expanded="false" aria-haspopup="true">
-                                        <span class="absolute -inset-1"></span>
-                                        <span class="sr-only">Open options menu</span>
-                                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z"/>
-                                        </svg>
-                                    </button>
-                                    <!--
-                                      Dropdown panel, show/hide based on dropdown state.
-
-                                      Entering: "transition ease-out duration-100"
-                                        From: "transform opacity-0 scale-95"
-                                        To: "transform opacity-100 scale-100"
-                                      Leaving: "transition ease-in duration-75"
-                                        From: "transform opacity-100 scale-100"
-                                        To: "transform opacity-0 scale-95"
-                                    -->
-                                    <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
-                                        <div class="py-1" role="none">
-                                            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-
-                                            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir CV</a>
-                                            <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande d'ami</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex px-4 sm:px-6 mt-4">
-                    <p class="flex items-center mr-2 text-sm text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-0.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                        </svg>
-                        {{ $user->region  }}
-                    </p>
-
-                    <p class="flex items-center text-sm text-gray-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-0.5 w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12M12.265 3.11a.375.375 0 1 1-.53 0L12 2.845l.265.265Zm-3 0a.375.375 0 1 1-.53 0L9 2.845l.265.265Zm6 0a.375.375 0 1 1-.53 0L15 2.845l.265.265Z" />
-                        </svg>
-                        {{ $birthday }}
-                    </p>
-                </div>
-            </div>
-
-            <nav class="bg-white shadow">
-                <div class="mx-auto max-w-7xl">
-                    <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <div class="space-x-6 space-y-1 sm:space-y-0 sm:ml-6  ml-4 sm:flex flex-wrap sm:space-x-8">
-                                <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-                                <a href="#" class="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900">Profile</a>
-                                <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Historiques des matchs</a>
-                                <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Stats</a>
-                                <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Livres d'or</a>
-                                <a href="#" class="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Amis</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+        <section>
 
         </section>
 
+        <livewire:partials.dashboard-bio/>
+        <x-dashboard.article :title="'Palmarès'">
+            <ul role="list" class="divide-y divide-gray-100">
+                @foreach($playerExperiencesShow as $experience)
+                    <li class="flex gap-x-4 py-5 w-full" wire:key="{{ $experience->id }}">
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
+                            <p class="text-3xl text-center text-white">{{$experience->placement}}</p>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
+                                · {{$experience->job}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
+                        </div>
+                        <button type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ml-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                            </svg>
+                        </button>
+                    </li>
+                @endforeach
+                @foreach($playerExperiencesHidden as $experience)
+                    <li :class="open ? '' : 'hidden'" class="flex gap-x-4 py-5">
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
+                            <p class="text-3xl text-center text-white">{{$experience->placement}}</p>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
+                                · {{$experience->job}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
+                        </div>
+                        <button type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ml-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                            </svg>
+                        </button>
+                    </li>
+                @endforeach
+            </ul>
+            <div class="flex justify-center">
+                <Bouton @click="open = !open">
+                    <p :class="open ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher plus
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                        </svg>
+                    </p>
+
+                    <p :class="open ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher moins
+                        <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
+                        </svg>
+                    </p>
+                </Bouton>
+            </div>
+        </x-dashboard.article>
     </div>
 </main>
 

@@ -98,7 +98,7 @@ $save = function () {
 
 	$validated = $this->validate();
 	$user = Auth::user();
-	$user->display_name = $this->displayName;
+	$user->displayed_name = $this->displayName;
 	$user->nationality = $this->nationality;
 	$user->bio = $this->bio;
 	$user->job = $this->job;

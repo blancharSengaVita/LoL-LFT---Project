@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('game_name')->nullable();
-            $table->string('display_name')->nullable();
+            $table->string('displayed_name')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->date('birthday')->nullable();
             $table->string('nationality')->nullable();
             $table->text('bio')->nullable();
+            $table->boolean('bio_displayed')->default(false);
             $table->string('region')->nullable();
             $table->enum('account_type', ['player', 'staff', 'team'])->nullable();
             $table->string('job')->nullable();
