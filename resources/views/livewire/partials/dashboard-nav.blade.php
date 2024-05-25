@@ -7,6 +7,9 @@ use function Livewire\Volt\{state};
 ?>
 
 <nav class="bg-white shadow border-b">
+    <h3 class="sr-only">
+        Menu de navigation du profil
+    </h3>
     <div class="mx-auto max-w-7xl">
         <div class="flex h-16 justify-between">
             <div class="flex">

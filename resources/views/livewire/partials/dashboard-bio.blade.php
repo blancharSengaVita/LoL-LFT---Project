@@ -31,13 +31,13 @@ mount(function () {
 $save = function () {
 	$this->user->bio = $this->bio;
 	$this->user->bio_displayed = $this->bioDisplayed;
-	$this->user->update();
+	$this->user->save();
 	$this->open = false;
 }
 
 ?>
 
-<div x-data="{
+<article x-data="{
 open: $wire.entangle('open'),
 bioDisplayed : $wire.entangle('bioDisplayed')
 }" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
@@ -115,4 +115,4 @@ bioDisplayed : $wire.entangle('bioDisplayed')
             </div>
         </div>
     </div>
-</div>
+</article>

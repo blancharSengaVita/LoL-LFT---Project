@@ -1,4 +1,4 @@
-<div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+<article class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
     <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
         <h3 class="text-base font-semibold leading-6 text-gray-900">{{$title}}</h3>
         <div class="flex">
@@ -17,4 +17,4 @@
     <div x-data="{open: false}" class=" sm:w-12/12">
         {{$slot}}
     </div>
-</div>
+</article>

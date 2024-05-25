@@ -25,7 +25,7 @@ mount(function () {
 
 ?>
 
-<section class="divide-y divide-gray-200 border-b"
+<div class="divide-y divide-gray-200 border-b"
          x-data="{
         openDropdownMenu: false,
          }"
@@ -41,7 +41,7 @@ mount(function () {
                 </div>
             </div>
             <div class="mt-6 sm:ml-6 sm:flex-1">
-                <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $user->displayed_name  }}</h2>
+                <p class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $user->displayed_name  }}</p>
                 <div>
                     <p class="text-gray-900">{{ $user->job  }}</p>
                 </div>
@@ -104,4 +104,4 @@ mount(function () {
             </p>
         </div>
     </div>
-</section>
+</div>
