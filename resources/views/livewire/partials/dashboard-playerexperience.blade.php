@@ -41,6 +41,7 @@ mount(function () {
 //        $this->displayed = false;
 //    }
     $this->openAccordion = false;
+    $this->openModal = false;
 });
 
 $save = function () {
@@ -53,7 +54,8 @@ $save = function () {
 ?>
 
 <article x-data="{
-openAccordion: $wire.entangle('open'),
+openAccordion: $wire.entangle('openAccordion'),
+openModal: $wire.entangle('openModal'),
 {{--bioDisplayed : $wire.entangle('bioDisplayed')--}}
 }"
          class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
@@ -171,8 +173,7 @@ openAccordion: $wire.entangle('open'),
                                 <input id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
-                                <label for="offers" class="font-medium text-gray-900">Afficher cette section au
-                                    public</label>
+                                <label for="offers" class="font-medium text-gray-900">Afficher cette section au public</label>
                             </div>
                         </div>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
