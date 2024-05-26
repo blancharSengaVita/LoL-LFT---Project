@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('team')->nullable();
             $table->string('job')->nullable();
             $table->timestamp('date')->nullable();
+            $table->boolean('displayed')->default(false);
             $table->timestamps();
         });
     }

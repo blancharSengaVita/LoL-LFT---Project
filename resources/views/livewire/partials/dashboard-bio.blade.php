@@ -11,7 +11,6 @@ state([
 	'open',
 	'bio',
 	'bioDisplayed',
-	'bioDisplayedAlpine'
 ]);
 
 mount(function () {
@@ -29,7 +28,7 @@ mount(function () {
 });
 
 $save = function () {
-	$this->user->bio = $this->bio;
+	$this->user->palmares = $this->bio;
 	$this->user->bio_displayed = $this->bioDisplayed;
 	$this->user->save();
 	$this->open = false;
