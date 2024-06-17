@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use \App\Models\DisplayedInformations;
 use function Livewire\Volt\{
 	state,
 	mount
@@ -16,7 +17,7 @@ state([
 mount(function () {
 	$this->user = Auth::user();
 	$this->bio = $this->user->bio;
-	$this->bioDisplayed = $this->user->bio_displayed;
+	$this->bioDisplayed = $this->user->displayedInformations->first()->bio;
 
 	if ($this->bioDisplayed === 1) {
 		$this->bioDisplayed = true;
@@ -28,10 +29,22 @@ mount(function () {
 });
 
 $save = function () {
-	$this->user->palmares = $this->bio;
-	$this->user->bio_displayed = $this->bioDisplayed;
+    $this->user->bio = $this->bio;
 	$this->user->save();
-	$this->open = false;
+	DisplayedInformations::where('user_id', Auth::id())->update(['bio' => $this->bioDisplayed]);
+    $this->open = false;
+};
+
+$close = function () {
+    $this->bio = $this->user->bio;
+    $this->bioDisplayed = $this->user->displayedInformations->first()->bio;
+    if ($this->bioDisplayed === 1) {
+        $this->bioDisplayed = true;
+    } else {
+        $this->bioDisplayed = false;
+    }
+
+    $this->open = false;
 }
 
 ?>
@@ -94,7 +107,7 @@ bioDisplayed : $wire.entangle('bioDisplayed')
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input x-model="bioDisplayed" wire:model.live="bioDisplayed" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="bioDisplayed" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
                                 <label for="offers" class="font-medium text-gray-900">Afficher cette section au
@@ -105,7 +118,7 @@ bioDisplayed : $wire.entangle('bioDisplayed')
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
                                 Enregistrer les changements
                             </button>
-                            <button @click="open = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
+                            <button @click="$wire.close()" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler
                             </button>
                         </div>

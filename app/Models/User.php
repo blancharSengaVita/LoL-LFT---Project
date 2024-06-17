@@ -52,4 +52,10 @@ class User extends Authenticatable
         return $this
             ->hasMany(PlayerExperiences::class);
     }
+
+    public function displayedInformations(): HasMany
+    {
+        return $this
+            ->hasMany(displayedInformations::class);
+    }
 }

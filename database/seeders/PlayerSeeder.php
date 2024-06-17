@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DisplayedInformations;
 use App\Models\PlayerExperiences;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,7 +27,7 @@ class PlayerSeeder extends Seeder
                 'nationality' => 'belgian',
                 'region' => 'EUW',
                 'job' => 'Mid',
-                'bio' => 'Je m\'appelle Blanchar Senga-Vita. Je joue à Leaque of Legends depuis 2019, je cumule 2000 heures de jeux. Je suis sur cette application car, je voudrais créer ma propre structure les "junkyards" Une bande d\'ami qui joue à league of legends pour s\'amuser',
+                'bio' => 'Je m\'appelle Blanchar Senga-Vita. Je joue à Leaque of Legends depuis 2019, je cumule 200 heures de jeux. Je suis sur cette application car, je voudrais créer ma propre structure les "junkyards" Une bande d\'ami qui joue à league of legends pour s\'amuser',
                 'setup_completed' => true,
             ]);
 
@@ -79,6 +80,14 @@ class PlayerSeeder extends Seeder
                 'job' => 'Support',
                 'date' => '2024-06-15',
             ],
+        ]);
+
+        DisplayedInformations::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'bio' => '0',
+                'player_experiences' => '0'
+            ]
         ]);
     }
 }

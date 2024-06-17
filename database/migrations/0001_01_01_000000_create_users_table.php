@@ -22,7 +22,6 @@ return new class extends Migration
             $table->date('birthday')->nullable();
             $table->string('nationality')->nullable();
             $table->text('bio')->nullable();
-            $table->boolean('bio_displayed')->default(false);
             $table->string('region')->nullable();
             $table->enum('account_type', ['player', 'staff', 'team'])->nullable();
             $table->string('job')->nullable();
