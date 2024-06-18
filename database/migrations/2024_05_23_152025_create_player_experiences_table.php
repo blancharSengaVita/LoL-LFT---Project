@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('player_experiences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('placement')->nullable();
-            $table->string('event')->nullable();
-            $table->string('team')->nullable();
-            $table->string('job')->nullable();
-            $table->timestamp('date')->nullable();
-            $table->boolean('displayed')->default(false);
+            $table->string('placement');
+            $table->string('event');
+            $table->string('team')->default('Inconnu')->nullable();
+            $table->string('job');
+            $table->timestamp('date');
             $table->timestamps();
         });
     }
