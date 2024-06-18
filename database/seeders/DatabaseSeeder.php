@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\PlayerExperiences;
+use App\Models\PlayerExperience;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;

@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('displayed_informations', function (Blueprint $table) {
+        Schema::create('awards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('bio')->default(false);
-            $table->boolean('player_experiences')->default(false);
-            $table->boolean('awards')->default(false);
+            $table->string('title');
+            $table->string('event');
+            $table->string('team');
+            $table->string('date');
             $table->timestamps();
         });
     }
@@ -26,9 +27,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('player_experiences', function (Blueprint $table) {
+        Schema::table('awards', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
-        Schema::dropIfExists('displayed_informations');
+        Schema::dropIfExists('awards');
     }
 };

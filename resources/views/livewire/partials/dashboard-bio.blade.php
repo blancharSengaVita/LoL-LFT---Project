@@ -1,43 +1,43 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
-use \App\Models\DisplayedInformations;
+use \App\Models\DisplayedInformation;
 use function Livewire\Volt\{
-	state,
-	mount
+    state,
+    mount
 };
 
 state([
-	'user',
-	'open',
-	'bio',
-	'bioDisplayed',
+    'user',
+    'open',
+    'bio',
+    'bioDisplayed',
 ]);
 
 mount(function () {
-	$this->user = Auth::user();
-	$this->bio = $this->user->bio;
-	$this->bioDisplayed = $this->user->displayedInformations->first()->bio;
+    $this->user = Auth::user();
+    $this->bio = $this->user->bio;
+    $this->bioDisplayed = $this->user->displayedInformation->first()->bio;
 
-	if ($this->bioDisplayed === 1) {
-		$this->bioDisplayed = true;
+    if ($this->bioDisplayed === 1) {
+        $this->bioDisplayed = true;
     } else {
-		$this->bioDisplayed = false;
+        $this->bioDisplayed = false;
     }
 
-	$this->open = false;
+    $this->open = false;
 });
 
 $save = function () {
     $this->user->bio = $this->bio;
-	$this->user->save();
-	DisplayedInformations::where('user_id', Auth::id())->update(['bio' => $this->bioDisplayed]);
+    $this->user->save();
+    DisplayedInformation::where('user_id', Auth::id())->update(['bio' => $this->bioDisplayed]);
     $this->open = false;
 };
 
 $close = function () {
     $this->bio = $this->user->bio;
-    $this->bioDisplayed = $this->user->displayedInformations->first()->bio;
+    $this->bioDisplayed = $this->user->displayedInformation->first()->bio;
     if ($this->bioDisplayed === 1) {
         $this->bioDisplayed = true;
     } else {

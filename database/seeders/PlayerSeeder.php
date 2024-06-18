@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\DisplayedInformations;
-use App\Models\PlayerExperiences;
+use App\Models\Award;
+use App\Models\DisplayedInformation;
+use App\Models\PlayerExperience;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PlayerSeeder extends Seeder
@@ -31,7 +31,7 @@ class PlayerSeeder extends Seeder
                 'setup_completed' => true,
             ]);
 
-        PlayerExperiences::factory()->createMany([
+        PlayerExperience::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
                 'placement' => '1',
@@ -81,12 +81,56 @@ class PlayerSeeder extends Seeder
                 'date' => '2024-06-15',
             ],
         ]);
-
-        DisplayedInformations::factory()->createMany([
+        DisplayedInformation::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
                 'bio' => '0',
                 'player_experiences' => '0'
+            ]
+        ]);
+
+        Award::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur rookie',
+                'event' => 'LEC',
+                'team' => 'Junkyard',
+                'date' => '2024-06-23',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'MVP du split',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-04-15',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur carry AD',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-05-10',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur joueur des playoffs',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-06-30',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur KDA',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-06-01',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur joueur d\'Europe',
+                'event' => 'Worlds',
+                'team' => 'Junkies',
+                'date' => '2024-10-15',
             ]
         ]);
     }

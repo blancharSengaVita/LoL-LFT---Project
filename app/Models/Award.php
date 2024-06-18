@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PlayerExperience extends Model
+class Award extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
+        'title',
         'event',
-        'placement',
         'team',
-        'job',
         'date',
     ];
 

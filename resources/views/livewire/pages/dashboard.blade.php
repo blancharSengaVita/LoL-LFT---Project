@@ -60,6 +60,7 @@ mount(function () {
 
         <livewire:partials.dashboard-bio/>
         <livewire:partials.dashboard-playerexperience/>
+        <livewire:partials.dashboard-awards/>
     </div>
 </section>
 </main>

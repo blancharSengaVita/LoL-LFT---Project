@@ -47,15 +47,21 @@ class User extends Authenticatable
         ];
     }
 
-    public function playerExperiences(): HasMany
+    public function playerExperience(): HasMany
     {
         return $this
-            ->hasMany(PlayerExperiences::class);
+            ->hasMany(PlayerExperience::class);
     }
 
-    public function displayedInformations(): HasMany
+    public function displayedInformation(): HasMany
     {
         return $this
-            ->hasMany(displayedInformations::class);
+            ->hasMany(DisplayedInformation::class);
+    }
+
+    public function award(): HasMany
+    {
+        return $this
+            ->hasMany(Award::class);
     }
 }
