@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Award;
 use App\Models\DisplayedInformation;
+use App\Models\Language;
 use App\Models\PlayerExperience;
+use App\Models\Skill;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -133,5 +135,68 @@ class PlayerSeeder extends Seeder
                 'date' => '2024-10-15',
             ]
         ]);
+
+        //TODO: Limiter le nombre de skills à 3 pour les top 3 skills
+        Skill::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Roaming',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Wave management',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Shootcalling',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Vision Control',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Ocean champion pool',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Lane Swapping',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Laning Phase',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Teamfighting',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Objective Control',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Map Awareness',
+            ],
+        ]);
+
+        Language::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'French',
+                'level' => 'C2 - Langues maternelle',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'English',
+                'level' => 'B1 - Intermédiaire',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'name' => 'Japanese',
+                'level' => 'Je sais dire bonjour',
+            ],
+        ]);
+
     }
 }

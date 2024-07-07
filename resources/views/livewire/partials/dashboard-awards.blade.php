@@ -66,7 +66,7 @@ mount(function () {
 
     $this->renderChange();
 
-    $this->displayed = $this->user->displayedInformation->first()->awards;
+    $this->displayed = $this->user->displayedInformation->first()->awards ?? 0;
 
     if ($this->displayed === 1) {
         $this->displayed = true;
@@ -98,7 +98,7 @@ $saveAwardsSettings = function () {
 };
 
 $closeAwardsSettingsModal = function () {
-    $this->displayed = $this->user->displayedInformations->first()->awards;
+    $this->displayed = $this->user->displayedInformations->first()->award;
 
     if ($this->displayed === 1) {
         $this->displayed = true;

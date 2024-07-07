@@ -64,4 +64,16 @@ class User extends Authenticatable
         return $this
             ->hasMany(Award::class);
     }
+
+    public function skill(): HasMany
+    {
+        return $this
+            ->hasMany(Skill::class);
+    }
+
+    public function language(): HasMany
+    {
+        return $this
+            ->hasMany(Language::class);
+    }
 }

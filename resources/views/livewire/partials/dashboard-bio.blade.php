@@ -17,7 +17,8 @@ state([
 mount(function () {
     $this->user = Auth::user();
     $this->bio = $this->user->bio;
-    $this->bioDisplayed = $this->user->displayedInformation->first()->bio;
+    $this->bioDisplayed = $this->user->displayedInformation->first()?->bio;
+//	dd($this->user->displayedInformation->first()?->bio);
 
     if ($this->bioDisplayed === 1) {
         $this->bioDisplayed = true;

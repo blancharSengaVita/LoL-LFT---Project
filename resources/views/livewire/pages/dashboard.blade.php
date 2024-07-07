@@ -61,6 +61,8 @@ mount(function () {
         <livewire:partials.dashboard-bio/>
         <livewire:partials.dashboard-playerexperience/>
         <livewire:partials.dashboard-awards/>
+        <livewire:partials.dashboard-skills/>
+        <livewire:partials.dashboard-languages/>
     </div>
 </section>
 </main>

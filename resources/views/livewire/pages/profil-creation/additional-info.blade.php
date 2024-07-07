@@ -23,14 +23,14 @@ state([
 	'nationalities' => [],
 	'jobs' => [],
 	'regions' => [],
-	'displayName' => 'azer',
+	'displayName' => '',
 	'profilPictureLabel' => 'importer une photo de profil',
 	'profilPictureFilename' => 'Aucun fichier sélectionné',
 	'profilPicture',
-	'nationality' => 'zaer',
-	'bio' => 'zaer',
-	'job' => 'zaer',
-	'region' => 'zaer',
+	'nationality' => '',
+	'bio' => '',
+	'job' => '',
+	'region' => '',
 ]);
 
 mount(function () {

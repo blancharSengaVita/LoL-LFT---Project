@@ -36,6 +36,12 @@ $register = function () {
 
     Auth::login($user);
 
+    $displayedInformation = DisplayedInformation::create([
+        'user_id' => $user->id,
+        'bio' => true,
+        'player_experiences' => true,
+    ]);
+
     $this->redirect(route('pages.profil-creation.account-type', absolute: false), navigate: true);
 };
 
