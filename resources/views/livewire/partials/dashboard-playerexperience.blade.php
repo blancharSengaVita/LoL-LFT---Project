@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\DisplayedInformationsOnce;
 use App\Models\DisplayedInformation;
 use App\Models\PlayerExperience;
 use Carbon\Carbon;
@@ -26,6 +27,8 @@ state([
     'playerExperiencesShow',
     'playerExperiencesHidden',
     'displayed',
+    'displayedTemp',
+    'displayedOnce',
     'event',
     'placement',
     'team',
@@ -35,7 +38,6 @@ state([
     'deleteModal',
     'experience',
 ]);
-
 
 rules([
     'event' => 'required',
@@ -55,7 +57,6 @@ rules([
 ]);
 
 $renderChange = function () {
-//	dd($this->user->playerExperience);
     $this->playerExperiences = $this->user->playerExperience()->orderBy('date', 'desc')->get();
     foreach ($this->playerExperiences as $experience) {
         $experience->date = Carbon::parse($experience->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
@@ -63,6 +64,7 @@ $renderChange = function () {
 
     $this->playerExperiencesShow = $this->playerExperiences->take(2);
     $this->playerExperiencesHidden = $this->playerExperiences->skip(2);
+    $this->displayedOnce = $this->user->displayedInformationsOnce->first()->player_experiences ?? 0;
 };
 
 mount(function () {
@@ -71,12 +73,14 @@ mount(function () {
     $this->renderChange();
 
     $this->displayed = $this->user->displayedInformation->first()->player_experiences ?? 0;
+    $this->displayedTemp = $this->displayed;
 
-    if ($this->displayed === 1) {
-        $this->displayed = true;
+    if ($this->displayedTemp === 1) {
+        $this->displayedTemp = true;
     } else {
-        $this->displayed = false;
+        $this->displayedTemp = false;
     }
+
     $this->openAccordion = false;
     $this->openPlayerExperiencesModal = false;
     $this->openSinglePlayerExperienceModal = false;
@@ -90,10 +94,8 @@ mount(function () {
     $this->id = 0;
 });
 
-$display = function () {
-
-};
 $saveExperiencesSettings = function () {
+    $this->displayed = $this->displayedTemp;
     DisplayedInformation::where('user_id', Auth::id())->update(['player_experiences' => $this->displayed]);
     $this->openAccordion = false;
     $this->renderChange();
@@ -101,12 +103,13 @@ $saveExperiencesSettings = function () {
 };
 
 $closeExperiencesSettingsModal = function () {
-    $this->displayed = $this->user->displayedInformations->first()->player_experiences;
+    $this->displayed = $this->user->displayedInformation->first()->player_experiences ?? 0;
+    $this->displayedTemp = $this->displayed;
 
-    if ($this->displayed === 1) {
-        $this->displayed = true;
+    if ($this->displayedTemp === 1) {
+        $this->displayedTemp = true;
     } else {
-        $this->displayed = false;
+        $this->displayedTemp = false;
     }
 
     $this->renderChange();
@@ -148,6 +151,9 @@ $saveSingleExperience = function () {
             'date' => $this->date,
         ]);
 
+    DisplayedInformationsOnce::where('user_id', $this->user->id)
+        ->update(['player_experiences' => true]);
+
     $this->renderChange();
     $this->openSinglePlayerExperienceModal = false;
 };
@@ -180,6 +186,9 @@ $closeDeleteModal = function () {
     $this->renderChange();
 };
 
+on(['newExperience' => function () {
+    $this->createSingleExperience();
+}]);
 ?>
 
 <article x-data="{
@@ -187,8 +196,12 @@ openAccordion: $wire.entangle('openAccordion'),
 openPlayerExperiencesModal: $wire.entangle('openPlayerExperiencesModal'),
 openSinglePlayerExperienceModal: $wire.entangle('openSinglePlayerExperienceModal'),
 deleteModal: $wire.entangle('deleteModal'),
-}"
-         class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+displayed:$wire.entangle('displayed'),
+displayedOnce:$wire.entangle('displayedOnce'),
+}">
+
+
+    <div x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
     <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
         <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Expérience'}}</h3>
         <div class="flex">
@@ -280,6 +293,7 @@ deleteModal: $wire.entangle('deleteModal'),
             </div>
         @endif
     </div>
+    </div>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openPlayerExperiencesModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--
@@ -306,7 +320,7 @@ deleteModal: $wire.entangle('deleteModal'),
                     From: "opacity-100 translate-y-0 sm:scale-100"
                     To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 -->
-                <div @click.away="openPlayerExperiencesModal = false" class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
+                <div @click.away="$wire.closeExperiencesSettingsModal" class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
                     <form action="" wire:submit="saveExperiencesSettings">
                         <div class="sm:flex sm:items-start">
                             <div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
@@ -317,10 +331,10 @@ deleteModal: $wire.entangle('deleteModal'),
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model="displayed" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="displayedTemp" id="displayed" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
-                                <label for="offers" class="font-medium text-gray-900">Afficher cette section au
+                                <label for="displayed" class="font-medium text-gray-900">Afficher cette section au
                                     public</label>
                             </div>
                         </div>
@@ -328,7 +342,7 @@ deleteModal: $wire.entangle('deleteModal'),
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
                                 Enregistrer les changements
                             </button>
-                            <button @click="openPlayerExperiencesModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
+                            <button wire:click="closeExperiencesSettingsModal" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler
                             </button>
                         </div>

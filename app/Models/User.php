@@ -71,9 +71,21 @@ class User extends Authenticatable
             ->hasMany(Skill::class);
     }
 
+    public function onboardingMission(): HasMany
+    {
+        return $this
+            ->hasMany(OnboardingMission::class);
+    }
+
     public function language(): HasMany
     {
         return $this
             ->hasMany(Language::class);
+    }
+
+    public function displayedInformationsOnce(): HasMany
+    {
+        return $this
+            ->hasMany(DisplayedInformationsOnce::class);
     }
 }

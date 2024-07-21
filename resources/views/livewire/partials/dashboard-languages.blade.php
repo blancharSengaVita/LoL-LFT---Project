@@ -3,174 +3,191 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\DisplayedInformation;
+use App\Models\DisplayedInformationsOnce;
 use App\Models\language;
 use Carbon\Carbon;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-	state,
-	on,
-	mount,
-	rules,
+    state,
+    on,
+    mount,
+    rules,
 };
 
 layout('layouts.dashboard');
 
 state([
-	'user',
-	'openModal',
-	'openSingleModal',
-	'openAccordion',
-	'singleLanguage',
-	'language',
-	'languagesShow',
-	'languagesHidden',
-	'displayed',
-	'name',
-	'level',
-	'level',
-	'id',
-	'deleteModal',
-	'languages',
-	'availableLanguages',
+    'user',
+    'openModal',
+    'openSingleModal',
+    'openAccordion',
+    'singleLanguage',
+    'language',
+    'languagesShow',
+    'languagesHidden',
+    'displayed',
+    'displayedTemp',
+    'displayedOnce',
+    'name',
+    'level',
+    'level',
+    'id',
+    'deleteModal',
+    'languages',
+    'availableLanguages',
 ]);
 
 
 rules([
-	'name' => 'required',
-	'level' => 'required|string',
+    'name' => 'required',
+    'level' => 'required|string',
 ])->messages([
-	'name.required' => 'Le champ est obligatoire.',
-	'level.required' => 'Le champ est obligatoire.',
-	'level.string' => 'Le champ doit etre un string',
+    'name.required' => 'Le champ est obligatoire.',
+    'level.required' => 'Le champ est obligatoire.',
+    'level.string' => 'Le champ doit etre un string',
 ])->attributes([
 
 ]);
 
 $renderChange = function () {
-	$this->languages = $this->user->language()->orderBy('created_at', 'desc')->get();
-	foreach ($this->languages as $language) {
-		$language->date = Carbon::parse($language->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
-	}
+    $this->languages = $this->user->language()->orderBy('created_at', 'desc')->get();
+    foreach ($this->languages as $language) {
+        $language->date = Carbon::parse($language->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+    }
 
-	$this->languagesShow = $this->languages->take(2);
-	$this->languagesHidden = $this->languages->skip(2);
+    $this->languagesShow = $this->languages->take(2);
+    $this->languagesHidden = $this->languages->skip(2);
+    $this->displayedOnce = $this->user->displayedInformationsOnce->first()->languages ?? 0;
 };
 
 mount(function () {
-	$this->user = Auth::user();
+    $this->user = Auth::user();
 
-	$this->renderChange();
+    $this->renderChange();
 
-	$this->displayed = $this->user->displayedInformation->first()->languages ?? 0;
+    $this->displayed = $this->user->displayedInformation->first()->languages ?? 0;
+    $this->displayedTemp = $this->displayed;
 
-	if ($this->displayed === 1) {
-		$this->displayed = true;
-	} else {
-		$this->displayed = false;
-	}
+    if ($this->displayedTemp === 1) {
+        $this->displayedTemp = true;
+    } else {
+        $this->displayedTemp = false;
+    }
+
 	$this->openAccordion = false;
-	$this->openModal = false;
-	$this->openSingleModal = false;
-	$this->deleteModal = false;
+    $this->openModal = false;
+    $this->openSingleModal = false;
+    $this->deleteModal = false;
 
-	$this->name = '';
-	$this->level = '';
-	$this->id = 0;
-	$this->availableLanguages = require __DIR__ . '/../../../../app/enum/languages.php';
+    $this->name = '';
+    $this->level = '';
+    $this->id = 0;
+    $this->availableLanguages = require __DIR__ . '/../../../../app/enum/languages.php';
 });
 
 $savelanguagesSettings = function () {
-	DisplayedInformation::where('user_id', Auth::id())->update(['languages' => $this->displayed]);
-	$this->openAccordion = false;
-	$this->renderChange();
-	$this->openModal = false;
+    $this->displayed = $this->displayedTemp;
+    DisplayedInformation::where('user_id', Auth::id())->update(['languages' => $this->displayed]);
+    $this->openAccordion = false;
+    $this->renderChange();
+    $this->openModal = false;
 };
 
 $closelanguagesSettingsModal = function () {
-	$this->displayed = $this->user->displayedInformations->first()->language;
+    $this->displayed = $this->user->displayedInformation->first()->languages ?? 0;
+    $this->displayedTemp = $this->displayed;
 
-	if ($this->displayed === 1) {
-		$this->displayed = true;
-	} else {
-		$this->displayed = false;
-	}
+    if ($this->displayedTemp === 1) {
+        $this->displayedTemp = true;
+    } else {
+        $this->displayedTemp = false;
+    }
 
-	$this->renderChange();
-	$this->openModal = false;
+    $this->renderChange();
+    $this->openModal = false;
 };
 
 $createsingleLanguage = function () {
-	$this->openSingleModal = true;
-	$this->name = '';
-	$this->level = '';
-	$this->id = 0;
-	$this->renderChange();
+    $this->openSingleModal = true;
+    $this->name = '';
+    $this->level = '';
+    $this->id = 0;
+    $this->renderChange();
 };
 
 $closesingleLanguageModale = function () {
-	$this->openSingleModal = false;
+    $this->openSingleModal = false;
 };
 
 $savesingleLanguage = function () {
-	try {
-		$this->validate();
-	} catch (\Illuminate\Validation\ValidationException $e) {
-		$this->renderChange();
-		throw $e;
-	}
+    try {
+        $this->validate();
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        $this->renderChange();
+        throw $e;
+    }
 
-	Language::updateOrCreate(
-		[
-			'user_id' => Auth::id(),
-			'id' => $this->id
-		],
-		[
-			'level' => $this->level,
-			'name' => $this->name
-		]
-	);
+    Language::updateOrCreate(
+        [
+            'user_id' => Auth::id(),
+            'id' => $this->id
+        ],
+        [
+            'level' => $this->level,
+            'name' => $this->name
+        ]
+    );
 
-	dd('aazer');
-	$this->renderChange();
-	$this->openSingleModal = false;
+	DisplayedInformationsOnce::where('user_id', $this->user->id)
+        ->update(['languages' => true]);
+
+    $this->renderChange();
+    $this->openSingleModal = false;
 };
 
 $editsingleLanguage = function (Language $language) {
-	$this->openSingleModal = true;
-	$this->name = $language->name;
-	$this->level = $language->level;
-	$this->renderChange();
+    $this->openSingleModal = true;
+    $this->name = $language->name;
+    $this->level = $language->level;
+    $this->renderChange();
 };
 
 $deletesingleLanguage = function () {
-	$this->language->delete();
-	$this->deleteModal = false;
-	$this->renderChange();
+    $this->language->delete();
+    $this->deleteModal = false;
+    $this->renderChange();
 };
 
 $openDeleteModal = function (Language $language) {
-	$this->deleteModal = true;
-	$this->language = $language;
-	$this->renderChange();
+    $this->deleteModal = true;
+    $this->language = $language;
+    $this->renderChange();
 };
 
 $closeDeleteModal = function () {
-	$this->deleteModal = false;
-	$this->renderChange();
+    $this->deleteModal = false;
+    $this->renderChange();
 };
 
+on(['newLanguage' => function () {
+    $this->createsinglelanguage();
+}]);
 ?>
-
-<article x-data="{
+<article
+    x-data="{
 openAccordion: $wire.entangle('openAccordion'),
 openModal: $wire.entangle('openModal'),
 openSingleModal: $wire.entangle('openSingleModal'),
 deleteModal: $wire.entangle('deleteModal'),
-}"
-         class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-    <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
+displayed:$wire.entangle('displayed'),
+displayedOnce:$wire.entangle('displayedOnce'),
+}">
+    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6"  x-cloack x-show="displayed && displayedOnce">
+    <div
+        class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
         <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Langues'}}</h3>
+
         <div class="flex">
             <button wire:click="createsingleLanguage"
                     type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
@@ -256,6 +273,7 @@ deleteModal: $wire.entangle('deleteModal'),
             </div>
         @endif
     </div>
+    </div>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--
@@ -282,7 +300,7 @@ deleteModal: $wire.entangle('deleteModal'),
                     From: "opacity-100 translate-y-0 sm:scale-100"
                     To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 -->
-                <div @click.away="openModal = false" class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
+                <div @click.away="$wire.closelanguagesSettingsModal" class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
                     <form action="" wire:submit="savelanguagesSettings">
                         <div class="sm:flex sm:items-start">
                             <div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
@@ -293,7 +311,7 @@ deleteModal: $wire.entangle('deleteModal'),
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model="displayed" id="displayed" aria-describedby="section-displayed-or-not" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="displayedTemp" id="displayed" aria-describedby="section-displayed-or-not" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
                                 <label for="displayed" class="font-medium text-gray-900">Afficher cette section aux
@@ -304,7 +322,7 @@ deleteModal: $wire.entangle('deleteModal'),
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
                                 Enregistrer les changements
                             </button>
-                            <button @click="openModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
+                            <button wire:click="closelanguagesSettingsModal" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler
                             </button>
                         </div>

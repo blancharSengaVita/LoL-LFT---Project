@@ -3,42 +3,52 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
-use function Livewire\Volt\{state, rules, layout};
+use App\Rules\StartsWithAt;
+use Illuminate\Validation\Rule;
+use function Livewire\Volt\{state, rules, layout, mount};
 
 layout('layouts.auth');
 
 // faire un trim ici
 state([
-    'firstname' => '',
-    'lastname' => '',
-    'gameName' => '',
-    'birthday' => '',
+	'user',
+    'game_name',
+    'username',
+    'birthday',
+    'nationalities',
+    'nationality',
 ]);
 
+mount(function () {
+    $this->user = Auth::user();
+    $this->nationalities = require __DIR__ . '/../../../../../app/enum/nationalities.php';
+    $this->game_name = $this->user->game_name ?? '';
+    $this->username = $this->user->username ?? '@';
+    $this->birthday = $this->user->birthday ?? '';
+    $this->nationality = $this->nationalities[array_search($this->user->nationality, $this->nationalities)] ?? '';
+});
+
 rules([
-    'firstname' => 'required|string',
-    'lastname' => 'required|string',
-    'gameName' => 'required|string',
+    'nationality' => 'required',
+    'game_name' => 'required|string|max:20',
+    'username' => ['required', 'string', Rule::unique('users')->ignore(Auth::user()->id), new StartsWithAt, 'max:20'],
     'birthday' => 'required|date',
 ])->messages([
-    'firstname.required' => 'Votre prénom est requis',
-    'firstname.string' => 'Votre prénom doit être composé de lettre',
-    'lastname.required' => 'Votre nom est requis',
-    'lastname.string' => 'Votre nom doit être composé de lettre',
-    'gameName.required' => 'Votre pseudo est requis',
-    'gameName.string' => 'Votre pseudo doit être composé de lettre',
+    'nationality.required' => 'Votre nationalité est requis',
+    'game_name.required' => 'Votre pseudo est requis',
+    'game_name.string' => 'Votre pseudo doit être composé de lettre',
+    'username.required' => 'Votre nom d\'utilisateur est requis',
+    'username.string' => 'Votre nom doit être composé de lettre',
     'birthday.required' => 'Votre date de naissance est requis',
     'birthday.date' => 'Votre date de naissance ne correspond pas au format',
 ]);
-
 $save = function () {
     $validated = $this->validate();
     $user = Auth::user();
-    $user->firstname = $this->firstname;
-    $user->lastname = $this->lastname;
-    $user->game_name = $this->gameName;
+    $user->game_name = $this->game_name;
+    $user->username = $this->username;
     $user->birthday = $this->birthday;
-    $user->setup_completed = true;
+    $user->nationality = $this->nationality;
     $user->save();
 
 
@@ -61,7 +71,7 @@ $save = function () {
                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                         <div class="h-0.5 w-full bg-indigo-600"></div>
                     </div>
-                    <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
+                    <a href="{{route('pages.profil-creation.account-type')}}" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
                         <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
                         </svg>
@@ -100,38 +110,40 @@ $save = function () {
             <form wire:submit="save" class="space-y-6">
 
                 <div>
-                    <label for="firstname" class="block text-sm font-medium leading-6 text-gray-900">Prénom</label>
+                    <label for="game_name" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
                     <div class="mt-2">
-                        <input wire:model="firstname" type="text" name="firstname" id="firstname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Lee">
+                        <input wire:model="game_name" type="text" name="game_name" id="game_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Lee">
                     </div>
-                    @error('firstname')
+                    @error('game_name')
                     <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                     @enderror
+                    <p class="mt-1 text-sm text-gray-500" id="password-description">Celui-ci sera votre pseudo affiché</p>
                 </div>
 
                 <div>
-                    <label for="surname" class="block text-sm font-medium leading-6 text-gray-900">Nom de
-                        famille</label>
+                    <label for="surname" class="block text-sm font-medium leading-6 text-gray-900">Nom d'utilisateur</label>
                     <div class="mt-2">
-                        <input wire:model="lastname" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
+                        <input wire:model="username" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
                     </div>
-                    @error('lastname')
+                    @error('username')
                     <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="gameName" class="block text-sm font-medium leading-6 text-gray-900">Pseudo</label>
-                    <div class="mt-2">
-                        <input type="text" wire:model="gameName" name="gameName" id="gameName" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
-                    </div>
-                    @error('gameName')
-                    <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
                     @enderror
                     <p class="mt-1 text-sm text-gray-500" id="password-description">Celui-ci sera votre pseudo de scène,
                         choisissez le bien</p>
                 </div>
 
+                <div>
+                    <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>
+                    <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <option value="">-- choisissez votre nationalité --</option>
+                        @foreach($nationalities as $nationality)
+                            <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
+                        @endforeach
+                    </select>
+                    @error('nationality')
+                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                    @enderror
+                </div>
 
                 <div>
                     <label for="birthday" class="block text-sm font-medium leading-6 text-gray-900">Date de naissance</label>

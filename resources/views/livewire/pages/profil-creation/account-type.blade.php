@@ -5,18 +5,26 @@ use Illuminate\Validation\Rules;
 
 use function Livewire\Volt\{state, rules};
 use function Livewire\Volt\layout;
+use function \Livewire\Volt\mount;
 
 layout('layouts.auth');
 
 state([
-    'account_type' => '',
+    'user',
+    'account_type',
 ]);
 
 rules([
     'account_type' => 'required',
+
 ])->messages([
     'account_type.required' => 'Veuillez choisir un type de compte',
 ]);
+
+mount(function (){
+    $this->user = Auth::user();
+    $this->account_type = $this->user->account_type ?? '';
+});
 
 $save = function () {
     $validated = $this->validate();

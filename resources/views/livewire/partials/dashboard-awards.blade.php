@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use \App\Models\DisplayedInformation;
+use App\Models\DisplayedInformationsOnce;
 use \App\Models\Award;
 use Carbon\Carbon;
 
@@ -26,6 +27,8 @@ state([
     'awardsShow',
     'awardsHidden',
     'displayed',
+    'displayedTemp',
+    'displayedOnce',
     'title',
     'event',
     'team',
@@ -59,6 +62,7 @@ $renderChange = function () {
 
     $this->awardsShow = $this->awards->take(2);
     $this->awardsHidden = $this->awards->skip(2);
+    $this->displayedOnce = $this->user->displayedInformationsOnce->first()->awards ?? 0;
 };
 
 mount(function () {
@@ -67,12 +71,14 @@ mount(function () {
     $this->renderChange();
 
     $this->displayed = $this->user->displayedInformation->first()->awards ?? 0;
+    $this->displayedTemp = $this->displayed;
 
-    if ($this->displayed === 1) {
-        $this->displayed = true;
+    if ($this->displayedTemp === 1) {
+        $this->displayedTemp = true;
     } else {
-        $this->displayed = false;
+        $this->displayedTemp = false;
     }
+
     $this->openAccordion = false;
     $this->openAwardModal = false;
     $this->openSingleAwardModal = false;
@@ -86,11 +92,9 @@ mount(function () {
     $this->id = 0;
 });
 
-$display = function () {
-
-};
 
 $saveAwardsSettings = function () {
+    $this->displayed = $this->displayedTemp;
     DisplayedInformation::where('user_id', Auth::id())->update(['awards' => $this->displayed]);
     $this->openAccordion = false;
     $this->renderChange();
@@ -98,12 +102,13 @@ $saveAwardsSettings = function () {
 };
 
 $closeAwardsSettingsModal = function () {
-    $this->displayed = $this->user->displayedInformations->first()->award;
+    $this->displayed = $this->user->displayedInformation->first()->awards;
+    $this->displayedTemp = $this->displayed;
 
-    if ($this->displayed === 1) {
-        $this->displayed = true;
+    if ($this->displayedTemp === 1) {
+        $this->displayedTemp = true;
     } else {
-        $this->displayed = false;
+        $this->displayedTemp = false;
     }
 
     $this->renderChange();
@@ -143,6 +148,9 @@ $saveSingleAward = function () {
             'date' => $this->date,
         ]);
 
+    DisplayedInformationsOnce::where('user_id', $this->user->id)
+        ->update(['awards' => true]);
+
     $this->renderChange();
     $this->openSingleAwardModal = false;
 };
@@ -174,6 +182,10 @@ $closeDeleteModal = function () {
     $this->renderChange();
 };
 
+on(['newAward' => function () {
+    $this->createSingleAward();
+}]);
+
 ?>
 
 <article x-data="{
@@ -181,93 +193,98 @@ openAccordion: $wire.entangle('openAccordion'),
 openAwardModal: $wire.entangle('openAwardModal'),
 openSingleAwardModal: $wire.entangle('openSingleAwardModal'),
 deleteModal: $wire.entangle('deleteModal'),
-}"
-         class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-    <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Récompenses'}}</h3>
-        <div class="flex">
-            <button wire:click="createSingleAward"
-                    type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                </svg>
-            </button>
-            <button @click="openAwardModal = !openAwardModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                </svg>
-            </button>
+displayed:$wire.entangle('displayed'),
+displayedOnce:$wire.entangle('displayedOnce'),
+}">
+
+    <div x-cloack x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Récompenses'}}</h3>
+            <div class="flex">
+                <button wire:click="createSingleAward"
+                        type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                    </svg>
+                </button>
+                <button @click="openAwardModal = !openAwardModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class=" sm:w-12/12">
+            <ul role="list" class="divide-y divide-gray-100">
+                @foreach($awardsShow as $award)
+                    <li class="flex gap-x-4 py-5 w-full" wire:key="{{ $award->id }}">
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$award->title}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900"> {{$award->team}}
+                                · {{$award->event}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-500">{{$award->date }}</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button wire:click="editSingleAward({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                                </svg>
+                            </button>
+                            <button wire:click="openDeleteModal({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                @endforeach
+                @foreach($awardsHidden as $award)
+                    <li :class="openAccordion ? '' : 'hidden'" class="flex gap-x-4 py-5">
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$award->title}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900"> {{$award->team}}
+                                · {{$award->event}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-500">{{$award->date }}</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button wire:click="editSingleAward({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                                </svg>
+                            </button>
+                            <button wire:click="openDeleteModal({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+
+            {{-- ACCORDEON --}}
+            @if(count($this->awardsHidden))
+                <div class="flex justify-center">
+                    <Bouton @click="openAccordion = !openAccordion">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
+                            plus
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                            </svg>
+                        </p>
+
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
+                            moins
+                            <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
+                            </svg>
+                        </p>
+                    </Bouton>
+                </div>
+            @endif
         </div>
     </div>
-    <div class=" sm:w-12/12">
-        <ul role="list" class="divide-y divide-gray-100">
-            @foreach($awardsShow as $award)
-                <li class="flex gap-x-4 py-5 w-full" wire:key="{{ $award->id }}">
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$award->title}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-900"> {{$award->team}}
-                            · {{$award->event}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-500">{{$award->date }}</p>
-                    </div>
-                    <div class="ml-auto">
-                        <button wire:click="editSingleAward({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                            </svg>
-                        </button>
-                        <button wire:click="openDeleteModal({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-                            </svg>
-                        </button>
-                    </div>
-                </li>
-            @endforeach
-            @foreach($awardsHidden as $award)
-                <li :class="openAccordion ? '' : 'hidden'" class="flex gap-x-4 py-5">
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$award->title}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-900"> {{$award->team}}
-                            · {{$award->event}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-500">{{$award->date }}</p>
-                    </div>
-                    <div class="ml-auto">
-                        <button wire:click="editSingleAward({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                            </svg>
-                        </button>
-                        <button wire:click="openDeleteModal({{$award}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-                            </svg>
-                        </button>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
 
-        {{-- ACCORDEON --}}
-        @if(count($this->awardsHidden))
-            <div class="flex justify-center">
-                <Bouton @click="openAccordion = !openAccordion">
-                    <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
-                        plus
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-                        </svg>
-                    </p>
-
-                    <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
-                        moins
-                        <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
-                        </svg>
-                    </p>
-                </Bouton>
-            </div>
-        @endif
-    </div>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openAwardModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--
@@ -305,7 +322,7 @@ deleteModal: $wire.entangle('deleteModal'),
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model="displayed" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="displayedTemp" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
                                 <label for="offers" class="font-medium text-gray-900">Afficher cette section au
@@ -316,7 +333,7 @@ deleteModal: $wire.entangle('deleteModal'),
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
                                 Enregistrer les changements
                             </button>
-                            <button @click="openAwardModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
+                            <button wire:click="closeAwardsSettingsModal" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler
                             </button>
                         </div>

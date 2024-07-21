@@ -19,38 +19,42 @@ ini_set('memory_limit', '256M');
 //upload_max_filesize = 20M
 
 state([
-	'displayNames' => [],
-	'nationalities' => [],
+	'user',
 	'jobs' => [],
 	'regions' => [],
-	'displayName' => '',
 	'profilPictureLabel' => 'importer une photo de profil',
 	'profilPictureFilename' => 'Aucun fichier sélectionné',
 	'profilPicture',
-	'nationality' => '',
 	'bio' => '',
 	'job' => '',
 	'region' => '',
 ]);
 
 mount(function () {
-	$user = Auth::user();
-	$this->displayNames = [$user->game_name, $user->firstname . ' ' . $user->lastname, $user->firstname . ' "' . $user->game_name . '" ' . $user->lastname];
+	$this->user = Auth::user();
 	$this->nationalities = require __DIR__ . '/../../../../../app/enum/nationalities.php';
-	$this->jobs = require __DIR__ . '/../../../../../app/enum/jobs.php';
-	$this->regions = require __DIR__ . '/../../../../../app/enum/regions.php';
+    $this->jobs = require __DIR__ . '/../../../../../app/enum/jobs.php';
+    $this->regions = require __DIR__ . '/../../../../../app/enum/regions.php';
+
+	if ($this->user->account_type === 'staff'){
+        $this->jobs = $this->jobs['staff'];
+    }
+
+	if($this->user->account_type === 'player'){
+        $this->jobs = $this->jobs['player'];
+    }
+
+    $this->job = $this->jobs[array_search($this->user->job, $this->jobs)] ?? '';
+    $this->region = $this->regions[array_search($this->user->region, $this->regions)] ?? '';
+    $this->bio = $this->user->bio ?? '';
 });
 
 rules([
-	'displayName' => 'required',
-	'nationality' => 'required',
 	'bio' => 'required',
 	'job' => 'required',
 	'region' => 'required',
 	'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
 ])->messages([
-	'displayName.required' => 'Votre nom affiché est requis',
-	'nationality.required' => 'Votre nationalité est requis',
 	'bio.required' => 'Votre bio est requis',
 	'job.required' => 'Votre job est requis',
 	'region.required' => 'Votre region est requis',
@@ -98,11 +102,10 @@ $save = function () {
 
 	$validated = $this->validate();
 	$user = Auth::user();
-	$user->displayed_name = $this->displayName;
-	$user->nationality = $this->nationality;
 	$user->bio = $this->bio;
 	$user->job = $this->job;
 	$user->region = $this->region;
+    $user->setup_completed = true;
 	$user->save();
 
     $this->redirect(route('dashboard', absolute: false), navigate: true);
@@ -122,7 +125,7 @@ $save = function () {
                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                         <div class="h-0.5 w-full bg-indigo-600"></div>
                     </div>
-                    <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
+                    <a href="{{route('pages.profil-creation.account-type')}}" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
                         <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
                         </svg>
@@ -134,7 +137,7 @@ $save = function () {
                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                         <div class="h-0.5 w-full bg-indigo-600"></div>
                     </div>
-                    <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
+                    <a href="{{route('pages.profil-creation.general-info')}}" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
                         <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
                         </svg>
@@ -161,37 +164,6 @@ $save = function () {
         <div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form wire:submit="save" class="space-y-6">
                 <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="col-span-3">
-                        <div class="col-span-3 mb-8">
-                            <label for="displayName" class="block text-sm font-medium leading-6 text-gray-900">Nom
-                                affiché </label>
-                            <select wire:model="displayName" id="displayName" name="displayName" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <option value="">-- choisissez votre nom affiché --</option>
-                                @foreach($this->displayNames as $name)
-                                    <option value="{{ $name }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            @error('displayName')
-                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                            @enderror
-                        </div>
-
-
-                        <div class="col-span-3">
-                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>
-                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <option value="">-- choisissez votre nationalité --</option>
-                                @foreach($nationalities as $nationality)
-                                    <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
-                                @endforeach
-                            </select>
-                            @error('nationality')
-                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                            @enderror
-                        </div>
-
-                    </div>
-
                     <div class="col-span-3">
                         <label for="profil-picture" class="block text-sm font-medium leading-6 text-gray-900">
                             Photo de profil</label>
@@ -222,6 +194,50 @@ $save = function () {
                     {{--                    @endif--}}
 
 
+                    <div class="col-span-3">
+                        <div class="col-span-3 mb-4">
+                            <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
+                            <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <option value="">-- choisissez votre poste --</option>
+                                @foreach($jobs as $job)
+                                    <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                @endforeach
+                            </select>
+                            @error('job')
+                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="col-span-3">
+                            <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région<span class="text-red-500">*</span></label>
+                            <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <option value="">-- choisissez votre region --</option>
+                                @foreach($regions as $region)
+                                    <option value="{{ $region }}">{{ $region }}</option>
+                                @endforeach
+                            </select>
+                            @error('region')
+                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                            @enderror
+                        </div>
+{{--                        <div class="col-span-3">--}}
+{{--                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>--}}
+{{--                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
+{{--                                <option value="">-- choisissez votre nationalité --</option>--}}
+{{--                                @foreach($nationalities as $nationality)--}}
+{{--                                    <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                            @error('nationality')--}}
+{{--                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+
+                    </div>
+
+
+
+
                     <div class="col-span-full">
                         <label for="bio" class="block text-sm font-medium leading-6 text-gray-900">Bio</label>
                         <div class="mt-2">
@@ -233,32 +249,9 @@ $save = function () {
                         <p class="mt-1 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
                     </div>
 
-                    <div class="col-span-3">
-                        <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Rôle</label>
-                        <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                            <option value="">-- choisissez votre rôle --</option>
-                            @foreach($jobs['player'] as $job)
-                                <option value="{{ $job }}">{{ __($job) }}</option>
-                            @endforeach
-                        </select>
-                        @error('job')
-                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <div class="col-span-3 mb-8">
-                        <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région</label>
-                        <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                            <option value="">-- choisissez votre region --</option>
-                            @foreach($regions as $region)
-                                <option value="{{ $region }}">{{ $region }}</option>
-                            @endforeach
-                        </select>
-                        @error('region')
-                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                        @enderror
-                    </div>
                 </div>
+
                 <div class="justify-center flex">
                     <button type="submit" class="flex justify-center rounded-md bg-rose-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Ajouter un compte riot
@@ -272,10 +265,6 @@ $save = function () {
                 </div>
             </form>
         </div>
-
-        <p class="mt-10 text-center text-sm text-gray-500">
-            <a href="{{ route('dashboard') }}" wire:navigate class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Ignorez</a>
-        </p>
     </div>
 </div>
 

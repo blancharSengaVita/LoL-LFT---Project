@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('displayed_informations', function (Blueprint $table) {
+        Schema::create('displayed_informations_once', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('bio')->default(true);
-            $table->boolean('player_experiences')->default(true);
-            $table->boolean('awards')->default(true);
-            $table->boolean('skills')->default(true);
-            $table->boolean('languages')->default(true);
+            $table->boolean('player_experiences')->default(false);
+            $table->boolean('awards')->default(false);
+            $table->boolean('skills')->default(false);
+            $table->boolean('languages')->default(false);
             $table->timestamps();
         });
     }
@@ -28,9 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('displayed_informations', function (Blueprint $table) {
+        Schema::table('displayed_informations_once', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
-        Schema::dropIfExists('displayed_informations');
+        Schema::dropIfExists('displayed_informations_once');
     }
 };

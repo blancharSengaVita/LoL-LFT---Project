@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class DisplayedInformation extends Model
+class OnboardingMission extends Model
 {
     use HasFactory;
-    protected $table = 'displayed_informations';
+
+    protected $table = 'onboarding_missions';
 
     protected $fillable = [
-        'user_id',
+        'title',
+        'description',
+        'button',
     ];
 
     public function user(): BelongsTo

@@ -32,16 +32,21 @@ mount(function () {
 >
     <div class="pb-6 bg-white">
         <div class="h-24 bg-indigo-700 sm:h-20 lg:h-28"></div>
-        <div class="-mt-12 flow-root px-4 sm:-mt-8 sm:flex sm:items-end sm:px-6 lg:-mt-16">
+        <div class="-mt-8 flow-root px-4 sm:-mt-4 sm:flex sm:items-end sm:px-6 lg:-mt-12">
             <div>
                 <div class="-m-1 flex">
                     <div class="inline-flex overflow-hidden rounded-lg border-4 border-white">
-                        <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="https://ui-avatars.com/api/?length=1&name={{ $user->displayed_name  }}" alt="">
+                        <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="https://ui-avatars.com/api/?length=1&name={{ $user->game_name  }}" alt="">
                     </div>
                 </div>
             </div>
-            <div class="mt-6 sm:ml-6 sm:flex-1">
-                <p class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $user->displayed_name  }}</p>
+            <div class="mt-4 sm:mt-6 sm:ml-6 sm:flex-1">
+                <div>
+                <p class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $user->game_name  }}
+                </div>
+                <div class="mb-2">
+                    <span class="text-sm text-gray-500">{{ $user->username  }}</span>
+                </div>
                 <div>
                     <p class="text-gray-900">{{ $user->job  }}</p>
                 </div>

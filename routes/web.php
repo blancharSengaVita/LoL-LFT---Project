@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::view('profile', 'profile')
         ->middleware(['auth'])
         ->name('profile');
+
+    Volt::route('paramètre', 'pages.paramètre')
+        ->name('paramètre');
 });
 
 require __DIR__ . '/auth.php';

@@ -5,6 +5,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use \App\Models\DisplayedInformation;
+use \App\Models\DisplayedInformationsOnce;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
@@ -38,8 +40,10 @@ $register = function () {
 
     $displayedInformation = DisplayedInformation::create([
         'user_id' => $user->id,
-        'bio' => true,
-        'player_experiences' => true,
+    ]);
+
+    $displayedInformationOnce = DisplayedInformationsOnce::create([
+        'user_id' => $user->id,
     ]);
 
     $this->redirect(route('pages.profil-creation.account-type', absolute: false), navigate: true);

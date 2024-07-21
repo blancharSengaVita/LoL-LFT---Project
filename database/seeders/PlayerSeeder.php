@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Award;
 use App\Models\DisplayedInformation;
+use App\Models\DisplayedInformationsOnce;
 use App\Models\Language;
+use App\Models\OnboardingMission;
 use App\Models\PlayerExperience;
 use App\Models\Skill;
 use App\Models\User;
@@ -21,9 +23,7 @@ class PlayerSeeder extends Seeder
             ->create([
                 'email' => 'anchar2107@gmail.com',
                 'game_name' => 'SparklesSupa',
-                'displayed_name' => 'SparklesSupa',
-                'firstname' => 'Blanchar',
-                'lastname' => 'Senga-Vita',
+                'username' => '@SparklesSupa',
                 'account_type' => 'player',
                 'birthday' => '2000-07-21',
                 'nationality' => 'belgian',
@@ -86,8 +86,18 @@ class PlayerSeeder extends Seeder
         DisplayedInformation::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
-                'bio' => '0',
-                'player_experiences' => '0'
+                'bio' => true,
+            ]
+        ]);
+
+        DisplayedInformationsOnce::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'bio' => true,
+                'player_experiences' => true,
+                'awards'=> true,
+                'skills' => true,
+                'languages'=> true,
             ]
         ]);
 
@@ -195,6 +205,39 @@ class PlayerSeeder extends Seeder
                 'user_id' => $blanchar->id,
                 'name' => 'Japanese',
                 'level' => 'Je sais dire bonjour',
+            ],
+        ]);
+
+        OnboardingMission::factory()->createMany([
+            [
+                'name' => 'addSection',
+                'title' => 'Ajouter une section',
+                'description' => 'Optimisez votre profil en ligne en ajoutant des sections détaillées sur vos experiences, vos compétences et vos recompenses.',
+                'button_title' => 'Nouvelle section'
+            ],
+            [
+                'name' => 'createLftPost',
+                'title' => 'Faire un poste LFT',
+                'description' => 'Poster une annonce "Looking for a Team" pour trouver des coéquipiers ou une équipe',
+                'button_title' => 'Nouveau poste'
+            ],
+            [
+                'name' => 'openLft',
+                'title' => 'Faire une demande de duo ou d\'équipe',
+                'description' => 'Envoyez des demandes de duo ou d\'équipe pour élargir votre réseau et rencontrer des nouveaux joueurs avec qui jouer et échanger',
+                'button_title' => 'Chercher des partenaires'
+            ],
+            [
+                'name' => 'linkRiotAccount',
+                'title' => 'Lier son compte League of Legends',
+                'description' => 'Lier votre compte League of Legends pour montrer vos statistiques et vos performances à vos potentiels coéquipiers.',
+                'button_title' => 'Lier son compte'
+            ],
+            [
+                'name' => 'completeBio',
+                'title' => 'Complete ta Bio',
+                'description' => 'Donne une description complète de toi-même, tes intérêts, tes expériences et ce que tu recherches chez tes coéquipiers ou ta prochaine équipe.',
+                'button_title' => 'Completer la bio'
             ],
         ]);
 
