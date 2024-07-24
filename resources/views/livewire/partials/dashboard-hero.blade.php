@@ -32,7 +32,7 @@ mount(function () {
 >
     <div class="pb-6 bg-white">
         <div class="h-24 bg-indigo-700 sm:h-20 lg:h-28"></div>
-        <div class="-mt-8 flow-root px-4 sm:-mt-4 sm:flex sm:items-end sm:px-6 lg:-mt-12">
+        <div class="-mt-8 flow-root px-4 sm:-mt-4 sm:flex sm:items-end sm:px-6 lg:-mt-8">
             <div>
                 <div class="-m-1 flex">
                     <div class="inline-flex overflow-hidden rounded-lg border-4 border-white">

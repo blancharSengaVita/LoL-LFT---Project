@@ -1,5 +1,7 @@
 <?php
 
+use \App\Models\User;
+use \Illuminate\Support\Facades\Auth;
 use function Livewire\Volt\{
     state,
     on,
@@ -15,22 +17,39 @@ state([
     'missionsHidden',
     'openAccordion',
     'openModal',
+    'percent',
+    'sections',
+    'sectionCompleted',
+    'missionCompleted' => true,
 ]);
 
 mount(function () {
+	$this->user = Auth::user();
+    $this->percent = 0;
+    $this->sectionCompleted = 0;
     $this->renderChange();
 });
 
 $renderChange = function () {
-//	dd($this->user->playerExperience);
     $this->missions = OnboardingMission::where('name', 'addSection')->orderBy('created_at', 'asc')->get();
-//    foreach ($this->playerExperiences as $experience) {
-//        $experience->date = Carbon::parse($experience->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
-//    }
+    $this->sections = $this->user->displayedInformationsOnce()->first()->only(['player_experiences', 'awards', 'skills', 'languages']);
+    $this->percent = 0;
+    $this->sectionCompleted = 0;
+    foreach ($this->sections as $section){
+        if ($section === 1){
+			//100 deviser par le nombre de mission
+            $this->percent += 25;
+            $this->sectionCompleted +=1;
+        }
+    }
 
+    if ($this->percent >= 100){
+		$this->missionCompleted = false;
+    }
     $this->missionsShow = $this->missions->take(2);
     $this->missionsHidden = $this->missions->skip(2);
 };
+
 
 $openMissionModal = function ($mission){
     $this->$mission();
@@ -44,31 +63,41 @@ $newExperience = function(){
     $this->openModal = false;
     $this->dispatch('newExperience');
 };
+
 $newAward = function(){
     $this->openModal = false;
     $this->dispatch('newAward');
-
 };
+
 $newSkill = function(){
     $this->openModal = false;
     $this->dispatch('newSkill');
-
 };
+
 $newLanguage = function(){
     $this->openModal = false;
     $this->dispatch('newLanguage');
 };
 
+$newBio = function(){
+    $this->openModal = false;
+    $this->dispatch('newBio');
+};
 
+on(['renderOnboarding' => function () {
+    $this->renderChange();
+}]);
 ?>
 
 <article
     x-data="{
     openAccordion: $wire.entangle('openAccordion'),
     openModal: $wire.entangle('openModal'),
+    missionCompleted: $wire.entangle('missionCompleted'),
     {{--openSinglePlayerExperienceModal: $wire.entangle('openSinglePlayerExperienceModal'),--}}
     {{--deleteModal: $wire.entangle('deleteModal'),--}}
     }"
+    x-show="missionCompleted"
     class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
     <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
         <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Complétez votre profile !'}}</h3>
@@ -101,9 +130,9 @@ $newLanguage = function(){
                         </button>
                         <div class="flex gap-x-2 items-center mt-2" aria-hidden="true">
                             <div class="max-h-2 grow-1 w-full overflow-hidden rounded-full bg-gray-200">
-                                <div class="h-2 rounded-full bg-indigo-600" style="width: 50.0%"></div>
+                                <div class="h-2 rounded-full bg-indigo-600" style="width: {{$percent}}%"></div>
                             </div>
-                            <p> 1/2 </p>
+                            <p> {{$sectionCompleted}}/{{count($sections)}} </p>
                         </div>
 
 
@@ -136,9 +165,9 @@ $newLanguage = function(){
                         </button>
                         <div class="flex gap-x-2 items-center mt-2" aria-hidden="true">
                             <div class="max-h-2 grow-1 w-full overflow-hidden rounded-full bg-gray-200">
-                                <div class="h-2 rounded-full bg-indigo-600" style="width: 50.0%"></div>
+                                <div class="h-2 rounded-full bg-indigo-600" style="width: {{$percent}}"></div>
                             </div>
-                            <p> 1/2 </p>
+                            <p> 1/{{count($sections)}} </p>
                         </div>
 
 
@@ -242,13 +271,20 @@ $newLanguage = function(){
                         </div>
 
                         <ul role="list" class="divide-y divide-gray-100">
+{{--                            <li class="flex gap-x-4 py-5">--}}
+{{--                                <div class="min-w-0">--}}
+{{--                                    <button type="button" wire:click="newBio">--}}
+{{--                                      <p class="text-left text-sm font-semibold leading-6 text-gray-900">Modifie ta bio</p>--}}
+{{--                                        <p class="mt-1 text-sm leading-5 text-gray-500">Donne une description de toi-même, tes intérêts, tes expériences et ce que tu recherches</p>--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
                             <li class="flex gap-x-4 py-5">
                                 <div class="min-w-0">
                                     <button type="button" wire:click="newExperience" >
-                                      <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une expérience</p>
+                                        <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une expérience</p>
                                         <p class="mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une saison en LEC qu'une demi-finale de clash</p>
                                     </button>
-
                                 </div>
                             </li>
                             <li class="flex gap-x-4 py-5">

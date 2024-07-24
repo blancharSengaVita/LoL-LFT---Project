@@ -6,7 +6,7 @@ use App\Models\DisplayedInformationsOnce;
 use App\Models\DisplayedInformation;
 use App\Models\PlayerExperience;
 use Carbon\Carbon;
-
+use Masmerise\Toaster\Toaster;
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
     state,
@@ -100,6 +100,7 @@ $saveExperiencesSettings = function () {
     $this->openAccordion = false;
     $this->renderChange();
     $this->openPlayerExperiencesModal = false;
+    Toaster::success('Modification effectué avec succès');
 };
 
 $closeExperiencesSettingsModal = function () {
@@ -155,7 +156,16 @@ $saveSingleExperience = function () {
         ->update(['player_experiences' => true]);
 
     $this->renderChange();
+    $this->dispatch('renderOnboarding');
+    //->to('pages.partials.dashboard-onbaording');
     $this->openSinglePlayerExperienceModal = false;
+    if($this->id === 0){
+        Toaster::success('Expérience ajouté avec succès');
+    }
+
+    if($this->id !== 0){
+        Toaster::success('Expérience modifiée avec succès');
+    }
 };
 
 $editSingleExperience = function (PlayerExperience $experience) {
@@ -189,6 +199,7 @@ $closeDeleteModal = function () {
 on(['newExperience' => function () {
     $this->createSingleExperience();
 }]);
+
 ?>
 
 <article x-data="{

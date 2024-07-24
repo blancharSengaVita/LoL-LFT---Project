@@ -6,7 +6,7 @@ use App\Models\DisplayedInformation;
 use App\Models\DisplayedInformationsOnce;
 use App\Models\language;
 use Carbon\Carbon;
-
+use Masmerise\Toaster\Toaster;
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
     state,
@@ -92,6 +92,7 @@ $savelanguagesSettings = function () {
     $this->openAccordion = false;
     $this->renderChange();
     $this->openModal = false;
+    Toaster::success('Modification effectué avec succès');
 };
 
 $closelanguagesSettingsModal = function () {
@@ -143,7 +144,15 @@ $savesingleLanguage = function () {
         ->update(['languages' => true]);
 
     $this->renderChange();
+    $this->dispatch('renderOnboarding');
     $this->openSingleModal = false;
+    if($this->id === 0){
+        Toaster::success('Langue ajouté avec succès');
+    }
+
+    if($this->id !== 0){
+        Toaster::success('Langue modifiée avec succès');
+    }
 };
 
 $editsingleLanguage = function (Language $language) {

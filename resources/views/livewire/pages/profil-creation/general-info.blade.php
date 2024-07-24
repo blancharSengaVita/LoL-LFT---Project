@@ -25,7 +25,7 @@ mount(function () {
     $this->game_name = $this->user->game_name ?? '';
     $this->username = $this->user->username ?? '@';
     $this->birthday = $this->user->birthday ?? '';
-    $this->nationality = $this->nationalities[array_search($this->user->nationality, $this->nationalities)] ?? '';
+    $this->nationality = $this->user->nationality ?? '';
 });
 
 rules([
@@ -51,10 +51,8 @@ $save = function () {
     $user->nationality = $this->nationality;
     $user->save();
 
-
     $this->redirect(route('pages.profil-creation.additional-info', absolute: false), navigate: true);
 };
-
 ?>
 
 <div class="flex min-h-full flex-col justify-center py-16 sm:px-6 lg:px-8">

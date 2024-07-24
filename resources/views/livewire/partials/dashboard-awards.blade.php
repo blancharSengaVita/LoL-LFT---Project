@@ -6,6 +6,7 @@ use \App\Models\DisplayedInformation;
 use App\Models\DisplayedInformationsOnce;
 use \App\Models\Award;
 use Carbon\Carbon;
+use Masmerise\Toaster\Toaster;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
@@ -99,6 +100,7 @@ $saveAwardsSettings = function () {
     $this->openAccordion = false;
     $this->renderChange();
     $this->openAwardModal = false;
+    Toaster::success('Modification effectué avec succès');
 };
 
 $closeAwardsSettingsModal = function () {
@@ -152,7 +154,15 @@ $saveSingleAward = function () {
         ->update(['awards' => true]);
 
     $this->renderChange();
+    $this->dispatch('renderOnboarding');
     $this->openSingleAwardModal = false;
+    if($this->id === 0){
+        Toaster::success('Prix ajouté avec succès');
+    }
+
+    if($this->id !== 0){
+        Toaster::success('Prix modifiée avec succès');
+    }
 };
 
 $editSingleAward = function (Award $award) {

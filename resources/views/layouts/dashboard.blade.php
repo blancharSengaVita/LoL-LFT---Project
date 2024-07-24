@@ -16,6 +16,7 @@ use function Livewire\Volt\{state};
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full">
+<x-toaster-hub />
 <h1 class="sr-only">{{ $h1 }}</h1>
 <livewire:partials.app-side-menu/>
 {{ $slot }}

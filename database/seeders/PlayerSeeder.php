@@ -86,7 +86,6 @@ class PlayerSeeder extends Seeder
         DisplayedInformation::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
-                'bio' => true,
             ]
         ]);
 

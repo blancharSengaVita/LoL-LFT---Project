@@ -44,13 +44,13 @@ mount(function () {
         $this->jobs = $this->jobs['player'];
     }
 
-    $this->job = $this->jobs[array_search($this->user->job, $this->jobs)] ?? '';
-    $this->region = $this->regions[array_search($this->user->region, $this->regions)] ?? '';
+    $this->job = $this->user->job ?? '';
+    $this->region = $this->user->region ?? '';
     $this->bio = $this->user->bio ?? '';
 });
 
 rules([
-	'bio' => 'required',
+	//'bio' => 'required',
 	'job' => 'required',
 	'region' => 'required',
 	'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
@@ -103,6 +103,9 @@ $save = function () {
 	$validated = $this->validate();
 	$user = Auth::user();
 	$user->bio = $this->bio;
+	if ($this->bio !== ''){
+        $user = Auth::user()->displayedInformationsOnce()->bio = true;
+    }
 	$user->job = $this->job;
 	$user->region = $this->region;
     $user->setup_completed = true;

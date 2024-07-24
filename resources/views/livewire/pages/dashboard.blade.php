@@ -44,7 +44,6 @@ mount(function () {
         <!-- Static sidebar for desktop -->
 
         <div class="xl:pr-96">
-
             <!-- Main area -->
             <!--
               When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars

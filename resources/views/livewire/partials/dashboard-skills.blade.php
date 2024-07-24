@@ -6,6 +6,7 @@ use App\Models\DisplayedInformationsOnce;
 use \App\Models\DisplayedInformation;
 use \App\Models\Skill;
 use Carbon\Carbon;
+use Masmerise\Toaster\Toaster;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
@@ -89,6 +90,7 @@ $saveskillsSettings = function () {
     $this->openAccordion = false;
     $this->renderChange();
     $this->openModal = false;
+    Toaster::success('Modification effectué avec succès');
 };
 
 $closeskillsSettingsModal = function () {
@@ -124,6 +126,7 @@ $savesingleSkill = function () {
         throw $e;
     }
 
+
     Skill::updateOrCreate([
         'user_id' => Auth::id(),
         'id' => $this->id
@@ -136,7 +139,17 @@ $savesingleSkill = function () {
         ->update(['skills' => true]);
 
     $this->renderChange();
+    $this->dispatch('renderOnboarding');
+
     $this->openSingleModal = false;
+
+    if($this->id === 0){
+        Toaster::success('Compétence ajouté avec succès');
+    }
+
+    if($this->id !== 0){
+        Toaster::success('Compétence modifiée avec succès');
+    }
 };
 
 $editsingleSkill = function (Skill $skill) {
@@ -170,6 +183,7 @@ $closeDeleteModal = function () {
         $this->createsingleSkill();
     }]);
 ?>
+
 
 <article x-data="{
 openAccordion: $wire.entangle('openAccordion'),
