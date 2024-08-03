@@ -10,7 +10,9 @@ use App\Models\OnboardingMission;
 use App\Models\PlayerExperience;
 use App\Models\Skill;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PlayerSeeder extends Seeder
 {
@@ -30,6 +32,62 @@ class PlayerSeeder extends Seeder
                 'region' => 'EUW',
                 'job' => 'Mid',
                 'bio' => 'Je m\'appelle Blanchar Senga-Vita. Je joue à Leaque of Legends depuis 2019, je cumule 200 heures de jeux. Je suis sur cette application car, je voudrais créer ma propre structure les "junkyards" Une bande d\'ami qui joue à league of legends pour s\'amuser',
+                'setup_completed' => true,
+            ]);
+
+        $squirtle = User::factory()
+            ->create([
+                'email' => 'squirtle0407@gmail.com',
+                'game_name' => 'Squirle is back',
+                'username' => '@Squirle',
+                'account_type' => 'player',
+                'birthday' => '2000-07-04',
+                'nationality' => 'belgian',
+                'region' => 'EUW',
+                'job' => 'Supp',
+                'bio' => 'Je vote à droite',
+                'setup_completed' => true,
+            ]);
+
+        $doki = User::factory()
+            ->create([
+                'email' => '$doki@gmail.com',
+                'game_name' => 'Doki',
+                'username' => '@$doki',
+                'account_type' => 'player',
+                'birthday' => '2002-04-15',
+                'nationality' => 'belgian',
+                'region' => 'EUW',
+                'job' => 'Top',
+                'bio' => 'Piqué par league malgré moi',
+                'setup_completed' => true,
+            ]);
+
+        $UwU= User::factory()
+            ->create([
+                'email' => 'UwU@gang.gg',
+                'game_name' => 'UwU GanG',
+                'username' => '@UwU',
+                'account_type' => 'team',
+                'birthday' => '2024-07-30',
+                'nationality' => 'belgian',
+                'region' => 'EUW',
+                'job' => 'Staff',
+                'bio' => 'Toujours cute, toujours kawainé',
+                'setup_completed' => true,
+            ]);
+
+        $striker= User::factory()
+            ->create([
+                'email' => 'striker@salut.com',
+                'game_name' => 'striker',
+                'username' => '@striker',
+                'account_type' => 'staff',
+                'birthday' => '2024-07-30',
+                'nationality' => 'belgian',
+                'region' => 'EUW',
+                'job' => 'Assistant coach',
+                'bio' => 'Toujours cute, toujours kawainé',
                 'setup_completed' => true,
             ]);
 
@@ -92,6 +150,39 @@ class PlayerSeeder extends Seeder
         DisplayedInformationsOnce::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
+                'bio' => true,
+                'player_experiences' => true,
+                'awards'=> true,
+                'skills' => true,
+                'languages'=> true,
+            ]
+        ]);
+
+        DisplayedInformationsOnce::factory()->createMany([
+            [
+                'user_id' => $doki->id,
+                'bio' => true,
+                'player_experiences' => true,
+                'awards'=> true,
+                'skills' => true,
+                'languages'=> true,
+            ]
+        ]);
+
+        DisplayedInformationsOnce::factory()->createMany([
+            [
+                'user_id' =>$UwU->id,
+                'bio' => true,
+                'player_experiences' => true,
+                'awards'=> true,
+                'skills' => true,
+                'languages'=> true,
+            ]
+        ]);
+
+        DisplayedInformationsOnce::factory()->createMany([
+            [
+                'user_id' => $squirtle->id,
                 'bio' => true,
                 'player_experiences' => true,
                 'awards'=> true,
@@ -240,5 +331,64 @@ class PlayerSeeder extends Seeder
             ],
         ]);
 
+        DB::table('team_members')->insert([
+            'team_id' => $UwU->id,
+            'username' => 'Mini',
+            'type' => 'player',
+            'nationality' => 'French',
+            'job' => 'Fill',
+            'entry_date' => Carbon::now()->format('Y-m-d'),
+            'archived' => true,
+        ]);
+
+        DB::table('team_members')->insert([
+            'team_id' => $UwU->id,
+            'type' => 'player',
+            'username' => 'DoKi',
+            'nationality' => 'French',
+            'job' => 'Mid',
+            'entry_date' => Carbon::now()->format('Y-m-d'),
+            'archived' => false,
+        ]);
+
+        DB::table('team_members')->insert([
+            'team_id' => $UwU->id,
+            'type' => 'player',
+            'username' => 'Squirlte',
+            'nationality' => 'Belgian',
+            'job' => 'Support',
+            'entry_date' => Carbon::now()->format('Y-m-d'),
+            'archived' => false,
+        ]);
+
+        DB::table('team_members')->insert([
+            'team_id' => $UwU->id,
+            'username' => 'Striker',
+            'type' => 'staff',
+            'nationality' => 'French',
+            'job' => 'Head coach',
+            'entry_date' => Carbon::now()->format('Y-m-d'),
+            'archived' => true,
+        ]);
+
+        DB::table('team_members')->insert([
+            'team_id' => $UwU->id,
+            'type' => 'staff',
+            'username' => 'Reha',
+            'nationality' => 'French',
+            'job' => 'Assistant coach',
+            'entry_date' => Carbon::now()->format('Y-m-d'),
+            'archived' => false,
+        ]);
+
+        DB::table('team_members')->insert([
+            'team_id' => $UwU->id,
+            'type' => 'staff',
+            'username' => 'Nalkya',
+            'nationality' => 'Belgian',
+            'job' => 'Analyst',
+            'entry_date' => Carbon::now()->format('Y-m-d'),
+            'archived' => false,
+        ]);
     }
 }

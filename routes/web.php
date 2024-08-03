@@ -18,9 +18,15 @@ Volt::route('/', 'pages.home')
     ->middleware('guest')
     ->name('home');
 
+
+
 Route::middleware('auth')->group(function () {
+    //testing things here
     Volt::route('/dashboard', 'pages.dashboard')
         ->name('dashboard');
+
+    Volt::route('/member', 'pages.dashboard.member')
+        ->name('member');
 
     Volt::route('/profil-creation/general-info', 'pages.profil-creation.general-info')
     ->name('pages.profil-creation.general-info');
@@ -40,3 +46,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+Route::middleware('auth')->group(function () {
+Volt::route('/{user:username}', 'pages.user')
+    ->name('user');
+});

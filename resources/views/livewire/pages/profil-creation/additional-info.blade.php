@@ -28,11 +28,11 @@ state([
 	'bio' => '',
 	'job' => '',
 	'region' => '',
+	'type' => '',
 ]);
 
 mount(function () {
 	$this->user = Auth::user();
-	$this->nationalities = require __DIR__ . '/../../../../../app/enum/nationalities.php';
     $this->jobs = require __DIR__ . '/../../../../../app/enum/jobs.php';
     $this->regions = require __DIR__ . '/../../../../../app/enum/regions.php';
 
@@ -44,14 +44,24 @@ mount(function () {
         $this->jobs = $this->jobs['player'];
     }
 
+    if($this->user->account_type === 'team'){
+        $this->jobs = $this->jobs['player'];
+    }
+
     $this->job = $this->user->job ?? '';
+    $this->type = $this->user->account_type ?? '';
     $this->region = $this->user->region ?? '';
     $this->bio = $this->user->bio ?? '';
+
+    if ($this->type === 'team') {
+		$this->job = 'team';
+        rules(fn () => [
+            'job' => 'required',
+        ]);
+    }
 });
 
 rules([
-	//'bio' => 'required',
-	'job' => 'required',
 	'region' => 'required',
 	'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
 ])->messages([
@@ -101,15 +111,16 @@ $save = function () {
 
 
 	$validated = $this->validate();
-	$user = Auth::user();
-	$user->bio = $this->bio;
+	$this->user = Auth::user();
+	$this->user->bio = $this->bio;
 	if ($this->bio !== ''){
         $user = Auth::user()->displayedInformationsOnce()->bio = true;
     }
-	$user->job = $this->job;
-	$user->region = $this->region;
-    $user->setup_completed = true;
-	$user->save();
+	//dd($this->job);
+	$this->user->job = $this->job;
+	$this->user->region = $this->region;
+    $this->user->setup_completed = true;
+	$this->user->save();
 
     $this->redirect(route('dashboard', absolute: false), navigate: true);
 };
@@ -198,6 +209,7 @@ $save = function () {
 
 
                     <div class="col-span-3">
+                        @if($type !== 'team')
                         <div class="col-span-3 mb-4">
                             <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
                             <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -210,6 +222,7 @@ $save = function () {
                             <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                             @enderror
                         </div>
+                        @endif()
 
                         <div class="col-span-3">
                             <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région<span class="text-red-500">*</span></label>

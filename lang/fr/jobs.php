@@ -6,7 +6,7 @@ return [
     'Mid' => 'Mid',
     'ADC' => 'ADC',
     'Support' => 'Support',
-    'Fill' => 'Remplisseur',
+    'Fill' => 'Fill',
     'Undefined' => 'Role indéfini',
     'Head coach' => 'Entraîneur principal',
     'Assistant coach' => 'Entraîneur assistant',

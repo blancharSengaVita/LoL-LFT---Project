@@ -19,8 +19,8 @@ class DisplayedInformationFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'bio' => 'true',
-            'player_experiences' => 'true',
+            'bio' => true,
+            'player_experiences' => true,
         ];
     }
 }
