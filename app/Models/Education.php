@@ -6,29 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
-class OnboardingMission extends Model
+class Education extends Model
 {
     use HasFactory;
 
-    protected $table = 'onboarding_missions';
-
+    protected $table = 'education';
     protected $fillable = [
-        'title',
-        'name',
-        'description',
-        'button',
+        'user_id',
+        'establishment',
+        'diploma',
+        'entry_date',
+        'exit_date',
     ];
+
+
 
     public function user(): BelongsTo
     {
         return $this
             ->belongsTo(User::class);
     }
-
-    public function userMission()
-    {
-        return $this->hasMany(UserMission::class, 'mission_id');
-    }
-
 }

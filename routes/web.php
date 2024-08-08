@@ -19,7 +19,6 @@ Volt::route('/', 'pages.home')
     ->name('home');
 
 
-
 Route::middleware('auth')->group(function () {
     //testing things here
     Volt::route('/dashboard', 'pages.dashboard')

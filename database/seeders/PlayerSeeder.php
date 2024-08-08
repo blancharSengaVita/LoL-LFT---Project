@@ -10,6 +10,7 @@ use App\Models\OnboardingMission;
 use App\Models\PlayerExperience;
 use App\Models\Skill;
 use App\Models\User;
+use App\Models\UserMission;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +64,7 @@ class PlayerSeeder extends Seeder
                 'setup_completed' => true,
             ]);
 
-        $UwU= User::factory()
+        $UwU = User::factory()
             ->create([
                 'email' => 'UwU@gang.gg',
                 'game_name' => 'UwU GanG',
@@ -74,10 +75,12 @@ class PlayerSeeder extends Seeder
                 'region' => 'EUW',
                 'job' => 'Staff',
                 'bio' => 'Toujours cute, toujours kawainé',
-                'setup_completed' => true,
+                'setup_completed' => false,
             ]);
 
-        $striker= User::factory()
+        $users = [$squirtle, $blanchar, $doki];
+
+        $striker = User::factory()
             ->create([
                 'email' => 'striker@salut.com',
                 'game_name' => 'striker',
@@ -152,9 +155,9 @@ class PlayerSeeder extends Seeder
                 'user_id' => $blanchar->id,
                 'bio' => true,
                 'player_experiences' => true,
-                'awards'=> true,
+                'awards' => true,
                 'skills' => true,
-                'languages'=> true,
+                'languages' => true,
             ]
         ]);
 
@@ -163,20 +166,20 @@ class PlayerSeeder extends Seeder
                 'user_id' => $doki->id,
                 'bio' => true,
                 'player_experiences' => true,
-                'awards'=> true,
+                'awards' => true,
                 'skills' => true,
-                'languages'=> true,
+                'languages' => true,
             ]
         ]);
 
         DisplayedInformationsOnce::factory()->createMany([
             [
-                'user_id' =>$UwU->id,
+                'user_id' => $UwU->id,
                 'bio' => true,
                 'player_experiences' => true,
-                'awards'=> true,
+                'awards' => true,
                 'skills' => true,
-                'languages'=> true,
+                'languages' => true,
             ]
         ]);
 
@@ -185,9 +188,9 @@ class PlayerSeeder extends Seeder
                 'user_id' => $squirtle->id,
                 'bio' => true,
                 'player_experiences' => true,
-                'awards'=> true,
+                'awards' => true,
                 'skills' => true,
-                'languages'=> true,
+                'languages' => true,
             ]
         ]);
 
@@ -306,6 +309,12 @@ class PlayerSeeder extends Seeder
                 'button_title' => 'Nouvelle section'
             ],
             [
+                'name' => 'addMember',
+                'title' => 'Ajouter un membre',
+                'description' => 'Ajoutez de nouveaux membres à votre équipe, qu\'ils soient joueurs ou membres du staff, et complétez leurs profils avec des informations détaillées.',
+                'button_title' => 'Ajouter un membre'
+            ],
+            [
                 'name' => 'createLftPost',
                 'title' => 'Faire un poste LFT',
                 'description' => 'Poster une annonce "Looking for a Team" pour trouver des coéquipiers ou une équipe',
@@ -390,5 +399,29 @@ class PlayerSeeder extends Seeder
             'entry_date' => Carbon::now()->format('Y-m-d'),
             'archived' => false,
         ]);
+
+        $m1 = OnboardingMission::where('name', 'addSection')->get()->first();
+        $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
+        echo $m1->id;
+
+        UserMission::factory()->createMany([
+            [
+                'user_id' => $UwU->id,
+                'mission_id' => $m1->id,
+            ],
+            [
+                'user_id' => $UwU->id,
+                'mission_id' => $m2->id,
+            ]
+        ]);
+
+        foreach ($users as $user){
+            UserMission::factory()->createMany([
+                [
+                    'user_id' => $user->id,
+                    'mission_id' => $m1->id,
+                ]
+            ]);
+        }
     }
 }

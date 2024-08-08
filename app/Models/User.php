@@ -91,9 +91,19 @@ class User extends Authenticatable
             ->hasMany(DisplayedInformationsOnce::class);
     }
 
+    public function userMission()
+    {
+        return $this->hasMany(UserMission::class);
+    }
+
     public function players(): HasMany
     {
         return $this->hasMany(TeamMember::class,'team_id');
+    }
+
+    public function education(): HasMany
+    {
+        return $this->hasMany(Education::class);
     }
 
 //    public function teams(): HasMany

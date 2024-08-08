@@ -102,7 +102,7 @@ $createSingleModel = function () {
 	$this->username = '';
 	$this->job = '';
 	$this->nationality = '';
-	$this->entry_date = '';
+	$this->entry_date = Carbon::now()->format('Y-m-d');
     $this->archived = false;
 	$this->id = 0;
 	$this->renderChange();
@@ -128,7 +128,8 @@ $saveSingleModel = function () {
 			'username' => $this->username,
 			'job' => $this->job,
 			'nationality' => $this->nationality,
-			'entry_date' => $this->entry_date ?? Carbon::now()->format('Y-m-d'),
+			'entry_date' => $this->entry_date,
+			'type' => 'player',
             'archived' => $this->archived,
 		]);
 

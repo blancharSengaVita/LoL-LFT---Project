@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use \App\Models\DisplayedInformation;
 use \App\Models\DisplayedInformationsOnce;
+use \App\Models\UserMission;
+use \App\Models\OnboardingMission;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
@@ -38,13 +40,15 @@ $register = function () {
 
     Auth::login($user);
 
-    $displayedInformation = DisplayedInformation::create([
+    DisplayedInformation::create([
         'user_id' => $user->id,
     ]);
 
-    $displayedInformationOnce = DisplayedInformationsOnce::create([
+    DisplayedInformationsOnce::create([
         'user_id' => $user->id,
     ]);
+
+
 
     $this->redirect(route('pages.profil-creation.account-type', absolute: false), navigate: true);
 };

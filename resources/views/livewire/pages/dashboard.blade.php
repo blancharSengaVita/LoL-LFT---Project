@@ -55,9 +55,11 @@ mount(function () {
             <livewire:partials.dashboard-hero/>
             <livewire:partials.dashboard-nav/>
             <livewire:partials.dashboard-onbaording/>
+{{--            <p>qsdfqsf</p>--}}
             <livewire:partials.dashboard-bio/>
             <livewire:partials.dashboard-playerexperience/>
             <livewire:partials.dashboard-awards/>
+            <livewire:partials.dashboard-education/>
             <livewire:partials.dashboard-skills/>
             <livewire:partials.dashboard-languages/>
         </div>

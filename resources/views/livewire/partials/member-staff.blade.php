@@ -131,6 +131,7 @@ $saveSingleModel = function () {
 			'username' => $this->username,
 			'job' => $this->job,
 			'nationality' => $this->nationality,
+            'type' => 'staff',
 			'entry_date' => $this->entry_date ?? Carbon::now()->format('Y-m-d'),
             'archived' => $this->archived,
 		]);

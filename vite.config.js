@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import copy from 'rollup-plugin-copy';
 
 export default defineConfig({
     plugins: [
@@ -10,5 +11,10 @@ export default defineConfig({
             ],
             refresh: true,
         }),
+        copy({
+            targets: [
+                { src: 'resources/images/**/*', dest: 'public/images' }
+            ]
+        })
     ],
 });

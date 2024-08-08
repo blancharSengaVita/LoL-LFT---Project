@@ -19,6 +19,8 @@ return new class extends Migration
             $table->boolean('awards')->default(true);
             $table->boolean('skills')->default(true);
             $table->boolean('languages')->default(true);
+            $table->boolean('onboarding')->default(true);
+            $table->boolean('education')->default(true);
             $table->timestamps();
         });
     }

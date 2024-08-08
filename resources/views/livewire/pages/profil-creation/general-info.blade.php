@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
 use App\Rules\StartsWithAt;
 use Illuminate\Validation\Rule;
+use \App\Models\UserMission;
+use \App\Models\OnboardingMission;
 use function Livewire\Volt\{state, rules, layout, mount};
 
 layout('layouts.auth');
@@ -47,7 +49,7 @@ mount(function () {
     }
 
     if ($this->type !== 'team') {
-        rules(fn () => [
+        rules(fn() => [
             'nationality' => 'required',
             'birthday' => 'required|date',
         ]);
@@ -72,17 +74,25 @@ $save = function () {
     $user = Auth::user();
     $user->game_name = $this->game_name;
     $user->username = $this->username;
-//    if ($this->type !== 'team') {
-//        $user->nationality = $this->nationality;
-//        $user->birthday = $this->birthday;
-//    }
+
+    UserMission::create([
+        'user_id' => $user->id,
+        'mission_id' => OnboardingMission::where('name', 'addSection')->get()->first()->id,
+    ]);
+
+    if ($this->user->account_type === 'team')
+        UserMission::create([
+            'user_id' => $user->id,
+            'mission_id' => OnboardingMission::where('name', 'addMember')->get()->first()->id,
+        ]);
 
     $user->save();
 
     $this->redirect(route('pages.profil-creation.additional-info', absolute: false), navigate: true);
 };
-?>
 
+
+?>
 
 
 <div class="flex min-h-full flex-col justify-center py-16 sm:px-6 lg:px-8">
