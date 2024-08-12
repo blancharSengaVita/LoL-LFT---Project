@@ -36,6 +36,7 @@ mount(function () {
 	$this->percent = 0;
 	$this->sectionCompletion = 0;
 	$this->renderChange();
+//	dd(DisplayedInformation::where('user_id', $this->user->id)->get());
 	$this->displayed = DisplayedInformation::where('user_id', $this->user->id)->get()->first()->onboarding;
 
 	if ($this->displayed === 1) {

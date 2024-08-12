@@ -37,6 +37,7 @@ state([
     'id',
     'deleteModal',
     'experience',
+    'jobs' => [],
 ]);
 
 rules([
@@ -69,6 +70,8 @@ $renderChange = function () {
 
 mount(function () {
     $this->user = Auth::user();
+    $this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
+    $this->jobs = array_merge($this->jobs['staff'], $this->jobs['player']);
 
     $this->renderChange();
 
@@ -85,6 +88,7 @@ mount(function () {
     $this->openPlayerExperiencesModal = false;
     $this->openSinglePlayerExperienceModal = false;
     $this->deleteModal = false;
+
 
     $this->event = '';
     $this->placement = '';
@@ -421,17 +425,16 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     @endif
                                 </div>
                                 <div class="mt-4">
-                                    <label for="job" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Poste
-                                    </label>
-                                    <div class="mt-2">
-                                        <input wire:model="job" type="text" name="job" id="job" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Jungle">
-                                    </div>
-                                    @if ($messages = $errors->get('job'))
-                                        <div class="text-sm text-red-600 space-y-1 mt-2">
-                                            <p>{{$messages[0]}}</p>
-                                        </div>
-                                    @endif
+                                    <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
+                                    <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <option value="">-- choisissez votre poste --</option>
+                                        @foreach($jobs as $job)
+                                            <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('job')
+                                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="mt-4">
                                     <label for="placement" class="block text-sm font-medium leading-6 text-gray-900">

@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
     Volt::route('/profil-creation/account-type', 'pages.profil-creation.account-type')
         ->name('pages.profil-creation.account-type');
 
+    Volt::route('/message', 'pages.message')
+        ->name('message');
+
     Route::view('profile', 'profile')
         ->middleware(['auth'])
         ->name('profile');
