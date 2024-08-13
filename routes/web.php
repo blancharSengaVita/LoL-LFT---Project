@@ -18,6 +18,11 @@ Volt::route('/', 'pages.home')
     ->middleware('guest')
     ->name('home');
 
+Volt::route('/welcome', 'pages.home')
+    ->middleware('guest')
+    ->name('home');
+
+
 
 Route::middleware('auth')->group(function () {
     //testing things here
