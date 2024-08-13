@@ -144,9 +144,18 @@ class PlayerSeeder extends Seeder
                 'date' => '2024-06-15',
             ],
         ]);
+
+        foreach ($users as $user) {
+            DisplayedInformation::factory()->createMany([
+                [
+                    'user_id' => $user->id,
+                ]
+            ]);
+        }
+
         DisplayedInformation::factory()->createMany([
             [
-                'user_id' => $blanchar->id,
+                'user_id' => $UwU->id,
             ]
         ]);
 
@@ -402,7 +411,6 @@ class PlayerSeeder extends Seeder
 
         $m1 = OnboardingMission::where('name', 'addSection')->get()->first();
         $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
-        echo $m1->id;
 
         UserMission::factory()->createMany([
             [
@@ -415,7 +423,7 @@ class PlayerSeeder extends Seeder
             ]
         ]);
 
-        foreach ($users as $user){
+        foreach ($users as $user) {
             UserMission::factory()->createMany([
                 [
                     'user_id' => $user->id,

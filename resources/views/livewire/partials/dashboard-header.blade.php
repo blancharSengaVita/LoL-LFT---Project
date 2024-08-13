@@ -1,15 +1,27 @@
 <?php
 
 use App\Livewire\Actions\Logout;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use function Livewire\Volt\{
 	state,
     mount,
 };
 
-state(['mobileMenu']);
+state([
+	'mobileMenu',
+    'profilePictureSource',
+    'user',
+    ]);
 
 mount(function () {
     $this->mobileMenu = false;
+    $this->user = Auth::user();
+    if($this->user->profil_picture){
+        $this->profilePictureSource = '/storage/images/1024/'.$this->user->profil_picture;
+    }else {
+        $this->profilePictureSource =  'https://ui-avatars.com/api/?length=1&name='. $this->user->game_name;
+    }
 });
 
 $openMobileMenu = function () {
@@ -87,7 +99,7 @@ $logout = function (Logout $logout) {
                         <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">Open user menu</span>
-                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                            <img class="h-8 w-8 rounded-full" src="{{ $profilePictureSource }}" alt="">
                         </button>
                     </div>
 
@@ -128,11 +140,11 @@ $logout = function (Logout $logout) {
             <div class="border-t border-gray-200 pb-3 pt-4">
                 <div class="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                        <img class="h-10 w-10 rounded-full" src="{{ $profilePictureSource }}" alt="">
                     </div>
                     <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">Chelsea Hagon</div>
-                        <div class="text-sm font-medium text-gray-500">chelsea.hagon@example.com</div>
+                        <div class="text-base font-medium text-gray-800">{{ $user->game_name }}</div>
+                        <div class="text-sm font-medium text-gray-500">{{ $user->username  }}</div>
                     </div>
                     <button type="button" class="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         <span class="absolute -inset-1.5"></span>
@@ -146,7 +158,7 @@ $logout = function (Logout $logout) {
                     <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Your
                         Profile</a>
                     <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Settings</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Sign
+                    <a wire:click="logout" href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Sign
                         out</a>
                 </div>
             </div>
