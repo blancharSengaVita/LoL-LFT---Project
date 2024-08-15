@@ -21,6 +21,7 @@ state([
 
 mount(function (User $user) {
     $this->user = $user;
+//	dd($this->user);
     //$this->displayed_informations = $this->user->displayedInformation()->first();
 });
 ?>
@@ -53,15 +54,14 @@ mount(function (User $user) {
             -->
             <livewire:partials.dashboard-header/>
             <!-- Hero -->
-{{--            <livewire:partials.dashboard-hero/>--}}
-{{--            <livewire:partials.dashboard-nav/>--}}
-{{--            <livewire:partials.dashboard-onbaording/>--}}
-{{--            <livewire:partials.dashboard-bio/>--}}
-{{--            <livewire:partials.dashboard-playerexperience/>--}}
-{{--            <livewire:partials.dashboard-awards/>--}}
-{{--            <livewire:partials.dashboard-skills/>--}}
-{{--            <livewire:partials.dashboard-languages/>--}}
-            <p>{{$user->game_name .  ' azerazr' }}</p>
+            <livewire:partials.user-hero :user="$user"/>
+            <livewire:partials.dashboard-nav/>
+            <livewire:partials.user-bio :user="$user"/>
+            <livewire:partials.user-playerexperience :user="$user"/>
+            <livewire:partials.user-awards :user="$user"/>
+            <livewire:partials.user-education :user="$user"/>
+            <livewire:partials.user-skills :user="$user"/>
+            <livewire:partials.user-languages :user="$user"/>
         </div>
     </section>
 </main>

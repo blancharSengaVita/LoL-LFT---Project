@@ -203,8 +203,6 @@ deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }"
-
-x-init="console.log(displayed, displayedOnce)"
 >
 
     <div x-cloack x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">

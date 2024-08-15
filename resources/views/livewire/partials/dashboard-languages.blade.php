@@ -76,7 +76,7 @@ mount(function () {
     $this->renderChange();
 
 
-	$this->openAccordion = false;
+    $this->openAccordion = false;
     $this->openModal = false;
     $this->openSingleModal = false;
     $this->deleteModal = false;
@@ -141,7 +141,7 @@ $savesingleLanguage = function () {
         ]
     );
 
-	DisplayedInformationsOnce::where('user_id', $this->user->id)
+    DisplayedInformationsOnce::where('user_id', $this->user->id)
         ->update(['languages' => true]);
 
     $this->renderChange();
@@ -198,95 +198,95 @@ displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }">
     <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6"  x-cloack x-show="displayed && displayedOnce">
-    <div
-        class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Langues'}}</h3>
+        <div
+            class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Langues'}}</h3>
 
-        <div class="flex">
-            <button wire:click="createsingleLanguage"
-                    type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                </svg>
-            </button>
-            <button @click="openModal = !openModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                </svg>
-            </button>
-        </div>
-    </div>
-    <div class=" sm:w-12/12">
-        <ul role="list" class="divide-y divide-gray-100">
-            @foreach($languagesShow as $language)
-                <li class="flex items-center gap-x-4 py-5 w-full" wire:key="{{ $language->id }}">
-                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
-                        <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$language->name}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
-                    </div>
-                    <div class="ml-auto">
-                        <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                            </svg>
-                        </button>
-                        <button wire:click="openDeleteModal({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-                            </svg>
-                        </button>
-                    </div>
-                </li>
-            @endforeach
-            @foreach($languagesHidden as $language)
-                <li :class="openAccordion ? '' : 'hidden'" class="flex items-center gap-x-4 py-5">
-                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
-                        <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$language->name}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
-                    </div>
-                    <div class="ml-auto">
-                        <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                            </svg>
-                        </button>
-                        <button wire:click="openDeleteModal({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-                            </svg>
-                        </button>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-
-        {{-- ACCORDEON --}}
-        @if(count($this->languagesHidden))
-            <div class="flex justify-center">
-                <Bouton @click="openAccordion = !openAccordion">
-                    <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
-                        plus
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-                        </svg>
-                    </p>
-
-                    <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
-                        moins
-                        <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
-                        </svg>
-                    </p>
-                </Bouton>
+            <div class="flex">
+                <button wire:click="createsingleLanguage"
+                        type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                    </svg>
+                </button>
+                <button @click="openModal = !openModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                    </svg>
+                </button>
             </div>
-        @endif
-    </div>
+        </div>
+        <div class=" sm:w-12/12">
+            <ul role="list" class="divide-y divide-gray-100">
+                @foreach($languagesShow as $language)
+                    <li class="flex items-center gap-x-4 py-5 w-full" wire:key="{{ $language->id }}">
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
+                            <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$language->name}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                                </svg>
+                            </button>
+                            <button wire:click="openDeleteModal({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                @endforeach
+                @foreach($languagesHidden as $language)
+                    <li :class="openAccordion ? '' : 'hidden'" class="flex items-center gap-x-4 py-5">
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
+                            <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$language->name}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                                </svg>
+                            </button>
+                            <button wire:click="openDeleteModal({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+
+            {{-- ACCORDEON --}}
+            @if(count($this->languagesHidden))
+                <div class="flex justify-center">
+                    <Bouton @click="openAccordion = !openAccordion">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
+                            plus
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                            </svg>
+                        </p>
+
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
+                            moins
+                            <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
+                            </svg>
+                        </p>
+                    </Bouton>
+                </div>
+            @endif
+        </div>
     </div>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
