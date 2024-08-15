@@ -8,6 +8,7 @@
         "php": "^8.2",
         "intervention/image": "^2",
         "laravel/framework": "^11.0",
+        "laravel/prompts": "^0.1.24",
         "laravel/reverb": "^1.1",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",

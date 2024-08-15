@@ -1,3 +1,4 @@
+console.log('aez');
 import './bootstrap';
 import '../../vendor/masmerise/livewire-toaster/resources/js';
 import.meta.glob([

@@ -11,15 +11,20 @@ class Message extends Model
 {
     use HasFactory;
 
-    public function to(): BelongsTo
+    protected $fillable = [
+        'message',
+        'user_id',
+    ];
+
+    public function user(): BelongsTo
     {
         return $this
-            ->belongsTo(User::class, 'to');
+            ->belongsTo(User::class);
     }
 
-    public function from(): BelongsTo
-    {
-        return $this
-            ->belongsTo(User::class, 'from');
-    }
+//    public function from(): BelongsTo
+//    {
+//        return $this
+//            ->belongsTo(User::class, 'from');
+//    }
 }

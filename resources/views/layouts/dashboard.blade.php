@@ -21,5 +21,6 @@ use function Livewire\Volt\{state};
 <livewire:partials.app-side-menu/>
 {{ $slot }}
 <livewire:partials.app-aside/>
+@livewireScripts
 </body>
 </html>
