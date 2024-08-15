@@ -10,74 +10,74 @@ use Masmerise\Toaster\Toaster;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-    state,
-    on,
-    mount,
-    rules,
+	state,
+	on,
+	mount,
+	rules,
 };
 
 layout('layouts.dashboard');
 
 state([
-    'user',
-    'openModal',
-    'openSingleModal',
-    'openAccordion',
-    'singleSkill',
-    'skill',
-    'skillsShow',
-    'skillsHidden',
-    'displayed',
-    'displayedTemp',
-    'displayedOnce',
-    'name',
-    'id',
-    'deleteModal',
-    'skills',
+	'user',
+	'openModal',
+	'openSingleModal',
+	'openAccordion',
+	'singleSkill',
+	'skill',
+	'skillsShow',
+	'skillsHidden',
+	'displayed',
+	'displayedTemp',
+	'displayedOnce',
+	'name',
+	'id',
+	'deleteModal',
+	'skills',
 ]);
 
 
 rules([
-    'name' => 'required|',
+	'name' => 'required|',
 ])->messages([
-    'name.required' => 'Le champ est obligatoire.',
+	'name.required' => 'Le champ est obligatoire.',
 ])->attributes([
 
 ]);
 
 $renderChange = function () {
-    $this->skills = $this->user->skill()->orderBy('created_at', 'desc')->get();
-    foreach ($this->skills as $skill) {
-        $skill->date = Carbon::parse($skill->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
-    };
+	$this->skills = $this->user->skill()->orderBy('created_at', 'desc')->get();
+	foreach ($this->skills as $skill) {
+		$skill->date = Carbon::parse($skill->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+	};
 
-    $this->skillsShow = $this->skills->take(2);
-    $this->skillsHidden = $this->skills->skip(2);
-    $this->displayedOnce = $this->user->displayedInformationsOnce->first()->skills ?? 0;
-};
-
-mount(function () {
-    $this->user = Auth::user();
-
-    $this->renderChange();
+	$this->skillsShow = $this->skills->take(2);
+	$this->skillsHidden = $this->skills->skip(2);
+	$this->displayedOnce = $this->user->displayedInformationsOnce->first()->skills ?? 0;
 
     $this->displayed = $this->user->displayedInformation->first()->skills ?? 0;
-	$this->displayedTemp = $this->displayed;
+    $this->displayedTemp = $this->displayed;
 
     if ($this->displayedTemp === 1) {
         $this->displayedTemp = true;
     } else {
         $this->displayedTemp = false;
     }
+};
 
-    $this->openAccordion = false;
-    $this->openModal = false;
-    $this->openSingleModal = false;
+mount(function () {
+	$this->user = Auth::user();
 
-    $this->deleteModal = false;
+	$this->renderChange();
 
-    $this->name = '';
-    $this->id = 0;
+	$this->openAccordion = false;
+	$this->openModal = false;
+	$this->openSingleModal = false;
+
+	$this->deleteModal = false;
+
+	$this->name = '';
+	$this->id = 0;
 });
 
 $display = function () {
@@ -85,103 +85,107 @@ $display = function () {
 };
 
 $saveskillsSettings = function () {
-    $this->displayed = $this->displayedTemp;
-    DisplayedInformation::where('user_id', Auth::id())->update(['skills' => $this->displayed]);
-    $this->openAccordion = false;
-    $this->renderChange();
-    $this->openModal = false;
-    Toaster::success('Modification effectué avec succès');
+	$this->displayed = $this->displayedTemp;
+	DisplayedInformation::where('user_id', Auth::id())->update(['skills' => $this->displayed]);
+	$this->openAccordion = false;
+	$this->renderChange();
+	$this->openModal = false;
+	Toaster::success('Modification effectué avec succès');
 };
 
 $closeskillsSettingsModal = function () {
-    $this->displayed = $this->user->displayedInformation->first()->skills ?? 0;
-    $this->displayedTemp = $this->displayed;
+	$this->displayed = $this->user->displayedInformation->first()->skills ?? 0;
+	$this->displayedTemp = $this->displayed;
 
-    if ($this->displayedTemp === 1) {
-        $this->displayedTemp = true;
-    } else {
+	if ($this->displayedTemp === 1) {
+		$this->displayedTemp = true;
+	} else {
 		$this->displayedTemp = false;
 	}
 
-    $this->renderChange();
-    $this->openModal = false;
+	$this->renderChange();
+	$this->openModal = false;
 };
 
 $createsingleSkill = function () {
-    $this->openSingleModal = true;
-    $this->name = '';
-    $this->id = 0;
-    $this->renderChange();
+	$this->openSingleModal = true;
+	$this->name = '';
+	$this->id = 0;
+	$this->renderChange();
 };
 
 $closesingleSkillModale = function () {
-    $this->openSingleModal = false;
+	$this->openSingleModal = false;
 };
 
 $savesingleSkill = function () {
-    try {
-        $this->validate();
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        $this->renderChange();
-        throw $e;
-    }
+	try {
+		$this->validate();
+	} catch (\Illuminate\Validation\ValidationException $e) {
+		$this->renderChange();
+		throw $e;
+	}
 
 
-    Skill::updateOrCreate([
-        'user_id' => Auth::id(),
-        'id' => $this->id
-    ],
-        [
-            'name' => $this->name,
-        ]);
+	Skill::updateOrCreate([
+		'user_id' => Auth::id(),
+		'id' => $this->id
+	],
+		[
+			'name' => $this->name,
+		]);
 
-    DisplayedInformationsOnce::where('user_id', $this->user->id)
-        ->update(['skills' => true]);
+	DisplayedInformationsOnce::where('user_id', $this->user->id)
+		->update(['skills' => true]);
 
-    $this->renderChange();
-    $this->dispatch('renderOnboarding');
+	$this->renderChange();
+	$this->dispatch('renderOnboarding');
 
-    $this->openSingleModal = false;
+	$this->openSingleModal = false;
 
-    if($this->id === 0){
-        Toaster::success('Compétence ajouté avec succès');
-    }
+	if ($this->id === 0) {
+		Toaster::success('Compétence ajouté avec succès');
+	}
 
-    if($this->id !== 0){
-        Toaster::success('Compétence modifiée avec succès');
-    }
+	if ($this->id !== 0) {
+		Toaster::success('Compétence modifiée avec succès');
+	}
 };
 
 $editsingleSkill = function (Skill $skill) {
-    $this->openSingleModal = true;
-    $this->event = $skill->event;
-    $this->title = $skill->title;
-    $this->team = $skill->team;
-    $this->date = $skill->date;
-    $this->id = $skill->id;
-    $this->renderChange();
+	$this->openSingleModal = true;
+	$this->event = $skill->event;
+	$this->title = $skill->title;
+	$this->team = $skill->team;
+	$this->date = $skill->date;
+	$this->id = $skill->id;
+	$this->renderChange();
 };
 
 $deletesingleSkill = function () {
-    $this->skill->delete();
-    $this->deleteModal = false;
-    $this->renderChange();
+	$this->skill->delete();
+	$this->deleteModal = false;
+	$this->renderChange();
 };
 
 $openDeleteModal = function (Skill $skill) {
-    $this->deleteModal = true;
-    $this->skill = $skill;
-    $this->renderChange();
+	$this->deleteModal = true;
+	$this->skill = $skill;
+	$this->renderChange();
 };
 
 $closeDeleteModal = function () {
-    $this->deleteModal = false;
-    $this->renderChange();
+	$this->deleteModal = false;
+	$this->renderChange();
 };
 
-    on(['newSkill' => function () {
-        $this->createsingleSkill();
-    }]);
+on(['newSkill' => function () {
+	$this->createsingleSkill();
+}]);
+
+on(['render' => function () {
+	$this->renderChange();
+}]);
 ?>
 
 
@@ -193,7 +197,7 @@ deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }">
-    <div x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6" >
+    <div x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Compétences'}}</h3>
             <div class="flex">
@@ -256,14 +260,16 @@ displayedOnce:$wire.entangle('displayedOnce'),
             @if(count($this->skillsHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                            Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                            Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>

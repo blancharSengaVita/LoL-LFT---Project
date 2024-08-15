@@ -59,12 +59,6 @@ $renderChange = function () {
     $this->languagesShow = $this->languages->take(2);
     $this->languagesHidden = $this->languages->skip(2);
     $this->displayedOnce = $this->user->displayedInformationsOnce->first()->languages ?? 0;
-};
-
-mount(function () {
-    $this->user = Auth::user();
-
-    $this->renderChange();
 
     $this->displayed = $this->user->displayedInformation->first()->languages ?? 0;
     $this->displayedTemp = $this->displayed;
@@ -74,6 +68,13 @@ mount(function () {
     } else {
         $this->displayedTemp = false;
     }
+};
+
+mount(function () {
+    $this->user = Auth::user();
+
+    $this->renderChange();
+
 
 	$this->openAccordion = false;
     $this->openModal = false;
@@ -181,6 +182,10 @@ $closeDeleteModal = function () {
 
 on(['newLanguage' => function () {
     $this->createsinglelanguage();
+}]);
+
+on(['render' => function () {
+    $this->renderChange();
 }]);
 ?>
 <article

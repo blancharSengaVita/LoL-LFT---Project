@@ -8,181 +8,187 @@ use Masmerise\Toaster\Toaster;
 use \App\Models\DisplayedInformation;
 
 use function Livewire\Volt\{
-	state,
-	on,
-	mount,
-	rules,
+    state,
+    on,
+    mount,
+    rules,
 };
 
 
 state([
-	'user',
-	'missions',
-	'missionsShow',
-	'missionsHidden',
-	'openAccordion',
-	'openModal',
-	'openModalMember',
-	'percent',
-	'sections',
-	'sectionCompletion',
-	'percentMission',
-	'missionsCompleted',
-	'displayed',
+    'user',
+    'missions',
+    'missionsShow',
+    'missionsHidden',
+    'openAccordion',
+    'openModal',
+    'openModalMember',
+    'percent',
+    'sections',
+    'sectionCompletion',
+    'percentMission',
+    'missionsCompleted',
+    'displayed',
 ]);
 
 mount(function () {
-	$this->user = Auth::user();
-	$this->percent = 0;
-	$this->sectionCompletion = 0;
-	$this->renderChange();
-	$this->displayed = DisplayedInformation::where('user_id', $this->user->id)->get()->first()->onboarding;
+    $this->user = Auth::user();
+    $this->percent = 0;
+    $this->sectionCompletion = 0;
+    $this->renderChange();
+    $this->displayed = DisplayedInformation::where('user_id', $this->user->id)->get()->first()->onboarding;
 
-	if ($this->displayed === 1) {
-		$this->displayed = true;
-	} else {
-		$this->displayed = false;
-	}
+    if ($this->displayed === 1) {
+        $this->displayed = true;
+    } else {
+        $this->displayed = false;
+    }
 });
 
 $renderChange = function () {
-	$id = $this->user->id;
+    $id = $this->user->id;
 
-	$query = OnboardingMission::wherehas('userMission', function ($q) use ($id) {
-		$q
-			->where('user_id', $id)
-			->where('finished', false);
-	});
+    $query = OnboardingMission::wherehas('userMission', function ($q) use ($id) {
+        $q
+            ->where('user_id', $id)
+            ->where('finished', false);
+    });
 
-	$this->missions = $query->get();
+    $this->missions = $query->get();
 
-	if ($this->user->account_type === 'staff') {
-		$this->sections = $this->user->displayedInformationsOnce()->first()->only(['player_experiences', 'awards', 'skills', 'languages', 'education']);
-	}
+    if ($this->user->account_type === 'staff') {
+        $this->sections = $this->user->displayedInformationsOnce()->first()->only(['player_experiences', 'awards', 'skills', 'languages', 'education']);
+    }
 
-	if ($this->user->account_type === 'player') {
-		$this->sections = $this->user->displayedInformationsOnce()->first()->only(['player_experiences', 'awards', 'skills', 'languages']);
-	}
+    if ($this->user->account_type === 'player') {
+        $this->sections = $this->user->displayedInformationsOnce()->first()->only(['player_experiences', 'awards', 'skills', 'languages']);
+    }
 
-	if ($this->user->account_type === 'team') {
-		$this->sections = $this->user->displayedInformationsOnce()->first()->only(['player_experiences', 'awards', 'languages']);
-	}
+    if ($this->user->account_type === 'team') {
+        $this->sections = $this->user->displayedInformationsOnce()->first()->only(['player_experiences', 'awards', 'languages']);
+    }
 
-	$this->percentMission = 0;
+    $this->percentMission = 0;
 
-	foreach ($this->missions as $mission) {
-		$mission['percent'] = 0;
-		$mission['sectionCompletion'] = 0;
-		$mission['completed'] = false;
-		$mission['completion'] = 'Non complétée';
+    foreach ($this->missions as $mission) {
+        $mission['percent'] = 0;
+        $mission['sectionCompletion'] = 0;
+        $mission['completed'] = false;
+        $mission['completion'] = 'Non complétée';
 
-		if ($mission->name === 'addSection') {
+        if ($mission->name === 'addSection') {
 
-			$mission['number'] = count($this->sections);
-			foreach ($this->sections as $section) {
-				if ($section === 1) {
-					$mission['percent'] += 100 / count($this->sections);
-					$mission['sectionCompletion'] += 1;
-				}
-			};
-		}
+            $mission['number'] = count($this->sections);
+            foreach ($this->sections as $section) {
+                if ($section === 1) {
+                    $mission['percent'] += 100 / count($this->sections);
+                    $mission['sectionCompletion'] += 1;
+                }
+            };
+        }
 
-		if ($mission->name === 'addMember') {
-			$isThereAtLeastOnePlayer = $this->user->players()->first();
-			$mission['number'] = 1;
-			if ($isThereAtLeastOnePlayer) {
-				$mission['percent'] += 100;
-				$mission['sectionCompletion'] += 1;
-			}
-		}
+        if ($mission->name === 'addMember') {
+            $isThereAtLeastOnePlayer = $this->user->players()->first();
+            $mission['number'] = 1;
+            if ($isThereAtLeastOnePlayer) {
+                $mission['percent'] += 100;
+                $mission['sectionCompletion'] += 1;
+            }
+        }
 
-		if ($mission['percent'] >= 99) {
-			$this->percentMission += 1;
-			$mission['completed'] = true;
-			$mission['completion'] = 'Complétée';
-		}
+        if ($mission['percent'] >= 99) {
+            $this->percentMission += 1;
+            $mission['completed'] = true;
+            $mission['completion'] = 'Complétée';
+        }
 
-		if ($this->percentMission >= count($this->missions)) {
+        if ($this->percentMission >= count($this->missions)) {
 //            $this->missionsCompleted = false;
-		}
-	}
+        }
+    }
 
-	$this->missionsShow = $this->missions->take(2);
-	$this->missionsHidden = $this->missions->skip(2);
+    $this->missionsShow = $this->missions->take(2);
+    $this->missionsHidden = $this->missions->skip(2);
 };
 
 
 $openMissionModal = function ($mission) {
-	$this->$mission();
-	$this->renderChange();
+    $this->$mission();
+    $this->renderChange();
 };
 
 $stopDisplay = function () {
-	$model = $this->displayed = DisplayedInformation::where('user_id', $this->user->id)->get()->first();
-	$model->onboarding = false;
-	$model->save();
+    $model = $this->displayed = DisplayedInformation::where('user_id', $this->user->id)->get()->first();
+    $model->onboarding = false;
+    $model->save();
 };
 
 $validateMission = function ($id) {
-	$mission = UserMission::where('user_id', $this->user->id)
-		->where('mission_id', $id)->get()->first();
-	$mission->finished = true;
-	$mission->save();
-	Toaster::success('Mission effectué avec succès');
-	$this->renderChange();
+    $mission = UserMission::where('user_id', $this->user->id)
+        ->where('mission_id', $id)->get()->first();
+    $mission->finished = true;
+    $mission->save();
+    Toaster::success('Mission effectué avec succès');
+    $this->renderChange();
 };
 
 $addMember = function () {
-	$this->openModalMember = true;
+    $this->openModalMember = true;
 };
 
 $addSection = function () {
-	$this->openModal = true;
+    $this->openModal = true;
 };
 
 $newEducation = function () {
-	$this->openModal = false;
-	$this->dispatch('newEducation');
-	$this->renderChange();
+    $this->openModal = false;
+    $this->dispatch('newEducation');
+    $this->renderChange();
 };
 
 $newExperience = function () {
-	$this->openModal = false;
-	$this->dispatch('newExperience');
-	$this->renderChange();
+    $this->openModal = false;
+    $this->dispatch('newExperience');
+    $this->renderChange();
 };
 
 $newAward = function () {
-	$this->openModal = false;
-	$this->dispatch('newAward');
-	$this->renderChange();
+    $this->openModal = false;
+    $this->dispatch('newAward');
+    $this->renderChange();
 };
 
 $newSkill = function () {
-	$this->openModal = false;
-	$this->dispatch('newSkill');
-	$this->renderChange();
+    $this->openModal = false;
+    $this->dispatch('newSkill');
+    $this->renderChange();
 };
 
 $newLanguage = function () {
-	$this->openModal = false;
-	$this->dispatch('newLanguage');
-	$this->renderChange();
+    $this->openModal = false;
+    $this->dispatch('newLanguage');
+    $this->renderChange();
 };
 
 $newBio = function () {
-	$this->openModal = false;
-	$this->dispatch('newBio');
-	$this->renderChange();
+    $this->openModal = false;
+    $this->dispatch('newBio');
+    $this->renderChange();
 };
 
+on(['openAddSectionModal' => function () {
+    $this->openModal = true;
+    $this->renderChange();
+}]);
+
 on(['renderOnboarding' => function () {
-	$this->renderChange();
+    $this->openModal = true;
+    $this->renderChange();
 }]);
 ?>
 
 <article
-        x-data="{
+    x-data="{
     openAccordion: $wire.entangle('openAccordion'),
     openModal: $wire.entangle('openModal'),
     openModalMember: $wire.entangle('openModalMember'),
@@ -191,115 +197,118 @@ on(['renderOnboarding' => function () {
     {{--openSinglePlayerExperienceModal: $wire.entangle('openSinglePlayerExperienceModal'),--}}
     {{--deleteModal: $wire.entangle('deleteModal'),--}}
     }"
-        x-cloak x-show="displayed"
-        class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-    <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Complétez votre profile !'}}</h3>
-        <div class="flex">
-            {{--            <button wire:click="createSingleExperience"--}}
-            {{--                    type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">--}}
-            {{--                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
-            {{--                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>--}}
-            {{--                </svg>--}}
-            {{--            </button>--}}
-            {{--            <button @click="openPlayerExperiencesModal = !openPlayerExperiencesModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">--}}
-            {{--                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
-            {{--                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>--}}
-            {{--                </svg>--}}
-            {{--            </button>--}}
+    >
+    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6" x-cloak x-show="displayed">
+        <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Complétez votre profile !'}}</h3>
+            <div class="flex">
+                {{--            <button wire:click="createSingleExperience"--}}
+                {{--                    type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">--}}
+                {{--                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
+                {{--                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>--}}
+                {{--                </svg>--}}
+                {{--            </button>--}}
+                {{--            <button @click="openPlayerExperiencesModal = !openPlayerExperiencesModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">--}}
+                {{--                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
+                {{--                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>--}}
+                {{--                </svg>--}}
+                {{--            </button>--}}
+            </div>
         </div>
-    </div>
-    <div class=" sm:w-12/12">
-        <ul role="list" class="divide-y divide-gray-100">
-            @if(!count($missionsShow))
-                <p class="mb-2">Toutes vos missions ont été accompli !</p>
-                <button wire:click="stopDisplay" type="button" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  sm:w-auto">
-                    Archiver cette section
-                </button>
-            @endif
-            @foreach($missionsShow as $mission)
-                <li
+        <div class=" sm:w-12/12">
+            <ul role="list" class="divide-y divide-gray-100">
+                @if(!count($missionsShow))
+                    <p class="mb-2">Toutes vos missions ont été accompli !</p>
+                    <button wire:click="stopDisplay" type="button" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  sm:w-auto">
+                        Archiver cette section
+                    </button>
+                @endif
+                @foreach($missionsShow as $mission)
+                    <li
                         class="gap-x-4 py-5 w-full">
-                    {{--                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
-                    {{--                    <p class="text-3xl text-center text-white">{{$mission['description']}}</p>--}}
-                    {{--                    </div>--}}
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$mission->title}}</p>
-                        <p class="mt-2 text-sm leading-5 text-gray-900">{{$mission->description}}</p>
-                        @if($mission->completed)
-                            <button wire:click="validateMission('{{$mission->id}}')" type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-green-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
-                                {{'Valider la mission'}}
-                            </button>
-                        @else
-                            <button wire:click="openMissionModal('{{$mission->name}}')" type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
+                        {{--                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
+                        {{--                    <p class="text-3xl text-center text-white">{{$mission['description']}}</p>--}}
+                        {{--                    </div>--}}
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$mission->title}}</p>
+                            <p class="mt-2 text-sm leading-5 text-gray-900">{{$mission->description}}</p>
+                            @if($mission->completed)
+                                <button wire:click="validateMission('{{$mission->id}}')" type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-green-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
+                                    {{'Valider la mission'}}
+                                </button>
+                            @else
+                                <button wire:click="openMissionModal('{{$mission->name}}')" type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
+                                    {{$mission->button_title}}
+                                </button>
+                            @endif
+                            <div class="flex gap-x-2 items-center mt-2" aria-hidden="true">
+                                <div class="max-h-2 grow-1 w-full overflow-hidden rounded-full bg-gray-200">
+                                    <div @class([ "h-2 rounded-full", 'bg-green-600' => $mission->completed,'bg-indigo-600' =>!$mission->completed,])
+                                         style="width: {{$mission->percent}}%"></div>
+                                </div>
+                                <p> {{$mission->sectionCompletion}}/{{$mission->number}} </p>
+                            </div>
+                            <p class="truncate mt-2 text-sm leading-5 text-gray-500">{{ $mission->completion }}</p>
+                        </div>
+                        {{--                    <div class="ml-auto">--}}
+                        {{--                        <button wire:click="editSingleExperience({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">--}}
+                        {{--                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
+                        {{--                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>--}}
+                        {{--                            </svg>--}}
+                        {{--                        </button>--}}
+                        {{--                        <button wire:click="openDeleteModal({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">--}}
+                        {{--                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
+                        {{--                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>--}}
+                        {{--                            </svg>--}}
+                        {{--                        </button>--}}
+                        {{--                    </div>--}}
+                    </li>
+                @endforeach
+                @foreach($missionsHidden as $mission)
+                    <li :class="openAccordion ? '' : 'hidden'" class="gap-x-4 py-5 w-full">
+                        {{--                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
+                        {{--                    <p class="text-3xl text-center text-white">{{$mission['description']}}</p>--}}
+                        {{--                    </div>--}}
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$mission->title}}</p>
+                            <p class="mt-2 text-sm leading-5 text-gray-900">{{$mission->description}}</p>
+                            <button type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
                                 {{$mission->button_title}}
                             </button>
-                        @endif
-                        <div class="flex gap-x-2 items-center mt-2" aria-hidden="true">
-                            <div class="max-h-2 grow-1 w-full overflow-hidden rounded-full bg-gray-200">
-                                <div @class([ "h-2 rounded-full", 'bg-green-600' => $mission->completed,'bg-indigo-600' =>!$mission->completed,])
-                                     style="width: {{$mission->percent}}%"></div>
+                            <div class="flex gap-x-2 items-center mt-2" aria-hidden="true">
+                                <div class="max-h-2 grow-1 w-full overflow-hidden rounded-full bg-gray-200">
+                                    <div class="h-2 rounded-full bg-indigo-600" style="width: {{$percent}}"></div>
+                                </div>
+                                <p> 1/{{count($sections)}} </p>
                             </div>
-                            <p> {{$mission->sectionCompletion}}/{{$mission->number}} </p>
                         </div>
-                        <p class="truncate mt-2 text-sm leading-5 text-gray-500">{{ $mission->completion }}</p>
-                    </div>
-                    {{--                    <div class="ml-auto">--}}
-                    {{--                        <button wire:click="editSingleExperience({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">--}}
-                    {{--                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
-                    {{--                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>--}}
-                    {{--                            </svg>--}}
-                    {{--                        </button>--}}
-                    {{--                        <button wire:click="openDeleteModal({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">--}}
-                    {{--                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
-                    {{--                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>--}}
-                    {{--                            </svg>--}}
-                    {{--                        </button>--}}
-                    {{--                    </div>--}}
-                </li>
-            @endforeach
-            @foreach($missionsHidden as $mission)
-                <li :class="openAccordion ? '' : 'hidden'" class="gap-x-4 py-5 w-full">
-                    {{--                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
-                    {{--                    <p class="text-3xl text-center text-white">{{$mission['description']}}</p>--}}
-                    {{--                    </div>--}}
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$mission->title}}</p>
-                        <p class="mt-2 text-sm leading-5 text-gray-900">{{$mission->description}}</p>
-                        <button type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
-                            {{$mission->button_title}}
-                        </button>
-                        <div class="flex gap-x-2 items-center mt-2" aria-hidden="true">
-                            <div class="max-h-2 grow-1 w-full overflow-hidden rounded-full bg-gray-200">
-                                <div class="h-2 rounded-full bg-indigo-600" style="width: {{$percent}}"></div>
-                            </div>
-                            <p> 1/{{count($sections)}} </p>
-                        </div>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
+                    </li>
+                @endforeach
+            </ul>
 
-        {{-- ACCORDEON --}}
-        @if(count($this->missionsHidden))
-            <div class="flex justify-center">
-                <Bouton @click="openAccordion = !openAccordion">
-                    <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
-                        plus
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-                        </svg>
-                    </p>
+            {{-- ACCORDEON --}}
+            @if(count($this->missionsHidden))
+                <div class="flex justify-center">
+                    <Bouton @click="openAccordion = !openAccordion">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                            Afficher
+                            plus
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                            </svg>
+                        </p>
 
-                    <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
-                        moins
-                        <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
-                        </svg>
-                    </p>
-                </Bouton>
-            </div>
-        @endif
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                            Afficher
+                            moins
+                            <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
+                            </svg>
+                        </p>
+                    </Bouton>
+                </div>
+            @endif
+        </div>
     </div>
     {{--     MODAL pour ajouter des sections --}}
     <div x-cloak x-show="openModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">

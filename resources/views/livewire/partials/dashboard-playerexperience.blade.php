@@ -65,12 +65,6 @@ $renderChange = function () {
     $this->playerExperiencesShow = $this->playerExperiences->take(2);
     $this->playerExperiencesHidden = $this->playerExperiences->skip(2);
     $this->displayedOnce = $this->user->displayedInformationsOnce->first()->player_experiences ?? 0;
-};
-
-mount(function () {
-    $this->user = Auth::user();
-
-    $this->renderChange();
 
     $this->displayed = $this->user->displayedInformation->first()->player_experiences ?? 0;
     $this->displayedTemp = $this->displayed;
@@ -80,6 +74,12 @@ mount(function () {
     } else {
         $this->displayedTemp = false;
     }
+};
+
+mount(function () {
+    $this->user = Auth::user();
+
+    $this->renderChange();
 
     $this->openAccordion = false;
     $this->openPlayerExperiencesModal = false;
@@ -158,6 +158,8 @@ $saveSingleExperience = function () {
     $this->renderChange();
     $this->dispatch('renderOnboarding');
     //->to('pages.partials.dashboard-onbaording');
+
+
     $this->openSinglePlayerExperienceModal = false;
     if($this->id === 0){
         Toaster::success('Expérience ajouté avec succès');
@@ -200,6 +202,9 @@ on(['newExperience' => function () {
     $this->createSingleExperience();
 }]);
 
+on(['render' => function () {
+    $this->renderChange();
+}]);
 ?>
 
 <article x-data="{

@@ -67,12 +67,6 @@ $renderChange = function () {
     $this->educationsShow = $this->educations->take(2);
     $this->educationsHidden = $this->educations->skip(2);
     $this->displayedOnce = $this->user->displayedInformationsOnce->first()->education ?? 0;
-};
-
-mount(function () {
-    $this->user = Auth::user();
-
-    $this->renderChange();
 
     $this->displayed = $this->user->displayedInformation->first()->education ?? 0;
     $this->displayedTemp = $this->displayed;
@@ -82,6 +76,12 @@ mount(function () {
     } else {
         $this->displayedTemp = false;
     }
+};
+
+mount(function () {
+    $this->user = Auth::user();
+
+    $this->renderChange();
 
     $this->openAccordion = false;
     $this->openEducationModal = false;
@@ -133,13 +133,6 @@ $closeSingleEducationModale = function () {
 };
 
 $saveSingleEducation = function () {
-    try {
-        $this->validate();
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        $this->renderChange();
-        throw $e;
-    }
-
     Education::updateOrCreate([
         'user_id' => Auth::id(),
         'id' => $this->id
@@ -197,6 +190,9 @@ on(['newEducation' => function () {
     $this->createSingleEducation();
 }]);
 
+on(['render' => function () {
+    $this->renderChange();
+}]);
 ?>
 
 <article x-data="{

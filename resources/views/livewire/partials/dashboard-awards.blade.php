@@ -64,12 +64,6 @@ $renderChange = function () {
     $this->awardsShow = $this->awards->take(2);
     $this->awardsHidden = $this->awards->skip(2);
     $this->displayedOnce = $this->user->displayedInformationsOnce->first()->awards ?? 0;
-};
-
-mount(function () {
-    $this->user = Auth::user();
-
-    $this->renderChange();
 
     $this->displayed = $this->user->displayedInformation->first()->awards ?? 0;
     $this->displayedTemp = $this->displayed;
@@ -79,6 +73,14 @@ mount(function () {
     } else {
         $this->displayedTemp = false;
     }
+};
+
+mount(function () {
+    $this->user = Auth::user();
+
+    $this->renderChange();
+
+
 
     $this->openAccordion = false;
     $this->openAwardModal = false;
@@ -196,6 +198,9 @@ on(['newAward' => function () {
     $this->createSingleAward();
 }]);
 
+on(['render' => function () {
+    $this->renderChange();
+}]);
 ?>
 
 <article x-data="{
