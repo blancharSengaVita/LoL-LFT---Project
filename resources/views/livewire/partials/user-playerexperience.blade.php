@@ -35,7 +35,6 @@ $renderChange = function () {
         $experience->date = Carbon::parse($experience->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
     }
 
-
     $this->playerExperiencesShow = $this->playerExperiences->take(2);
     $this->playerExperiencesHidden = $this->playerExperiences->skip(2);
 

@@ -17,6 +17,7 @@ state([
     'openMobileMenu',
     'user',
     'birthday',
+    'profilePictureSource',
     'openModal' => false,
 ]);
 
@@ -25,6 +26,12 @@ mount(function (User $user) {
     $this->user = $user;
     $this->openMobileMenu = false;
     $this->birthday = Carbon::parse($this->user->birthday)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+
+    if($this->user->profil_picture){
+        $this->profilePictureSource = '/storage/images/1024/'.$this->user->profil_picture;
+    }else {
+        $this->profilePictureSource =  'https://ui-avatars.com/api/?length=1&name='. $this->user->game_name;
+    }
 });
 
 ?>
@@ -41,7 +48,7 @@ mount(function (User $user) {
             <div>
                 <div class="-m-1 flex">
                     <div class="inline-flex overflow-hidden rounded-lg border-4 border-white">
-                        <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="https://ui-avatars.com/api/?length=1&name={{ $user->game_name }}" alt="">
+                        <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="{{$profilePictureSource}}" alt="">
                     </div>
                 </div>
             </div>
@@ -57,18 +64,11 @@ mount(function (User $user) {
                 </div>
 
                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-x-3 sm:space-y-0">
-                    {{--                    <button type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">--}}
-                    {{--                        Invitation LFT--}}
-                    {{--                    </button>--}}
-                    {{--                    <button type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">--}}
-                    {{--                        Message--}}
-                    {{--                    </button>--}}
-                    {{--                    Envoyer une demande d'ami--}}
-                    <button wire:click="openAddSectionModal" type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
-                        Ajouter une section
+                    <button type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
+                        Invitation LFT
                     </button>
                     <button type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                        Votre poste LFT
+                        Message
                     </button>
                     <div class="ml-3 inline-flex sm:ml-0">
                         <div class="relative inline-block text-left">
@@ -90,14 +90,12 @@ mount(function (User $user) {
                                 To: "transform opacity-0 scale-95"
                             -->
                             <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
-                                <div class="py-1" role="none">
+{{--                                <div class="py-1" role="none">--}}
                                     <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Ajouter un CV sur le profil</a>
-                                    {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
-                                    {{--                                        CV</a>--}}
-                                    {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande--}}
-                                    {{--                                        d'ami</a>--}}
-                                </div>
+{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande d'amie</a>--}}
+{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
+{{--                                        CV</a>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                     </div>

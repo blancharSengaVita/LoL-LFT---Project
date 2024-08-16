@@ -52,7 +52,7 @@ mount(function (User $user) {
 
               Open: "fixed inset-0 z-40 overflow-y-auto", Closed: ""
             -->
-            <livewire:partials.dashboard-header/>
+            <livewire:partials.dashboard-header :user="$user"/>
             <!-- Hero -->
             <livewire:partials.user-hero :user="$user"/>
             <livewire:partials.dashboard-nav/>

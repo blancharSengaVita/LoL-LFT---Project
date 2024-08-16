@@ -224,7 +224,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                             <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
                         </div>
                         <div class="min-w-0">
-                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$language->name}}</p>
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
                             <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
                         </div>
                         <div class="ml-auto">
@@ -247,7 +247,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                             <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
                         </div>
                         <div class="min-w-0">
-                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$language->name}}</p>
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
                             <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
                         </div>
                         <div class="ml-auto">
