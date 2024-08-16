@@ -3,30 +3,33 @@
 use App\Livewire\Actions\Logout;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use  \Illuminate\Support\Facades\Route;
 use function Livewire\Volt\{
     state,
     mount,
     computed,
+    boot,
 };
 
 state([
     'mobileMenu',
     'search' => '',
     'profilePictureSource',
+    'route' => request()->url(),
+    'user',
 ]);
 
 mount(function (User $user) {
     $this->mobileMenu = false;
     $this->user = Auth::user();
 
-//    if ($user->profil_picture) {
-//        $this->profilePictureSource = '/storage/images/1024/' . $user->profil_picture;
-//    } else {
-//        $this->profilePictureSource = 'https://ui-avatars.com/api/?length=1&name=' . $user->game_name;
-//    }
-
-//    dd($this->user->profil_picture);
+    if ($user->profil_picture) {
+        $this->profilePictureSource = '/storage/images/1024/' . $this->user->profil_picture;
+    } else {
+        $this->profilePictureSource = 'https://ui-avatars.com/api/?length=1&name=' . $this->user->game_name;
+    }
 });
+
 
 $filteredUser = computed(function () {
     $results = User::where('username', 'like', '%' . $this->search . '%')
@@ -42,14 +45,13 @@ $filteredUser = computed(function () {
         }
     }
 
-//	dd($result);
-
     return $results;
 });
 
 $openMobileMenu = function () {
     $this->mobileMenu = !$this->mobileMenu;
     $this->dispatch('openMobileMenu');
+
 };
 
 $logout = function (Logout $logout) {
@@ -117,7 +119,7 @@ $logout = function (Logout $logout) {
                                         class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabindex="-1"
                                     >
                                         <a class="flex items-center" href="{{route('user', ['user' => $player->username])}}" title="voir la page de {{$player->game_name}}">
-                                            <img src="{{$player->src}}" alt="" class="h-6 w-6 flex-shrink-0 rounded-full">
+                                            <img src="{{$player->src}}" alt="" class="h-10 w-10 flex-shrink-0 rounded-full">
                                             <!-- Selected: "font-semibold" -->
                                             <span class="ml-3 truncate">{{ $player->game_name }}</span>
                                             <span :class="isHovered ? 'text-indigo-200' : 'text-gray-500'" class="ml-2 truncate text-gray-500">{{ $player->username }}</span>
@@ -167,14 +169,14 @@ $logout = function (Logout $logout) {
                 </button>
             </div>
             <div class="hidden lg:flex lg:items-center lg:justify-end xl:col-span-6">
-                <button type="button" class="relative ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    <span class="absolute -inset-1.5"></span>
-                    <span class="sr-only">View notifications</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                    </svg>
-                </button>
+{{--                <button type="button" class="relative ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">--}}
+{{--                    <span class="absolute -inset-1.5"></span>--}}
+{{--                    <span class="sr-only">View notifications</span>--}}
+{{--                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">--}}
+{{--                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"/>--}}
+{{--                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>--}}
+{{--                    </svg>--}}
+{{--                </button>--}}
 
                 <!-- Profile dropdown -->
                 <div class="relative ml-5 flex-shrink-0">
@@ -182,7 +184,7 @@ $logout = function (Logout $logout) {
                         <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">Open user menu</span>
-                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                            <img class="h-8 w-8 rounded-full" src="{{$profilePictureSource}}" alt="">
                         </button>
                     </div>
 
@@ -198,11 +200,9 @@ $logout = function (Logout $logout) {
                     -->
                     <div x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100", Not Active: "" -->
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your
-                            Profile</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                        <a wire:click="logout" href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign
-                            out</a>
+                        <a href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                        <a href="{{route('settings')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>
+                        <boutton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</boutton>
                     </div>
                 </div>
             </div>
@@ -215,34 +215,32 @@ $logout = function (Logout $logout) {
             </h2>
             <div class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
                 <!-- Current: "bg-gray-100 text-gray-900", Default: "hover:bg-gray-50" -->
-                <a href="#" aria-current="page" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Calendar</a>
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Teams</a>
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Directory</a>
+                <a href="{{route('dashboard')}}"  class="{{ Route::is('dashboard') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} {{ Route::is('dashboard') ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50' }} rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
+                <a href="{{route('find-teammate')}}" class="{{ Route::is('find-teammate') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Recherche de partenaires</a>
+                <a href="{{route('messages')}}" class="{{ Route::is('messages') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Messages</a>
+                <a href="{{route('notifications')}}" class="{{ Route::is('notifications') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Notifications</a>
+                <a href="{{route('missions')}}" class="{{ Route::is('missions') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Missions</a>
+                <a href="{{route('settings')}}" class="{{ Route::is('settings') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Paramètres</a>
+
+{{--                <a href="{{route('dashboard')}}" aria-current="page" class=" bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>--}}
+{{--                <a href="#" class="block rounded-md py-2 px-3 text-base font-medium">Calendar</a>--}}
+{{--                <a href="#" class="block rounded-md py-2 px-3 text-base font-medium">Teams</a>--}}
+{{--                <a href="#" class="block rounded-md py-2 px-3 text-base font-medium">Directory</a>--}}
             </div>
             <div class="border-t border-gray-200 pb-3 pt-4">
                 <div class="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                        <img class="h-10 w-10 rounded-full" src="{{$profilePictureSource}}" alt="">
                     </div>
                     <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">Chelsea Hagon</div>
-                        <div class="text-sm font-medium text-gray-500">chelsea.hagon@example.com</div>
+                        <div class="text-base font-medium text-gray-800">{{ $user->game_name }}</div>
+                        <div class="text-sm font-medium text-gray-500">{{ $user->username }}</div>
                     </div>
-                    <button type="button" class="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        <span class="absolute -inset-1.5"></span>
-                        <span class="sr-only">View notifications</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
-                        </svg>
-                    </button>
                 </div>
                 <div class="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Your
-                        Profile</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Settings</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Sign
-                        out</a>
+                    <a href="{{route('dashboard')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Profil</a>
+                    <a href="{{route('settings')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Paramètres</a>
+                    <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Se déconnecter</button>
                 </div>
             </div>
         </nav>
