@@ -19,11 +19,11 @@ state([
     'user',
 ]);
 
-mount(function (User $user) {
+mount(function () {
     $this->mobileMenu = false;
     $this->user = Auth::user();
 
-    if ($user->profil_picture) {
+    if ($this->user->profil_picture) {
         $this->profilePictureSource = '/storage/images/1024/' . $this->user->profil_picture;
     } else {
         $this->profilePictureSource = 'https://ui-avatars.com/api/?length=1&name=' . $this->user->game_name;
@@ -95,7 +95,7 @@ $logout = function (Logout $logout) {
                                 x-data="{
                                                     searchValue: $wire.entangle('search'),
                                                     }"
-
+                                x-cloak
                                 x-show="searchValue && isFocused"
                                 class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" id="options" role="listbox">
                                 <!--
@@ -198,7 +198,7 @@ $logout = function (Logout $logout) {
                         From: "transform opacity-100 scale-100"
                         To: "transform opacity-0 scale-95"
                     -->
-                    <div x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                    <div x-cloak x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100", Not Active: "" -->
                         <a href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
                         <a href="{{route('settings')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>

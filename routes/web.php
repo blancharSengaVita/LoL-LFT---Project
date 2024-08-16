@@ -65,3 +65,19 @@ Route::middleware('auth')->group(function () {
 Volt::route('/{user:username}', 'pages.user')
     ->name('user');
 });
+
+Route::middleware('auth')->group(function () {
+    Volt::route('/{user:username}/members', 'pages.user.members')
+        ->name('user-members');
+    Volt::route('/{user:username}/guestbook', 'pages.user.guestbook')
+        ->name('user-guestbook');
+    Volt::route('/{user:username}/mates', 'pages.user.mates')
+        ->name('user-mates');
+    Volt::route('/{user:username}/stats', 'pages.user.stats')
+        ->name('user-stats');
+    Volt::route('/{user:username}/match-history', 'pages.user.matchHistory')
+        ->name('user-match-history');
+//    Volt::route('/{user:username}/salut', 'pages.user.')
+//        ->name('user-');
+
+});

@@ -182,7 +182,6 @@ on(['openAddSectionModal' => function () {
 }]);
 
 on(['renderOnboarding' => function () {
-    $this->openModal = true;
     $this->renderChange();
 }]);
 ?>
