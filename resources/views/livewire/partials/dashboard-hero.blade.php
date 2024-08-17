@@ -17,6 +17,7 @@ state([
     'user',
     'birthday',
     'openModal' => false,
+    'profilePictureSource'
 ]);
 
 
@@ -24,6 +25,12 @@ mount(function () {
     $this->user = Auth::user();
     $this->openMobileMenu = false;
     $this->birthday = Carbon::parse($this->user->birthday)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+
+    if($this->user->profil_picture){
+        $this->profilePictureSource = '/storage/images/1024/'.$this->user->profil_picture;
+    }else {
+        $this->profilePictureSource =  'https://ui-avatars.com/api/?length=1&name='. $this->user->game_name;
+    }
 });
 
 $openAddSectionModal = function (){
@@ -142,7 +149,7 @@ $newLanguage = function () {
             <div>
                 <div class="-m-1 flex">
                     <div class="inline-flex overflow-hidden rounded-lg border-4 border-white">
-                        <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="https://ui-avatars.com/api/?length=1&name={{ $user->game_name }}" alt="">
+                        <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="{{ $profilePictureSource }}" alt="">
                     </div>
                 </div>
             </div>

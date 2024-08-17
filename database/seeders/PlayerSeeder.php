@@ -404,16 +404,16 @@ class PlayerSeeder extends Seeder
         $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
         echo $m1->id;
 
-        UserMission::factory()->createMany([
-            [
-                'user_id' => $UwU->id,
-                'mission_id' => $m1->id,
-            ],
-            [
-                'user_id' => $UwU->id,
-                'mission_id' => $m2->id,
-            ]
-        ]);
+//        UserMission::factory()->createMany([
+//            [
+//                'user_id' => $UwU->id,
+//                'mission_id' => $m1->id,
+//            ],
+//            [
+//                'user_id' => $UwU->id,
+//                'mission_id' => $m2->id,
+//            ]
+//        ]);
 
         foreach ($users as $user){
             UserMission::factory()->createMany([

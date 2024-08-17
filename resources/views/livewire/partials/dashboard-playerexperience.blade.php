@@ -37,13 +37,14 @@ state([
     'id',
     'deleteModal',
     'experience',
+    'jobs',
 ]);
 
 rules([
     'event' => 'required',
     'placement' => 'required|max:3',
-    'team' => 'required',
-    'job' => 'required',
+    'team' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
+    'job' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
     'team' => '',
     'date' => 'required|date'
 ])->messages([
@@ -81,6 +82,8 @@ mount(function () {
 
     $this->renderChange();
 
+    $this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
+    $this->jobs = array_merge($this->jobs['staff'], $this->jobs['player']);
     $this->openAccordion = false;
     $this->openPlayerExperiencesModal = false;
     $this->openSinglePlayerExperienceModal = false;
@@ -243,8 +246,8 @@ displayedOnce:$wire.entangle('displayedOnce'),
                     </div>
                     <div class="min-w-0">
                         <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
-                            · {{$experience->job}}</p>
+                        @if($user->account_type !== 'team')<p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
+                            · {{$experience->job}}</p> @endif
                         <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
                     </div>
                     <div class="ml-auto">
@@ -268,8 +271,8 @@ displayedOnce:$wire.entangle('displayedOnce'),
                     </div>
                     <div class="min-w-0">
                         <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
-                        <p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
-                            · {{$experience->job}}</p>
+                        @if($user->account_type !== 'team')<p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
+                            · {{$experience->job}}</p> @endif
                         <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
                     </div>
                     <div class="ml-auto">
@@ -412,6 +415,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         </div>
                                     @endif
                                 </div>
+                                @if($user->account_type !== 'team')
                                 <div class="mt-4">
                                     <label for="team" class="block text-sm font-medium leading-6 text-gray-900">
                                         Équipe
@@ -425,19 +429,19 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         </div>
                                     @endif
                                 </div>
-                                <div class="mt-4">
-                                    <label for="job" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Poste
-                                    </label>
-                                    <div class="mt-2">
-                                        <input wire:model="job" type="text" name="job" id="job" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Jungle">
-                                    </div>
-                                    @if ($messages = $errors->get('job'))
-                                        <div class="text-sm text-red-600 space-y-1 mt-2">
-                                            <p>{{$messages[0]}}</p>
-                                        </div>
-                                    @endif
+                                <div class="col-span-3 mt-4">
+                                    <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste</label>
+                                    <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <option value="">-- choisissez votre poste --</option>
+                                        @foreach($jobs as $job)
+                                            <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('job')
+                                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                                    @enderror
                                 </div>
+                                @endif
                                 <div class="mt-4">
                                     <label for="placement" class="block text-sm font-medium leading-6 text-gray-900">
                                         Classement

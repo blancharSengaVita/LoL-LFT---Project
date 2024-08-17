@@ -36,6 +36,7 @@ state([
     'deleteModal',
     'languages',
     'availableLanguages',
+    'languageLevels',
 ]);
 
 
@@ -85,6 +86,7 @@ mount(function () {
     $this->level = '';
     $this->id = 0;
     $this->availableLanguages = require __DIR__ . '/../../../../app/enum/languages.php';
+    $this->languageLevels = require __DIR__ . '/../../../../app/enum/languageLevels.php';
 });
 
 $savelanguagesSettings = function () {
@@ -225,7 +227,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
-                            <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{ __('languageLevels.'.$language->level) }}</p>
                         </div>
                         <div class="ml-auto">
                             <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
@@ -248,7 +250,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
-                            <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{ __('languageLevels.'.$language->level) }}</p>
                         </div>
                         <div class="ml-auto">
                             <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
@@ -378,18 +380,6 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
                                     Langues</h3>
                                 <div class="mt-4">
-                                    {{--                                    <label for="name" class="block text-sm font-medium leading-6 text-gray-900">--}}
-                                    {{--                                        nom--}}
-                                    {{--                                    </label>--}}
-                                    {{--                                    <div class="mt-2">--}}
-                                    {{--                                        <input wire:model="name" type="text" name="name" id="name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">--}}
-                                    {{--                                    </div>--}}
-                                    {{--                                    @if ($messages = $errors->get('name'))--}}
-                                    {{--                                        <div class="text-sm text-red-600 space-y-1 mt-2">--}}
-                                    {{--                                            <p>{{$messages[0]}}</p>--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    @endif--}}
-
                                     <label for="name" class="block text-sm font-medium leading-6 text-gray-900">name</label>
                                     <select wire:model="name" id="name" name="name" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez une langue --</option>
@@ -405,9 +395,15 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                         Niveau
                                     </label>
-                                    <div class="mt-2">
-                                        <input wire:model.live="level" type="text" name="level" id="level" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">
-                                    </div>
+                                    <select wire:model="level" id="level" name="level" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <option value="">-- choisissez un niveau --</option>
+                                        @foreach($languageLevels as $level)
+                                            <option value="{{ $level }}">{{ __('languageLevels.'.$level) }}</option>
+                                        @endforeach
+                                    </select>
+{{--                                    <div class="mt-2">--}}
+{{--                                        <input wire:model.live="level" type="text" name="level" id="level" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">--}}
+{{--                                    </div>--}}
                                     @if ($messages = $errors->get('level'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
                                             <p>{{$messages[0]}}</p>
