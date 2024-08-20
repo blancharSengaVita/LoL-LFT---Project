@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->string('region')->nullable();
             $table->enum('account_type', ['player', 'staff', 'team'])->nullable();
+            $table->string('level')->nullable();
             $table->string('job')->nullable();
             $table->string('profil_picture')->nullable();
             $table->boolean('setup_completed')->default(false);

@@ -14,9 +14,14 @@ Route::get('/', function () {
     }
 });
 
-Volt::route('/', 'pages.home')
+Volt::route('/realtime', 'pages.realtime')
+    ->middleware('auth')
+    ->name('realtime');
+
+Volt::route('/welcome', 'pages.home')
     ->middleware('guest')
     ->name('home');
+
 
 
 Route::middleware('auth')->group(function () {
