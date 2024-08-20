@@ -78,8 +78,6 @@ class PlayerSeeder extends Seeder
                 'setup_completed' => false,
             ]);
 
-        $users = [$squirtle, $blanchar, $doki];
-
         $striker = User::factory()
             ->create([
                 'email' => 'striker@salut.com',
@@ -93,6 +91,10 @@ class PlayerSeeder extends Seeder
                 'bio' => 'Toujours cute, toujours kawainé',
                 'setup_completed' => true,
             ]);
+
+        $users = [$squirtle, $blanchar, $doki, $striker];
+
+
 
         PlayerExperience::factory()->createMany([
             [
@@ -153,6 +155,17 @@ class PlayerSeeder extends Seeder
         DisplayedInformationsOnce::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
+                'bio' => true,
+                'player_experiences' => true,
+                'awards' => true,
+                'skills' => true,
+                'languages' => true,
+            ]
+        ]);
+
+        DisplayedInformationsOnce::factory()->createMany([
+            [
+                'user_id' => $striker->id,
                 'bio' => true,
                 'player_experiences' => true,
                 'awards' => true,
@@ -404,16 +417,16 @@ class PlayerSeeder extends Seeder
         $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
         echo $m1->id;
 
-        UserMission::factory()->createMany([
-            [
-                'user_id' => $UwU->id,
-                'mission_id' => $m1->id,
-            ],
-            [
-                'user_id' => $UwU->id,
-                'mission_id' => $m2->id,
-            ]
-        ]);
+//        UserMission::factory()->createMany([
+//            [
+//                'user_id' => $UwU->id,
+//                'mission_id' => $m1->id,
+//            ],
+//            [
+//                'user_id' => $UwU->id,
+//                'mission_id' => $m2->id,
+//            ]
+//        ]);
 
         foreach ($users as $user){
             UserMission::factory()->createMany([

@@ -33,16 +33,16 @@ mount(function () {
                     <a href="{{route('dashboard')}}" class="{{ Route::is('dashboard') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">Profile</a>
 
                     @if($user->account_type === 'team')
-                        <a href="{{route('member')}}" class="{{ Route::is('member') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Membres</a>
+                        <a href="{{route('members')}}" class="{{ Route::is('members') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Membres</a>
                     @endif
                     @if($user->account_type !== 'team')
-                        <a href="#" class="{{ Route::is('') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Historiques
+                        <a href="{{route('match-history')}}" class="{{ Route::is('match-history') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Historiques
                             des matchs</a>
-                        <a href="#" class="{{ Route::is('') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Stats</a>
+                        <a href="{{route('stats')}}" class="{{ Route::is('stats') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Stats</a>
                     @endif
-                    <a href="#" class="{{ Route::is('') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Livres
+                    <a href="{{route('guestbook')}}" class="{{ Route::is('guestbook') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Livres
                         d'or</a>
-                    <a href="#" class="{{ Route::is('') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Amis</a>
+                    <a href="{{route('mates')}}" class="{{ Route::is('mates') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Amis</a>
                 </div>
             </div>
         </div>
