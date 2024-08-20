@@ -11,7 +11,6 @@ use function Livewire\Volt\{state, rules, layout, mount};
 
 layout('layouts.auth');
 
-// faire un trim ici
 state([
     'user',
     'game_name',
@@ -90,8 +89,6 @@ $save = function () {
 
     $this->redirect(route('pages.profil-creation.additional-info', absolute: false), navigate: true);
 };
-
-
 ?>
 
 

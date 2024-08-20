@@ -5,27 +5,28 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use  \Illuminate\Support\Facades\Route;
 use function Livewire\Volt\{
-    state,
-    mount,
+	state,
+	mount,
 };
 
 state([
-    'users',
+	'users',
 ]);
 
 mount(function (User $user) {
 
-   $this->users = User::inRandomOrder()
-        ->limit(3)
-        ->get();
+	$this->users = User::whereNot('id', Auth::user()->id)
+		->inRandomOrder()
+		->limit(3)
+		->get();
 
-    foreach ($this->users as $user) {
-        if ($user->profil_picture) {
-            $user['src'] = '/storage/images/1024/' . $user->profil_picture;
-        } else {
-            $user['src'] = 'https://ui-avatars.com/api/?length=1&name=' . $user->game_name;
-        }
-    }
+	foreach ($this->users as $user) {
+		if ($user->profil_picture) {
+			$user['src'] = '/storage/images/1024/' . $user->profil_picture;
+		} else {
+			$user['src'] = 'https://ui-avatars.com/api/?length=1&name=' . $user->game_name;
+		}
+	}
 });
 ?>
 
