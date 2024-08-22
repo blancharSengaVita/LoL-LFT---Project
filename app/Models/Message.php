@@ -22,9 +22,9 @@ class Message extends Model
             ->belongsTo(User::class);
     }
 
-//    public function from(): BelongsTo
-//    {
-//        return $this
-//            ->belongsTo(User::class, 'from');
-//    }
+    public function conversation(): BelongsTo
+    {
+        return $this->belongsTo(Conversation::class);
+    }
+
 }

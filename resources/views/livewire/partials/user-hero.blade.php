@@ -5,34 +5,57 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Masmerise\Toaster\Toaster;
 use App\Models\User;
+use \App\Models\Conversation;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-    state,
-    on,
-    mount,
+	state,
+	on,
+	mount,
 };
 
 state([
-    'openMobileMenu',
-    'user',
-    'birthday',
-    'profilePictureSource',
-    'openModal' => false,
+	'openMobileMenu',
+	'user',
+	'birthday',
+	'profilePictureSource',
+	'openModal' => false,
+	'conversation',
 ]);
 
 
 mount(function (User $user) {
-    $this->user = $user;
-    $this->openMobileMenu = false;
-    $this->birthday = Carbon::parse($this->user->birthday)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+	$this->user = $user;
+	$this->openMobileMenu = false;
+	$this->birthday = Carbon::parse($this->user->birthday)->locale('fr_FR')->isoFormat('D MMMM YYYY');
 
-    if($this->user->profil_picture){
-        $this->profilePictureSource = '/storage/images/1024/'.$this->user->profil_picture;
-    }else {
-        $this->profilePictureSource =  'https://ui-avatars.com/api/?length=1&name='. $this->user->game_name;
-    }
+	if ($this->user->profil_picture) {
+		$this->profilePictureSource = '/storage/images/1024/' . $this->user->profil_picture;
+	} else {
+		$this->profilePictureSource = 'https://ui-avatars.com/api/?length=1&name=' . $this->user->game_name;
+	}
 });
+
+$newConversation = function () {
+    $userId = $this->user->id;
+    $this->conversation = Conversation::where(function ($query) use ($userId) {
+        $query->where('user_one_id', Auth::id())
+            ->where('user_two_id', $userId);
+    })->orWhere(function ($query) use ($userId) {
+        $query->where('user_one_id', $userId)
+            ->where('user_two_id', Auth::id());
+    })->first();
+
+	if(!$this->conversation){
+        $this->conversation = Conversation::create([
+            'user_one_id' => Auth::id(),
+            'user_two_id' => $this->user->id,
+        ])->get();
+        dd($this->conversation);
+    }
+
+	$this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
+};
 
 ?>
 
@@ -62,13 +85,12 @@ mount(function (User $user) {
                 <div>
                     <p class="text-gray-900">{{ $user->job }}</p>
                 </div>
-
                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-x-3 sm:space-y-0">
                     <button type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
                         Invitation LFT
                     </button>
-                    <button type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                        Message
+                    <button wire:click="newConversation" type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                       envoyer un Message
                     </button>
                     <div class="ml-3 inline-flex sm:ml-0">
                         <div class="relative inline-block text-left">
@@ -90,12 +112,12 @@ mount(function (User $user) {
                                 To: "transform opacity-0 scale-95"
                             -->
                             <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
-{{--                                <div class="py-1" role="none">--}}
-                                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande d'amie</a>--}}
-{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
-{{--                                        CV</a>--}}
-{{--                                </div>--}}
+                                {{--                                <div class="py-1" role="none">--}}
+                                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                                {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande d'amie</a>--}}
+                                {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
+                                {{--                                        CV</a>--}}
+                                {{--                                </div>--}}
                             </div>
                         </div>
                     </div>

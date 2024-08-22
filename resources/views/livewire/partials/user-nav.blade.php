@@ -35,7 +35,9 @@ mount(function (User $user) {
                         <a href="{{ route('user-members', ['user' => $user->username]) }}" class="{{ Route::is('user-members') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Membres</a>
                     @endif
                     @if($user->account_type !== 'team')
-                        <a href="{{ route('user-match-history', ['user' => $user->username]) }}" class="{{ Route::is('user-match-history') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Historiques
+                        <a href="{{ route('user-match-history', ['user' => $user->username]) }}"
+                           class="{{ Route::is('user-match-history') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}
+                           inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Historiques
                             des matchs</a>
                         <a href="{{ route('user-stats', ['user' => $user->username]) }}" class="{{ Route::is('user-stats') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Stats</a>
                     @endif

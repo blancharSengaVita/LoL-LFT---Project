@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Award;
+use App\Models\Conversation;
 use App\Models\DisplayedInformation;
 use App\Models\DisplayedInformationsOnce;
 use App\Models\Language;
+use App\Models\Message;
 use App\Models\OnboardingMission;
 use App\Models\PlayerExperience;
 use App\Models\Skill;
@@ -425,16 +427,33 @@ class PlayerSeeder extends Seeder
         $m1 = OnboardingMission::where('name', 'addSection')->get()->first();
         $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
 
-//        UserMission::factory()->createMany([
-//            [
-//                'user_id' => $UwU->id,
-//                'mission_id' => $m1->id,
-//            ],
-//            [
-//                'user_id' => $UwU->id,
-//                'mission_id' => $m2->id,
-//            ]
-//        ]);
+        Conversation::factory()->create([
+            'user_one_id'=> $blanchar->id,
+            'user_two_id'=> $doki->id,
+        ]);
+
+        Message::factory()->createMany([
+            [
+                'conversation_id' => 1,
+                'user_id' => $doki->id,
+                'message' => 'Salut',
+            ],
+            [
+                'conversation_id' => 1,
+                'user_id' => $blanchar->id,
+                'message' => 'Salut',
+            ],
+            [
+                'conversation_id' => 1,
+                'user_id' => $doki->id,
+                'message' => 'Comment va va',
+            ],
+            [
+                'conversation_id' => 1,
+                'user_id' => $blanchar->id,
+                'message' => 'Bien et toi',
+            ],
+        ]);
 
         foreach ($users as $user) {
             UserMission::factory()->createMany([

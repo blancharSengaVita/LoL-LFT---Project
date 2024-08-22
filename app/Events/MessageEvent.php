@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
@@ -17,22 +18,24 @@ class MessageEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $username;
+    public $user_id;
     public $message;
+    public $conversation;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($user_id, $message)
+    public function __construct($user_id, $message, $conversation_id)
     {
         $newMessage = new Message();
+        $newMessage->conversation_id = $conversation_id;
         $newMessage->user_id = $user_id;
         $newMessage->message = $message;
         $newMessage->save();
 
         $this->message = $message;
-        $this->username = User::find($user_id)->game_name;
-
+        $this->user_id = $user_id;
+        $this->conversation = $conversation_id;
     }
 
     /**
