@@ -45,7 +45,7 @@ mount(function (User $user) {
                             <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{$user->username}}</p>
                         </div>
                     </div>
-                    <a href="{{route('user', ['user' => $user->username])}}" title="aller vers la page de {{$user->game_name}}" class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">View</a>
+                    <a wire:navigate href="{{route('user', ['user' => $user->username])}}" title="aller vers la page de {{$user->game_name}}" class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">View</a>
                 </li>
             @endforeach
         </ul>

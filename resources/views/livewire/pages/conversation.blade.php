@@ -105,6 +105,7 @@ $listenForMessage = function ($data) {
                     </div>
                 <div
                         id="messagesContainer" class="flex flex-col
+                        py-2
                         px-2
                 flex-grow
                 overflow-scroll

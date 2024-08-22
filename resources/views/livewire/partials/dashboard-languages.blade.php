@@ -227,7 +227,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
-                            <p class="truncate text-sm leading-5 text-gray-900">{{ __('languageLevels.'.$language->level) }}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{ $language->level}}</p>
                         </div>
                         <div class="ml-auto">
                             <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
@@ -250,7 +250,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
-                            <p class="truncate text-sm leading-5 text-gray-900">{{ __('languageLevels.'.$language->level) }}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
                         </div>
                         <div class="ml-auto">
                             <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">

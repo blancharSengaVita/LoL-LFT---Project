@@ -69,9 +69,9 @@ mount(function (User $user) {
 <article
     x-data="{
 openAccordion: $wire.entangle('openAccordion'),
-openModal: $wire.entangle('openModal'),
-openSingleModal: $wire.entangle('openSingleModal'),
-deleteModal: $wire.entangle('deleteModal'),
+{{--openModal: $wire.entangle('openModal'),--}}
+{{--openSingleModal: $wire.entangle('openSingleModal'),--}}
+{{--deleteModal: $wire.entangle('deleteModal'),--}}
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 showSection:$wire.entangle('showSection'),
