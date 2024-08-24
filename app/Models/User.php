@@ -110,4 +110,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class);
     }
+
+    public function lftPost(): HasMany
+    {
+        return $this->hasMany(LftPost::class);
+    }
 }

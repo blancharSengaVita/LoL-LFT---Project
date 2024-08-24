@@ -30,6 +30,7 @@ state([
     'job' => '',
     'region' => '',
     'type' => '',
+    'messageJob' => '',
 ]);
 
 mount(function () {
@@ -40,14 +41,19 @@ mount(function () {
 
     if ($this->user->account_type === 'staff') {
         $this->jobs = $this->jobs['staff'];
+		$this->messageJob = 'Choisissez votre niveau jeu ou dans votre profession';
     }
+
+//    $user->account_type === 'team' ? ': ';
 
     if ($this->user->account_type === 'player') {
         $this->jobs = $this->jobs['player'];
+        $this->messageJob = 'Choisissez votre niveau sur le jeu';
     }
 
     if ($this->user->account_type === 'team') {
         $this->jobs = $this->jobs['player'];
+        $this->messageJob = 'Choisissez le niveau moyen de l\'équipe';
     }
 
     $this->job = $this->user->job ?? '';
@@ -63,7 +69,7 @@ mount(function () {
 
 rules([
     'job' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
-    'level' => Auth::user()->account_type !== 'staff' ? 'required' : 'nullable',
+    'level' =>  'required',
     'region' => 'required',
     'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
 ])->messages([
@@ -236,7 +242,7 @@ $save = function () {
                             <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                             @enderror
                         </div>
-                        @if($type !== 'staff')
+{{--                        @if($type !== 'staff')--}}
                             <div class="col-span-3">
                                 <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-500">*</span></label>
                                 <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -250,10 +256,10 @@ $save = function () {
                                 @enderror
                                 {{--                                @if()--}}
                                 <p class="mt-1 text-sm text-gray-500" id="password-description">
-                                    {{ $user->account_type === 'team' ? 'Choisissez le niveau moyen de l\'équipe': 'Choisissez votre niveau moyen'}}</p>
+                                    {{ $messageJob }}</p>
                                 {{--                                @endif--}}
                             </div>
-                        @endif()
+{{--                        @endif()--}}
 
                         {{--                        <div class="col-span-3">--}}
                         {{--                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>--}}

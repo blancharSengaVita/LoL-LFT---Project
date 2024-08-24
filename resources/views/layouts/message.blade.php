@@ -3,7 +3,6 @@
 use function Livewire\Volt\{state};
 
 ?>
-
     <!DOCTYPE html>
 <html class="h-full bg-gray-50" lang="fr">
 <head>

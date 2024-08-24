@@ -7,6 +7,7 @@ return [
         'ERL 1',
         'ERL 2',
         'ERL 3',
+        'Academic league',
         'LAN',
         'Online Tournament',
         'Clash',
@@ -20,7 +21,14 @@ return [
         'Special mode'
     ],
     'staff' => [
-        'Coach',
-        'Head coach'
+        'Head coach',
+        'Assistant coach',
+        'Manager',
+        'Analyst',
+        'Head of operations',
+        'Performance coach',
+        'Recruiter',
+        'Scout',
+        'Other'
     ],
 ];

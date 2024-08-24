@@ -85,7 +85,6 @@ $newConversation = function ($userId) {
             'user_one_id' => Auth::id(),
             'user_two_id' => $userId,
         ])->get();
-        dd($this->conversation);
     }
 
     $this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);

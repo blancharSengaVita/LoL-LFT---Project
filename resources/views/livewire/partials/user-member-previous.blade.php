@@ -44,7 +44,7 @@ mount(function (User $user) {
 
 <article>
 
-    <div x-cloack class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+    <div x-cloak class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900 p-2">{{'Anciens membres'}}</h3>
         </div>

@@ -51,7 +51,6 @@ $filteredUser = computed(function () {
 $openMobileMenu = function () {
     $this->mobileMenu = !$this->mobileMenu;
     $this->dispatch('openMobileMenu');
-
 };
 
 $logout = function (Logout $logout) {
@@ -95,8 +94,7 @@ $logout = function (Logout $logout) {
                                 x-data="{
                                                     searchValue: $wire.entangle('search'),
                                                     }"
-                                x-cloak
-                                x-show="searchValue && isFocused"
+                                x-cloak x-show="searchValue && isFocused"
                                 class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" id="options" role="listbox">
                                 <!--
                                   Combobox option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
