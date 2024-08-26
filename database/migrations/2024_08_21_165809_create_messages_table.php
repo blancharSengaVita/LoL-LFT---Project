@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('conversation_id')->constrained('conversations')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->text('message');
+            $table->string('color')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
@@ -28,9 +30,11 @@ return new class extends Migration
         Schema::table('messages', function (Blueprint $table) {
             $table->dropForeign(['conversation_id']);
         });
+
         Schema::table('messages', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
         });
+
         Schema::dropIfExists('messages');
     }
 };

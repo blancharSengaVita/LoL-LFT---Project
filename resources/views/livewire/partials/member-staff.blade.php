@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Masmerise\Toaster\Toaster;
 use App\Models\TeamMember;
+use \App\Models\Notification;
+use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
@@ -187,11 +189,17 @@ on(['newAward' => function () {
 	$this->createSingleModel();
 }]);
 
-$sendNotification = function () {
-//    dd('salut');
-	$this->openSingleModal = false;
-	Toaster::success('Demande d\'ajout envoyé ');
+$sendNotification = function ($userId) {
+    Notification::firstOrCreate([
+        'to' => $userId,
+        'from' => Auth::id(),
+        'description' => 'veut te recruter',
+    ]);
+    NotificationEvent::dispatch($userId, Auth::id(), 'veut te recruter');
+    $this->openSingleModal = false;
+    Toaster::success('Demande d\'ajout envoyé ');
 };
+
 
 on(['archiveMember' => function () {
     $this->renderChange();
@@ -204,7 +212,6 @@ openModal: $wire.entangle('openModal'),
 openSingleModal: $wire.entangle('openSingleModal'),
 deleteModal: $wire.entangle('deleteModal'),
 }">
-
     <div x-cloak class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Staff'}}</h3>
@@ -245,7 +252,7 @@ deleteModal: $wire.entangle('deleteModal'),
                             <tr class="flex" >
                                 <td class="truncate  flex-1 whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $player->username }}</td>
                                 <td class="flex-1 whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{  __('jobs.'.$player->job)  }}</td>
-                                <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ __('nationalities.'.$player->nationality) }}</td>
+                                <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ __('nationalities.'.ucfirst($player->nationality)) }}</td>
                                 <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 md:table-cell">{{ $player->entry_date }}</td>
                                 <td class="flex-1 relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                     <div class="ml-auto">
@@ -348,7 +355,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                                 @foreach($this->filteredUser as $player)
                                                     <li
                                                         wire:key="player-{{$player->id}}"
-                                                        {{--                                                            wire:click="sendNotification"--}}@click="$wire.sendNotification"
+                                                        {{--                                                            wire:click="sendNotification"--}}@click="$wire.sendNotification({{$player->id}})"
                                                         x-data="{ isHovered: false }"
                                                         @mouseenter="isHovered = true"
                                                         @mouseleave="isHovered = false"

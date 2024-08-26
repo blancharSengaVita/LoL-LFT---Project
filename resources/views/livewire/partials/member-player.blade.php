@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Masmerise\Toaster\Toaster;
 use App\Models\TeamMember;
+use \App\Models\Notification;
+use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
@@ -184,8 +186,13 @@ on(['newAward' => function () {
 	$this->createSingleModel();
 }]);
 
-$sendNotification = function () {
-//    dd('salut');
+$sendNotification = function ($userId) {
+    Notification::firstOrCreate([
+        'to' => $userId,
+        'from' => Auth::id(),
+        'description' => 'veut te recruter',
+    ]);
+    NotificationEvent::dispatch($userId, Auth::id(), 'veut te recruter');
 	$this->openSingleModal = false;
 	Toaster::success('Demande d\'ajout envoyé ');
 };
@@ -345,7 +352,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                                 @foreach($this->filteredUser as $player)
                                                     <li
                                                         wire:key="player-{{$player->id}}"
-                                                        {{--                                                            wire:click="sendNotification"--}}@click="$wire.sendNotification"
+                                                        {{--                                                            wire:click="sendNotification"--}}@click="$wire.sendNotification({{$player->id}})"
                                                         x-data="{ isHovered: false }"
                                                         @mouseenter="isHovered = true"
                                                         @mouseleave="isHovered = false"

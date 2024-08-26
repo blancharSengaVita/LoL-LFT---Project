@@ -28,29 +28,49 @@ mount(function (Conversation $conversation) {
 	$this->conversation = $conversation;
 
 	if ($conversation->user_one_id === Auth::id()) {
-        $this->user_two = User::find($conversation->user_two_id);
+		$this->user_two = User::find($conversation->user_two_id);
 	} else {
-        $this->user_two = User::find($conversation->user_one_id);
+		$this->user_two = User::find($conversation->user_one_id);
 	}
 
 	$this->messages = Message::where('conversation_id', $this->conversation->id)->get();
 	foreach ($this->messages as $message) {
-		if ($message->user_id === Auth::id()) {
-			$this->convos[] = '<div class="flex justify-end mb-4">
+
+		if ($message->color === 'green') {
+			if ($message->user_id === Auth::id() && $message->color === 'green') {
+				$this->convos[] = '<div class="flex justify-center my-8">
+                                <div class="py-4 px-6 bg-green-600 rounded-lg text-white text-md">
+                                    ' . htmlspecialchars($message->message) . '
+                                </div>
+                            </div>';
+			} else {
+				$this->convos[] = '<div class="flex justify-center my-8">
+                        <div
+                            class="py-4 px-6 border-gray-50 bg-green-600 border rounded-lg text-gray-900 text-white text-md max-w-96"
+                        >'
+					. htmlspecialchars($message->message) .
+					'</div>
+                    </div>';
+			}
+		} else {
+			if ($message->user_id === Auth::id()) {
+				$this->convos[] = '<div class="flex justify-end mb-4">
                                 <div class="mr-2 py-2 px-3 bg-indigo-500 rounded-bl-lg rounded-tl-lg rounded-tr-lg text-white text-sm">
                                     ' . htmlspecialchars($message->message) . '
                                 </div>
                             </div>';
-		} else {
-			$this->convos[] = '<div class="flex justify-start mb-4">
+			} else {
+				$this->convos[] = '<div class="flex justify-start mb-4">
                         <div
                             class="ml-2 py-2 px-3 border-gray-50 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
                         >'
-				. htmlspecialchars($message->message) .
-				'</div>
+					. htmlspecialchars($message->message) .
+					'</div>
                     </div>';
+			}
 		}
 	}
+//	$this->markAsRead();
 });
 
 $submitMessage = function () {
@@ -58,9 +78,40 @@ $submitMessage = function () {
 	$this->message = "";
 };
 
+$markAsRead = function () {
+	$conversationId = $this->conversation->id;
+	Message::where('conversation_id', $conversationId)
+		->whereNot('user_id', Auth::id())
+		->update(['read_at' => now()]);
+	$this->renderChange();
+};
+
 on(['echo:our-channel,MessageEvent' => function ($data) {
 	$this->listenForMessage($data);
 }]);
+
+on(['echo:Accept-lft-invitation,AcceptLftPostEvent' => function ($data) {
+	$this->listenForLftInvitation($data);
+}]);
+
+$listenForLftInvitation = function ($data) {
+	if ($data['user_id'] === Auth::id()) {
+		$this->convos[] = '<div class="message flex justify-end mb-4">
+                                <div class="mr-2 py-4 px-6 bg-green-500 rounded-bl-lg rounded-tl-lg rounded-tr-lg text-white text-sm">
+                                    ' . htmlspecialchars($data['message']) . '
+                                </div>
+                            </div>';
+	} else {
+		$this->convos[] = '<div class="message flex justify-start mb-4">
+                        <div
+                            class="ml-2 py-2 px-3 border-gray-50 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
+                        >'
+			. htmlspecialchars($data['message']) .
+			'</div>
+                    </div>';
+	}
+	$this->dispatch('message-sent')->self();
+};
 
 
 $listenForMessage = function ($data) {
@@ -100,9 +151,9 @@ $listenForMessage = function ($data) {
             </div>
             <!-- messages -->
             <div class="w-full flex flex-col justify-between">
-                    <div class="flex items-center px-6 py-4 border-b">
-                        <p class="text-lg font-medium"> {{ $user_two->game_name }} </p>
-                    </div>
+                <div class="flex items-center px-6 py-4 border-b">
+                    <p class="text-lg font-medium"> {{ $user_two->game_name }} </p>
+                </div>
                 <div
                         id="messagesContainer" class="flex flex-col
                         py-2

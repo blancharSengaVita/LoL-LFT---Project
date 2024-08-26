@@ -7,6 +7,8 @@ use App\Models\User;
 use \App\Models\Conversation;
 use \App\Models\LftPost;
 use Masmerise\Toaster\Toaster;
+use \App\Models\Notification;
+use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
@@ -70,7 +72,7 @@ mount(function () {
 	$this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
 	$this->user = Auth::user();
 
-    $this->myLftPost = $this->user->lftPost()->first();
+	$this->myLftPost = $this->user->lftPost()->first();
 //    dd($this->myLftPost);
 
 	$this->id = $this->myLftPost->id ?? 0;
@@ -81,12 +83,14 @@ mount(function () {
 	$this->published = $this->myLftPost->published ?? '';
 //    $this->publishedTemp = ;
 
-    if ($this->published === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
+	if ($this->published === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
+
 });
+
 
 $lftPosts = computed(function () {
 //	$posts = \App\Models\LftPost::where('job', 'like', '%' . $this->job . '%');
@@ -118,26 +122,26 @@ $openMobileMenu = function () {
 };
 
 $openLFTModal = function () {
-    $this->publishedTemp = $this->published;
+	$this->publishedTemp = $this->published;
 
-    if ($this->publishedTemp === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
-    $this->lftModal = true;
+	if ($this->publishedTemp === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
+	$this->lftModal = true;
 };
 
 $closeLFTModal = function () {
-    $this->published = $this->myLftPost->published ?? '';
+	$this->published = $this->myLftPost->published ?? '';
 
-    $this->publishedTemp = $this->published;
+	$this->publishedTemp = $this->published;
 
-    if ($this->publishedTemp === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
+	if ($this->publishedTemp === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
 	$this->lftModal = false;
 };
 
@@ -148,30 +152,40 @@ $saveMyLftPost = function () {
 //        throw $e;
 //    }
 
-    $this->published = $this->publishedTemp ;
+	$this->published = $this->publishedTemp;
 
-    LftPost::updateOrCreate([
-        'user_id' => Auth::id(),
-        'id' => $this->id
-    ],
-        [
-            'job' => $this->myJob,
-            'ambiance' => $this->myAmbiance,
-            'goal' => $this->myGoal,
-            'description' => $this->description,
-            'published' => $this->published,
-        ]);
+	LftPost::updateOrCreate([
+		'user_id' => Auth::id(),
+		'id' => $this->id
+	],
+		[
+			'job' => $this->myJob,
+			'ambiance' => $this->myAmbiance,
+			'goal' => $this->myGoal,
+			'description' => $this->description,
+			'published' => $this->published,
+		]);
 
-    $this->lftModal = false;
+	$this->lftModal = false;
 
-    if($this->id === 0){
-        Toaster::success('Post LFT crée avec succès');
-    }
+	if ($this->id === 0) {
+		Toaster::success('Post LFT crée avec succès');
+	}
 
-    if($this->id !== 0){
-        Toaster::success('Post LFT modifiée avec succès');
-    }
+	if ($this->id !== 0) {
+		Toaster::success('Post LFT modifiée avec succès');
+	}
 
+};
+
+$sendLftInvitation = function ($userId) {
+	Notification::firstOrCreate([
+		'to' => $userId,
+		'from' => Auth::id(),
+		'description' => 'veut jouer avec toi.',
+	]);
+	NotificationEvent::dispatch($userId, Auth::id(), 'veut jouer avec toi.');
+	Toaster::success('Demande envoyé');
 };
 
 $newConversation = function ($userId) {
@@ -501,7 +515,7 @@ $newConversation = function ($userId) {
                                             </div>
                                         </dl>
                                         <div class="my-2 flex justify-end gap-x-2">
-                                            <button type="button" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                            <button wire:click="sendLftInvitation({{$post->user->id}})" type="button" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                                 Demande LFT
                                             </button>
                                             <button wire:click="newConversation({{$post->user->id}})" type="button" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">

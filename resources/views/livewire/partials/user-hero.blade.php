@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Masmerise\Toaster\Toaster;
 use App\Models\User;
 use \App\Models\Conversation;
+use \App\Models\Notification;
+use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
@@ -51,12 +53,20 @@ $newConversation = function () {
             'user_one_id' => Auth::id(),
             'user_two_id' => $this->user->id,
         ])->get();
-        dd($this->conversation);
     }
 
 	$this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
 };
 
+$sendLftInvitation = function ($userId) {
+    Notification::firstOrCreate([
+        'to' => $userId,
+        'from' => Auth::id(),
+        'description' => 'veut jouer avec toi.',
+    ]);
+    NotificationEvent::dispatch($userId, Auth::id(), 'veut jouer avec toi.');
+    Toaster::success('Demande envoyé');
+};
 ?>
 
 <div class="divide-y divide-gray-200 border-b"
@@ -86,7 +96,7 @@ $newConversation = function () {
                     <p class="text-gray-900">{{ $user->job }} · {{ __('levels.'.$user->level) }} </p>
                 </div>
                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-x-3 sm:space-y-0">
-                    <button type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
+                    <button wire:click="sendLftInvitation({{$user->id}})" type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
                         Invitation LFT
                     </button>
                     <button wire:click="newConversation" type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">

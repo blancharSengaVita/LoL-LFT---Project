@@ -56,7 +56,7 @@ $openMobileMenu = function () {
 $logout = function (Logout $logout) {
     $logout();
 
-    $this->redirect('/', navigate: true);
+    $this->redirect(\route('login'), navigate: true);
 };
 ?>
 
@@ -199,8 +199,8 @@ $logout = function (Logout $logout) {
                     <div x-cloak x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100", Not Active: "" -->
                         <a wire:navigate href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
-                        <a wire:navigate href="{{route('settings')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>
-                        <boutton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</boutton>
+                        <a wire:navigate href="{{route('settings')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1 cursor-pointer">Paramètres</a>
+                        <a wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Se déconnecter</a>
                     </div>
                 </div>
             </div>
@@ -239,7 +239,7 @@ $logout = function (Logout $logout) {
                 <div class="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">
                     <a wire:navigate href="{{route('dashboard')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Profil</a>
                     <a wire:navigate href="{{route('settings')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Paramètres</a>
-                    <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Se déconnecter</button>
+                    <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">Se déconnecter</button>
                 </div>
             </div>
         </nav>
