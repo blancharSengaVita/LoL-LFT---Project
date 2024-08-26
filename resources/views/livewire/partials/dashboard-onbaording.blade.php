@@ -264,7 +264,7 @@ on(['renderOnboarding' => function () {
                     </li>
                 @endforeach
                 @foreach($missionsHidden as $mission)
-                    <li :class="openAccordion ? '' : 'hidden'" class="gap-x-4 py-5 w-full">
+                    <li x-cloak :class="openAccordion ? '' : 'hidden'" class="gap-x-4 py-5 w-full">
                         {{--                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
                         {{--                    <p class="text-3xl text-center text-white">{{$mission['description']}}</p>--}}
                         {{--                    </div>--}}

@@ -5,122 +5,132 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
 use Intervention\Image\ImageManagerStatic as Image;
 use function Livewire\Volt\{
-	state,
-	rules,
-	computed,
-	layout,
-	usesFileUploads,
-	mount
+    state,
+    rules,
+    computed,
+    layout,
+    usesFileUploads,
+    mount,
+    updated,
 };
 
 usesFileUploads();
 ini_set('memory_limit', '256M');
-//post_max_size = 20M
-//upload_max_filesize = 20M
 
 state([
-	'user',
-	'jobs' => [],
-	'regions' => [],
-	'profilPictureLabel' => 'importer une photo de profil',
-	'profilPictureFilename' => 'Aucun fichier sélectionné',
-	'profilPicture',
-	'bio' => '',
-	'job' => '',
-	'region' => '',
-	'type' => '',
+    'user',
+    'jobs' => [],
+    'regions' => [],
+    'levels' => [],
+    'profilPictureLabel' => 'importer une photo de profil',
+    'profilPictureFilename' => 'Aucun fichier sélectionné',
+    'profilPicture',
+    'level' => '',
+    'bio' => '',
+    'job' => '',
+    'region' => '',
+    'type' => '',
+    'messageJob' => '',
 ]);
 
 mount(function () {
-	$this->user = Auth::user();
+    $this->user = Auth::user();
     $this->jobs = require __DIR__ . '/../../../../../app/enum/jobs.php';
     $this->regions = require __DIR__ . '/../../../../../app/enum/regions.php';
+    $this->levels = require __DIR__ . '/../../../../../app/enum/levels.php';
 
-	if ($this->user->account_type === 'staff'){
+    if ($this->user->account_type === 'staff') {
         $this->jobs = $this->jobs['staff'];
+		$this->messageJob = 'Choisissez votre niveau jeu ou dans votre profession';
     }
 
-	if($this->user->account_type === 'player'){
+//    $user->account_type === 'team' ? ': ';
+
+    if ($this->user->account_type === 'player') {
         $this->jobs = $this->jobs['player'];
+        $this->messageJob = 'Choisissez votre niveau sur le jeu';
     }
 
-    if($this->user->account_type === 'team'){
+    if ($this->user->account_type === 'team') {
         $this->jobs = $this->jobs['player'];
+        $this->messageJob = 'Choisissez le niveau moyen de l\'équipe';
     }
 
     $this->job = $this->user->job ?? '';
     $this->type = $this->user->account_type ?? '';
     $this->region = $this->user->region ?? '';
     $this->bio = $this->user->bio ?? '';
+    $this->level = $this->user->level ?? '';
 
     if ($this->type === 'team') {
-		$this->job = 'team';
-        rules(fn () => [
-            'job' => 'required',
-        ]);
+        $this->job = 'Team';
     }
 });
 
 rules([
-	'region' => 'required',
-	'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
+    'job' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
+    'level' =>  'required',
+    'region' => 'required',
+    'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
 ])->messages([
-	'bio.required' => 'Votre bio est requis',
-	'job.required' => 'Votre job est requis',
-	'region.required' => 'Votre region est requis',
-	'profilPicture.image' => 'Le fichier n\'est pas une image',
-	'profilPicture.mimes' => 'Seuls les fichiers de type jpeg, png, jpg sont autorisés.',
-	'profilPicture.max' => 'La taille maximale de l’image doit être de 5MB.',
-	'profilPicture.uploaded' => 'Le chargement de l\'image a échoué',
+    'bio.required' => 'Votre bio est requis',
+    'job.required' => 'Votre job est requis',
+    'level.required' => 'Votre niveau est requis',
+    'region.required' => 'Votre region est requis',
+    'profilPicture.image' => 'Le fichier n\'est pas une image',
+    'profilPicture.mimes' => 'Seuls les fichiers de type jpeg, png, jpg sont autorisés.',
+    'profilPicture.max' => 'La taille maximale de l’image doit être de 5MB.',
+    'profilPicture.uploaded' => 'Le chargement de l\'image a échoué',
 ]);
 
+
+updated(['profilPictureFilename' => fn() => $this->profilPictureFilename]);
 layout('layouts.auth');
 
-
 $save = function () {
-	if (isset($this->profilPicture)) {
-		$tmpPath = $this->profilPicture->getPathname();
-		$originalFilename = $this->profilPicture->getClientOriginalName();
-		$filenameParts = explode('.', $originalFilename);
-		$extension = $filenameParts[array_key_last($filenameParts)];
-		$newFilename = sha1_file($tmpPath) . '.' . $extension;
-		$image = Image::make($this->profilPicture);
-		$width = $image->width();
-		$height = $image->height();
-		$ratio = $width / $height;
+
+    if (isset($this->profilPicture)) {
+        $tmpPath = $this->profilPicture->getPathname();
+        $originalFilename = $this->profilPicture->getClientOriginalName();
+        $filenameParts = explode('.', $originalFilename);
+        $extension = $filenameParts[array_key_last($filenameParts)];
+        $newFilename = sha1_file($tmpPath) . '.' . $extension;
+        $image = Image::make($this->profilPicture);
+        $width = $image->width();
+        $height = $image->height();
+        $ratio = $width / $height;
+        $sizes = ['1024', '512', '400', '200', '150'];
+
+        foreach ($sizes as $size) {
+            if (!file_exists(storage_path('app/public/images/' . $size))) {
+                mkdir(storage_path('app/public/images/' . $size));
+            }
+
+            $image->resize($size, null, function ($constraint) {
+                $constraint->aspectRatio(); // Maintient le ratio original
+                $constraint->upsize(); // Empêche l'agrandissement
+            });
+
+            $image->save(storage_path('app/public/images/' . $size . '/') . $newFilename, 100);
+            $image->destroy();
+        }
+
+        Auth::user()->profil_picture = $newFilename;
+    }
 
 
-		$sizes = ['1024', '512', '400', '200', '150'];
-
-		foreach ($sizes as $size) {
-			if (!file_exists(storage_path('app/public/images/' . $size))) {
-				mkdir(storage_path('app/public/images/' . $size));
-			}
-
-			$image->resize($size, null, function ($constraint) {
-				$constraint->aspectRatio(); // Maintient le ratio original
-				$constraint->upsize(); // Empêche l'agrandissement
-			});
-
-			$image->save(storage_path('app/public/images/' . $size . '/') . $newFilename, 100);
-			$image->destroy();
-		}
-
-		Auth::user()->profil_picture = $newFilename;
-	}
-
-
-	$validated = $this->validate();
-	$this->user = Auth::user();
-	$this->user->bio = $this->bio;
-	if ($this->bio !== ''){
+    $validated = $this->validate();
+    $this->user = Auth::user();
+    $this->user->bio = $this->bio;
+    if ($this->bio !== '') {
         $user = Auth::user()->displayedInformationsOnce()->bio = true;
     }
-	//dd($this->job);
-	$this->user->job = $this->job;
-	$this->user->region = $this->region;
+
+    $this->user->job = $this->job;
+    $this->user->region = $this->region;
+    $this->user->level = $this->level;
     $this->user->setup_completed = true;
-	$this->user->save();
+    $this->user->save();
 
     $this->redirect(route('dashboard', absolute: false), navigate: true);
 };
@@ -185,9 +195,6 @@ $save = function () {
                             <div class="text-center">
                                 <div class="profil-picture flex items-center justify-center"></div>
                                 <p class="flex justify-center items-center">{{ $profilPictureFilename }}</p>
-                                {{--                                <svg class="mx-auto h-12 w-12 text-gray-300 profil-picture-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">--}}
-                                {{--                                    <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd"/>--}}
-                                {{--                                </svg>--}}
                                 <div class="mt-2 justify-center flex text-sm leading-6 text-gray-600">
                                     <label for="profilePicture" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                         <span>{{ $profilPictureLabel }}</span>
@@ -210,21 +217,20 @@ $save = function () {
 
                     <div class="col-span-3">
                         @if($type !== 'team')
-                        <div class="col-span-3 mb-4">
-                            <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
-                            <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <option value="">-- choisissez votre poste --</option>
-                                @foreach($jobs as $job)
-                                    <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
-                                @endforeach
-                            </select>
-                            @error('job')
-                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                            @enderror
-                        </div>
+                            <div class="col-span-3 mb-4">
+                                <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
+                                <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <option value="">-- choisissez votre poste --</option>
+                                    @foreach($jobs as $job)
+                                        <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                    @endforeach
+                                </select>
+                                @error('job')
+                                <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                                @enderror
+                            </div>
                         @endif()
-
-                        <div class="col-span-3">
+                        <div class="col-span-3 mb-4">
                             <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région<span class="text-red-500">*</span></label>
                             <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                                 <option value="">-- choisissez votre region --</option>
@@ -236,22 +242,39 @@ $save = function () {
                             <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                             @enderror
                         </div>
-{{--                        <div class="col-span-3">--}}
-{{--                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>--}}
-{{--                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
-{{--                                <option value="">-- choisissez votre nationalité --</option>--}}
-{{--                                @foreach($nationalities as $nationality)--}}
-{{--                                    <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                            @error('nationality')--}}
-{{--                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>--}}
-{{--                            @enderror--}}
-{{--                        </div>--}}
+{{--                        @if($type !== 'staff')--}}
+                            <div class="col-span-3">
+                                <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-500">*</span></label>
+                                <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <option value="">-- choisissez votre niveau --</option>
+                                    @foreach($levels as $level)
+                                        <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
+                                    @endforeach
+                                </select>
+                                @error('level')
+                                <p class="text-sm text-red-600 space-y-1 mt-2 mb-2"> {{ $message }}</p>
+                                @enderror
+                                {{--                                @if()--}}
+                                <p class="mt-1 text-sm text-gray-500" id="password-description">
+                                    {{ $messageJob }}</p>
+                                {{--                                @endif--}}
+                            </div>
+{{--                        @endif()--}}
+
+                        {{--                        <div class="col-span-3">--}}
+                        {{--                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>--}}
+                        {{--                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
+                        {{--                                <option value="">-- choisissez votre nationalité --</option>--}}
+                        {{--                                @foreach($nationalities as $nationality)--}}
+                        {{--                                    <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>--}}
+                        {{--                                @endforeach--}}
+                        {{--                            </select>--}}
+                        {{--                            @error('nationality')--}}
+                        {{--                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>--}}
+                        {{--                            @enderror--}}
+                        {{--                        </div>--}}
 
                     </div>
-
-
 
 
                     <div class="col-span-full">
@@ -292,27 +315,29 @@ $save = function () {
 
     profilPictureInput.addEventListener('change', (e) => {
         const file = profilPictureInput.files[0];
-        if (validFileType(file)) {
-
-            const maxSize = 10 * 1024 * 1024; // 10 MB
-            if (file.size > maxSize) {
-                alert('La taille du fichier doit être inférieure à 10 MB.');
-                e.currentTarget.value = ''; // Réinitialiser le champ de fichier
-                return
-            }
-
-            const image = document.createElement('img');
-            image.src = URL.createObjectURL(file);
-            image.alt = 'l\'image importé';
-            image.width = 100;
-            image.height = 100;
-            image.className = 'flex justify-center';
-
-            $wire.profilPictureFilename = `${file.name}`;
-
-            profilPictureIcon.remove();
-            profilPicture.insertAdjacentElement('afterbegin', image);
+        if (!validFileType(file)) {
+            $wire.profilPictureFilename = `Aucun fichier sélectionné`;
+            alert('Le format du fichier n\'est pas valide');
+            e.currentTarget.value = ''; // Réinitialiser le champ de fichier
         }
+
+        const maxSize = 10 * 1024 * 1024; // 10 MB
+        if (file.size > maxSize) {
+            alert('La taille du fichier doit être inférieure à 10 MB.');
+            e.currentTarget.value = ''; // Réinitialiser le champ de fichier
+            return;
+        }
+        const image = document.createElement('img');
+        image.src = URL.createObjectURL(file);
+        image.alt = 'l\'image importé';
+        image.width = 100;
+        image.height = 100;
+        image.className = 'flex justify-center';
+
+        $wire.profilPictureFilename = `${file.name}`;
+
+        // profilPictureIcon.remove();
+        // profilPicture.insertAdjacentElement('afterbegin', image);
     });
 
     const fileTypes = [

@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
@@ -39,12 +38,15 @@ state([
     'gameNameDescription' => '',
     'jobs' => [],
     'regions' => [],
+    'levels' => [],
     'profilPictureLabel' => 'importer une photo de profil',
     'profilPictureFilename' => 'Aucun fichier sélectionné',
     'profilPicture',
     'bio' => '',
     'job' => '',
     'region' => '',
+    'level' => '',
+    'messageJob' => '',
 ]);
 
 mount(function () {
@@ -52,9 +54,11 @@ mount(function () {
     $this->displayed_informations = $this->user->displayedInformation()->first();
 
     $this->nationalities = require __DIR__ . '/../../../../app/enum/nationalities.php';
+    $this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
     $this->game_name = $this->user->game_name ?? '';
     $this->username = $this->user->username ?? '@';
     $this->birthday = $this->user->birthday ?? '';
+    $this->level = $this->user->level ?? '';
     $this->nationality = ucfirst($this->user->nationality) ?? '';
     $this->type = $this->user->account_type ?? '';
 
@@ -77,14 +81,17 @@ mount(function () {
 
     if ($this->user->account_type === 'staff'){
         $this->jobs = $this->jobs['staff'];
+        $this->messageJob = 'Choisissez votre niveau jeu ou dans votre profession';
     }
 
     if($this->user->account_type === 'player'){
         $this->jobs = $this->jobs['player'];
+        $this->messageJob = 'Choisissez votre niveau sur le jeu';
     }
 
     if($this->user->account_type === 'team'){
         $this->jobs = $this->jobs['player'];
+        $this->messageJob = 'Choisissez le niveau moyen de l\'équipe';
     }
 
     $this->job = $this->user->job ?? '';
@@ -112,7 +119,9 @@ rules([
     'username' => ['required', 'string', Rule::unique('users')->ignore(Auth::user()->id), new StartsWithAt, 'max:20'],
     'region' => 'required',
     'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
+    'level' =>  'required',
 ])->messages([
+    'level.required' => 'Votre niveau est requis',
     'nationality.required' => 'Votre nationalité est requis',
     'game_name.required' => 'Votre pseudo est requis',
     'game_name.string' => 'Votre pseudo doit être composé de lettre',
@@ -191,6 +200,7 @@ $saveProfilePicture = function () {
 
     $this->user->job = $this->job;
     $this->user->region = $this->region;
+    $this->user->level = $this->level;
     $this->user->setup_completed = true;
     $this->user->save();
     Toaster::success('Modification effectué avec succès');
@@ -200,6 +210,7 @@ $cancelProfilePicture = function () {
     $this->game_name = $this->user->game_name ?? '';
     $this->job = $this->user->job ?? '@';
     $this->region = $this->user->region ?? '';
+	$this->level = $this->user->level ?? '';
 };
 ?>
 
@@ -377,6 +388,23 @@ $cancelProfilePicture = function () {
                             <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                             @enderror
                         </div>
+
+                    <div class="col-span-3">
+                        <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-500">*</span></label>
+                        <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <option value="">-- choisissez votre niveau --</option>
+                            @foreach($levels as $level)
+                                <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
+                            @endforeach
+                        </select>
+                        @error('level')
+                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-2"> {{ $message }}</p>
+                        @enderror
+                        {{--                                @if()--}}
+                        <p class="mt-1 text-sm text-gray-500" id="password-description">
+                            {{ $messageJob }}</p>
+                        {{--                                @endif--}}
+                    </div>
                         {{--                        <div class="col-span-3">--}}
                         {{--                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>--}}
                         {{--                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
@@ -393,7 +421,7 @@ $cancelProfilePicture = function () {
                 <div class="flex items-center justify-end gap-x-6 px-4 py-4 sm:px-8">
                     <button wire:click="cancelProfilePicture" type="button" class="text-sm font-semibold leading-6 text-gray-900">Annuler</button>
                     <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Save
+                        Sauvegarder
                     </button>
                 </div>
             </form>

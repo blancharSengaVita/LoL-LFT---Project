@@ -106,18 +106,13 @@ class User extends Authenticatable
         return $this->hasMany(Education::class);
     }
 
-//    public function teams(): HasMany
-//    {
-//        return $this->hasMany(TeamMember::class, 'team_id');
-//    }
+    public function message(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
 
-//    public function players(): BelongsToMany
-//    {
-//        return $this->belongsToMany(User::class, 'team_player', 'player_id', 'user_id');
-//    }
-//
-//    public function teams(): BelongsToMany
-//    {
-//        return $this->belongsToMany(User::class, 'team_player', 'player_id', 'player_id');
-//    }
+    public function lftPost(): HasMany
+    {
+        return $this->hasMany(LftPost::class);
+    }
 }

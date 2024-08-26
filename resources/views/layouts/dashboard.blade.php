@@ -12,7 +12,6 @@ use function Livewire\Volt\{state};
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full">
@@ -21,5 +20,6 @@ use function Livewire\Volt\{state};
 <livewire:partials.app-side-menu/>
 {{ $slot }}
 <livewire:partials.app-aside/>
+@livewireScripts
 </body>
 </html>

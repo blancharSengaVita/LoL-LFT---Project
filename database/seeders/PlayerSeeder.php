@@ -3,15 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\Award;
+use App\Models\Conversation;
 use App\Models\DisplayedInformation;
 use App\Models\DisplayedInformationsOnce;
 use App\Models\Language;
+use App\Models\LftPost;
+use App\Models\Message;
 use App\Models\OnboardingMission;
 use App\Models\PlayerExperience;
 use App\Models\Skill;
 use App\Models\User;
 use App\Models\UserMission;
 use Carbon\Carbon;
+use Database\Factories\LftPostFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -34,6 +38,7 @@ class PlayerSeeder extends Seeder
                 'job' => 'Mid',
                 'bio' => 'Je m\'appelle Blanchar Senga-Vita. Je joue à Leaque of Legends depuis 2019, je cumule 200 heures de jeux. Je suis sur cette application car, je voudrais créer ma propre structure les "junkyards" Une bande d\'ami qui joue à league of legends pour s\'amuser',
                 'setup_completed' => true,
+                'level' => 'Silver',
             ]);
 
         $squirtle = User::factory()
@@ -48,6 +53,7 @@ class PlayerSeeder extends Seeder
                 'job' => 'Supp',
                 'bio' => 'Je vote à droite',
                 'setup_completed' => true,
+                'level' => 'Silver',
             ]);
 
         $doki = User::factory()
@@ -62,6 +68,7 @@ class PlayerSeeder extends Seeder
                 'job' => 'Top',
                 'bio' => 'Piqué par league malgré moi',
                 'setup_completed' => true,
+                'level' => 'Platine',
             ]);
 
         $UwU = User::factory()
@@ -76,6 +83,7 @@ class PlayerSeeder extends Seeder
                 'job' => 'Staff',
                 'bio' => 'Toujours cute, toujours kawainé',
                 'setup_completed' => false,
+                'level' => 'Argent',
             ]);
 
         $striker = User::factory()
@@ -90,10 +98,10 @@ class PlayerSeeder extends Seeder
                 'job' => 'Assistant coach',
                 'bio' => 'Toujours cute, toujours kawainé',
                 'setup_completed' => true,
+                'level' => 'Ligue majeure',
             ]);
 
         $users = [$squirtle, $blanchar, $doki, $striker];
-
 
 
         PlayerExperience::factory()->createMany([
@@ -146,9 +154,18 @@ class PlayerSeeder extends Seeder
                 'date' => '2024-06-15',
             ],
         ]);
+
+        foreach ($users as $user) {
+            DisplayedInformation::factory()->createMany([
+                [
+                    'user_id' => $user->id,
+                ]
+            ]);
+        }
+
         DisplayedInformation::factory()->createMany([
             [
-                'user_id' => $blanchar->id,
+                'user_id' => $UwU->id,
             ]
         ]);
 
@@ -415,20 +432,58 @@ class PlayerSeeder extends Seeder
 
         $m1 = OnboardingMission::where('name', 'addSection')->get()->first();
         $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
-        echo $m1->id;
 
-//        UserMission::factory()->createMany([
-//            [
-//                'user_id' => $UwU->id,
-//                'mission_id' => $m1->id,
-//            ],
-//            [
-//                'user_id' => $UwU->id,
-//                'mission_id' => $m2->id,
-//            ]
-//        ]);
+        Conversation::factory()->create([
+            'user_one_id' => $blanchar->id,
+            'user_two_id' => $doki->id,
+        ]);
 
-        foreach ($users as $user){
+        Message::factory()->createMany([
+            [
+                'conversation_id' => 1,
+                'user_id' => $doki->id,
+                'message' => 'Salut',
+            ],
+            [
+                'conversation_id' => 1,
+                'user_id' => $blanchar->id,
+                'message' => 'Salut',
+            ],
+            [
+                'conversation_id' => 1,
+                'user_id' => $doki->id,
+                'message' => 'Comment va va',
+            ],
+            [
+                'conversation_id' => 1,
+                'user_id' => $blanchar->id,
+                'message' => 'Bien et toi',
+            ],
+        ]);
+
+        UserMission::factory()->createMany([
+            [
+                'user_id' => $UwU->id,
+                'mission_id' => $m1->id,
+            ],
+            [
+                'user_id' => $UwU->id,
+                'mission_id' => $m2->id,
+            ]
+        ]);
+
+        LftPost::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'description' => 'salut',
+                'job' => 'Undefined', //job
+                'goal' => 'Ranked', //looking_for
+                'ambiance' => 'Fun', //ambiance
+                'published' => true,
+            ],
+        ]);
+
+        foreach ($users as $user) {
             UserMission::factory()->createMany([
                 [
                     'user_id' => $user->id,

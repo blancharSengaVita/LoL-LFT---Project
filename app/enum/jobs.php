@@ -20,5 +20,8 @@ return [
         'Recruiter',
         'Scout',
         'Other'
+    ],
+    'team' => [
+        'team'
     ]
 ];

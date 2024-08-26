@@ -89,6 +89,7 @@ mount(function () {
     $this->openSinglePlayerExperienceModal = false;
     $this->deleteModal = false;
 
+
     $this->event = '';
     $this->placement = '';
     $this->team = '';

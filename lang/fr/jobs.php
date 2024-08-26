@@ -16,5 +16,6 @@ return [
     'Performance coach' => 'Entraîneur de performance',
     'Recruiter' => 'Recruteur',
     'Scout' => 'Dénicheur de talent',
-    'Other' => 'Autre'
+    'Other' => 'Autre',
+    'team' => 'Équipe',
 ];

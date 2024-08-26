@@ -14,9 +14,14 @@ Route::get('/', function () {
     }
 });
 
-Volt::route('/', 'pages.home')
+Volt::route('/realtime', 'pages.realtime')
+    ->middleware('auth')
+    ->name('realtime');
+
+Volt::route('/welcome', 'pages.home')
     ->middleware('guest')
     ->name('home');
+
 
 
 Route::middleware('auth')->group(function () {
@@ -46,8 +51,10 @@ Route::middleware('auth')->group(function () {
     //ASIDE LINKS
     Volt::route('/find-teammate', 'pages.find-teammate')
         ->name('find-teammate');
-    Volt::route('/messages', 'pages.messages')
+    Volt::route('/messages', 'pages.message')
         ->name('messages');
+    Volt::route('/messages/{conversation}', 'pages.conversation')
+        ->name('conversation');
     Volt::route('/notifications', 'pages.notifications')
         ->name('notifications');
     Volt::route('/missions', 'pages.missions')

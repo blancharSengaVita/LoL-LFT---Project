@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Masmerise\Toaster\Toaster;
 use App\Models\TeamMember;
+use \App\Models\Notification;
+use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
@@ -184,8 +186,13 @@ on(['newAward' => function () {
 	$this->createSingleModel();
 }]);
 
-$sendNotification = function () {
-//    dd('salut');
+$sendNotification = function ($userId) {
+    Notification::firstOrCreate([
+        'to' => $userId,
+        'from' => Auth::id(),
+        'description' => 'veut te recruter',
+    ]);
+    NotificationEvent::dispatch($userId, Auth::id(), 'veut te recruter');
 	$this->openSingleModal = false;
 	Toaster::success('Demande d\'ajout envoyé ');
 };
@@ -202,7 +209,7 @@ openSingleModal: $wire.entangle('openSingleModal'),
 deleteModal: $wire.entangle('deleteModal'),
 }">
 
-    <div x-cloack class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+    <div x-cloak class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Joueurs'}}</h3>
             <div class="flex">
@@ -345,7 +352,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                                 @foreach($this->filteredUser as $player)
                                                     <li
                                                         wire:key="player-{{$player->id}}"
-                                                        {{--                                                            wire:click="sendNotification"--}}@click="$wire.sendNotification"
+                                                        {{--                                                            wire:click="sendNotification"--}}@click="$wire.sendNotification({{$player->id}})"
                                                         x-data="{ isHovered: false }"
                                                         @mouseenter="isHovered = true"
                                                         @mouseleave="isHovered = false"
