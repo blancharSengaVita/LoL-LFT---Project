@@ -188,6 +188,7 @@ $editSingleExperience = function (PlayerExperience $experience) {
 $deleteSingleExperience = function () {
     $this->experience->delete();
     $this->deleteModal = false;
+    Toaster::success('Expérience supprimé avec succès');
     $this->renderChange();
 };
 
@@ -218,10 +219,11 @@ openSinglePlayerExperienceModal: $wire.entangle('openSinglePlayerExperienceModal
 deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
-}">
+}"
+         x-cloak x-show="displayed && displayedOnce"
+>
 
-
-    <div x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+    <div  class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
     <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
         <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Expérience'}}</h3>
         <div class="flex">

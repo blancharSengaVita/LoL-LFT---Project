@@ -13,12 +13,10 @@ state([
 ]);
 
 $newNotification = function () {
-    if (Route::currentRouteName() !== 'notifications') {
         $this->unSeen = Notification::where('to', Auth::id())->whereNull('read_at')->exists();
-    }
 };
 
-//on
+
 $newMessage = function () {
 	$conversations = Conversation::where('user_one_id', Auth::id())
 		->orWhere('user_two_id', Auth::id())
@@ -27,8 +25,8 @@ $newMessage = function () {
 			$query->where('user_one_id', Auth::id())
 				->orWhere('user_one_id', Auth::id());
 		})
-			->whereNot('user_id', Auth::id())->whereNull('read_at')
-			->orderBy('created_at', 'desc')
+			->whereNot('user_id', Auth::id())
+            ->whereNull('read_at')
 			->exists();
 };
 
@@ -38,9 +36,7 @@ mount(function () {
 });
 
 on(['echo:notification-send,NotificationEvent' => function () {
-//	if (Route::currentRouteName() !== 'notifications') {
 		$this->newNotification();
-//	}
 }]);
 
 on(['echo:our-channel,MessageEvent' => function ($data) {

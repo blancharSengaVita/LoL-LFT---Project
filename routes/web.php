@@ -10,7 +10,7 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect('/dashboard');
     } else {
-        return redirect('/');
+        return redirect('/home');
     }
 });
 
@@ -18,7 +18,7 @@ Volt::route('/realtime', 'pages.realtime')
     ->middleware('auth')
     ->name('realtime');
 
-Volt::route('/welcome', 'pages.home')
+Volt::route('/home', 'pages.home')
     ->middleware('guest')
     ->name('home');
 

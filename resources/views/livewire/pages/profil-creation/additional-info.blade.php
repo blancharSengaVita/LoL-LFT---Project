@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
 use Intervention\Image\ImageManagerStatic as Image;
+use \Illuminate\Support\Facades\Storage;
 use function Livewire\Volt\{
     state,
     rules,
@@ -103,7 +104,7 @@ $save = function () {
 
         foreach ($sizes as $size) {
             if (!file_exists(storage_path('app/public/images/' . $size))) {
-                mkdir(storage_path('app/public/images/' . $size));
+                Storage::makeDirectory(('public/images/' . $size));
             }
 
             $image->resize($size, null, function ($constraint) {
