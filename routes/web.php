@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-
-
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect('/dashboard');
@@ -21,8 +19,6 @@ Volt::route('/realtime', 'pages.realtime')
 Volt::route('/home', 'pages.home')
     ->middleware('guest')
     ->name('home');
-
-
 
 Route::middleware('auth')->group(function () {
     //PROFILE CREATION
@@ -46,7 +42,6 @@ Route::middleware('auth')->group(function () {
         ->name('guestbook');
     Volt::route('/mates', 'pages.dashboard.mates')
         ->name('mates');
-
 
     //ASIDE LINKS
     Volt::route('/find-teammate', 'pages.find-teammate')
@@ -84,7 +79,4 @@ Route::middleware('auth')->group(function () {
         ->name('user-stats');
     Volt::route('/{user:username}/match-history', 'pages.user.matchHistory')
         ->name('user-match-history');
-//    Volt::route('/{user:username}/salut', 'pages.user.')
-//        ->name('user-');
-
 });

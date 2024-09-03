@@ -165,11 +165,11 @@ $saveSingleExperience = function () {
 
 
     $this->openSinglePlayerExperienceModal = false;
-    if($this->id === 0){
+    if ($this->id === 0) {
         Toaster::success('Expérience ajouté avec succès');
     }
 
-    if($this->id !== 0){
+    if ($this->id !== 0) {
         Toaster::success('Expérience modifiée avec succès');
     }
 };
@@ -212,7 +212,8 @@ on(['render' => function () {
 }]);
 ?>
 
-<article x-data="{
+<div
+    x-data="{
 openAccordion: $wire.entangle('openAccordion'),
 openPlayerExperiencesModal: $wire.entangle('openPlayerExperiencesModal'),
 openSinglePlayerExperienceModal: $wire.entangle('openSinglePlayerExperienceModal'),
@@ -220,102 +221,106 @@ deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }"
-         x-cloak x-show="displayed && displayedOnce"
 >
-
-    <div  class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-    <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Expérience'}}</h3>
-        <div class="flex">
-            <button wire:click="createSingleExperience"
-                    type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
-                </svg>
-            </button>
-            <button @click="openPlayerExperiencesModal = !openPlayerExperiencesModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                </svg>
-            </button>
-        </div>
-    </div>
-    <div class=" sm:w-12/12">
-        <ul role="list" class="divide-y divide-gray-100">
-            @foreach($playerExperiencesShow as $experience)
-                <li class="flex gap-x-4 py-5 w-full" wire:key="{{ $experience->id }}">
-                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
-                        <p class="text-3xl text-center text-white">{{$experience->placement}}</p>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
-                        @if($user->account_type !== 'team')<p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
-                            · {{$experience->job}}</p> @endif
-                        <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
-                    </div>
-                    <div class="ml-auto">
-                        <button wire:click="editSingleExperience({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                            </svg>
-                        </button>
-                        <button wire:click="openDeleteModal({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-                            </svg>
-                        </button>
-                    </div>
-                </li>
-            @endforeach
-            @foreach($playerExperiencesHidden as $experience)
-                <li :class="openAccordion ? '' : 'hidden'" class="flex gap-x-4 py-5">
-                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
-                        <p class="text-3xl text-center text-white">{{$experience->placement}}</p>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
-                        @if($user->account_type !== 'team')<p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
-                            · {{$experience->job}}</p> @endif
-                        <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
-                    </div>
-                    <div class="ml-auto">
-                        <button wire:click="editSingleExperience({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                            </svg>
-                        </button>
-                        <button wire:click="openDeleteModal({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-                            </svg>
-                        </button>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-
-        {{-- ACCORDEON --}}
-        @if(count($this->playerExperiencesHidden))
-            <div class="flex justify-center">
-                <Bouton @click="openAccordion = !openAccordion">
-                    <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
-                        plus
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-                        </svg>
-                    </p>
-
-                    <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
-                        moins
-                        <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
-                        </svg>
-                    </p>
-                </Bouton>
+    <article x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+        <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Expérience'}}</h3>
+            <div class="flex">
+                <button wire:click="createSingleExperience"
+                        type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                    </svg>
+                </button>
+                <button @click="openPlayerExperiencesModal = !openPlayerExperiencesModal" type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                    </svg>
+                </button>
             </div>
-        @endif
-    </div>
-    </div>
+        </div>
+        <div class=" sm:w-12/12">
+            <ul role="list" class="divide-y divide-gray-100">
+                @foreach($playerExperiencesShow as $experience)
+                    <li class="flex gap-x-4 py-5 w-full" wire:key="{{ $experience->id }}">
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
+                            <p class="text-3xl text-center text-white">{{$experience->placement}}</p>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
+                            @if($user->account_type !== 'team')
+                                <p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
+                                    · {{$experience->job}}</p>
+                            @endif
+                            <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button wire:click="editSingleExperience({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                                </svg>
+                            </button>
+                            <button wire:click="openDeleteModal({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                @endforeach
+                @foreach($playerExperiencesHidden as $experience)
+                    <li :class="openAccordion ? '' : 'hidden'" class="flex gap-x-4 py-5">
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
+                            <p class="text-3xl text-center text-white">{{$experience->placement}}</p>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold leading-6 text-gray-900">{{$experience->event}}</p>
+                            @if($user->account_type !== 'team')
+                                <p class="truncate text-sm leading-5 text-gray-900">{{$experience->team}}
+                                    · {{$experience->job}}</p>
+                            @endif
+                            <p class="truncate text-sm leading-5 text-gray-500">{{$experience->date }}</p>
+                        </div>
+                        <div class="ml-auto">
+                            <button wire:click="editSingleExperience({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                                </svg>
+                            </button>
+                            <button wire:click="openDeleteModal({{$experience}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+
+            {{-- ACCORDEON --}}
+            @if(count($this->playerExperiencesHidden))
+                <div class="flex justify-center">
+                    <Bouton @click="openAccordion = !openAccordion">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                            Afficher
+                            plus
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                            </svg>
+                        </p>
+
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                            Afficher
+                            moins
+                            <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
+                            </svg>
+                        </p>
+                    </Bouton>
+                </div>
+            @endif
+        </div>
+    </article>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openPlayerExperiencesModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--
@@ -419,31 +424,31 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     @endif
                                 </div>
                                 @if($user->account_type !== 'team')
-                                <div class="mt-4">
-                                    <label for="team" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Équipe
-                                    </label>
-                                    <div class="mt-2">
-                                        <input wire:model="team" type="text" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="T1">
-                                    </div>
-                                    @if ($messages = $errors->get('team'))
-                                        <div class="text-sm text-red-600 space-y-1 mt-2">
-                                            <p>{{$messages[0]}}</p>
+                                    <div class="mt-4">
+                                        <label for="team" class="block text-sm font-medium leading-6 text-gray-900">
+                                            Équipe
+                                        </label>
+                                        <div class="mt-2">
+                                            <input wire:model="team" type="text" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="T1">
                                         </div>
-                                    @endif
-                                </div>
-                                <div class="col-span-3 mt-4">
-                                    <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste</label>
-                                    <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                        <option value="">-- choisissez votre poste --</option>
-                                        @foreach($jobs as $job)
-                                            <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('job')
-                                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                                    @enderror
-                                </div>
+                                        @if ($messages = $errors->get('team'))
+                                            <div class="text-sm text-red-600 space-y-1 mt-2">
+                                                <p>{{$messages[0]}}</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="col-span-3 mt-4">
+                                        <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste</label>
+                                        <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <option value="">-- choisissez votre poste --</option>
+                                            @foreach($jobs as $job)
+                                                <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('job')
+                                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 @endif
                                 <div class="mt-4">
                                     <label for="placement" class="block text-sm font-medium leading-6 text-gray-900">
@@ -457,7 +462,8 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                             <p>{{$messages[0]}}</p>
                                         </div>
                                     @endif
-                                    <p class="mt-3 text-sm leading-6 text-gray-600">Écrivez votre top ou «&nbsp;W&nbsp;» pour
+                                    <p class="mt-3 text-sm leading-6 text-gray-600">Écrivez votre top ou «&nbsp;W&nbsp;»
+                                        pour
                                         indiquer une victoire ou «&nbsp;L&nbsp;» pour indiquer une défaite</p>
                                 </div>
                                 <div class="mt-4">
@@ -543,4 +549,4 @@ displayedOnce:$wire.entangle('displayedOnce'),
             </div>
         </div>
     </div>
-</article>
+</div>

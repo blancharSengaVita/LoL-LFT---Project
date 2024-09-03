@@ -150,7 +150,7 @@ $save = function () {
                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                         <div class="h-0.5 w-full bg-indigo-600"></div>
                     </div>
-                    <a href="{{route('pages.profil-creation.account-type')}}" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
+                    <a href="{{route('pages.profil-creation.account-type')}}" title="vers l'étape 1" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
                         <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
                         </svg>
@@ -162,7 +162,7 @@ $save = function () {
                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                         <div class="h-0.5 w-full bg-indigo-600"></div>
                     </div>
-                    <a href="{{route('pages.profil-creation.general-info')}}" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
+                    <a href="{{route('pages.profil-creation.general-info')}}" title="vers l'étape 2" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900">
                         <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/>
                         </svg>
@@ -174,7 +174,7 @@ $save = function () {
                     <div class="absolute flex items-center" aria-hidden="true">
                         <div class="h-0.5 w-full bg-gray-200"></div>
                     </div>
-                    <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white" aria-current="step">
+                    <a title="vers l'étape 3" href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white" aria-current="step">
                         <span class="h-2.5 w-2.5 rounded-full bg-indigo-600" aria-hidden="true"></span>
                         <span class="sr-only">Étape 3</span>
                     </a>
@@ -255,25 +255,9 @@ $save = function () {
                                 @error('level')
                                 <p class="text-sm text-red-600 space-y-1 mt-2 mb-2"> {{ $message }}</p>
                                 @enderror
-                                {{--                                @if()--}}
                                 <p class="mt-1 text-sm text-gray-500" id="password-description">
                                     {{ $messageJob }}</p>
-                                {{--                                @endif--}}
                             </div>
-{{--                        @endif()--}}
-
-                        {{--                        <div class="col-span-3">--}}
-                        {{--                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>--}}
-                        {{--                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
-                        {{--                                <option value="">-- choisissez votre nationalité --</option>--}}
-                        {{--                                @foreach($nationalities as $nationality)--}}
-                        {{--                                    <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>--}}
-                        {{--                                @endforeach--}}
-                        {{--                            </select>--}}
-                        {{--                            @error('nationality')--}}
-                        {{--                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>--}}
-                        {{--                            @enderror--}}
-                        {{--                        </div>--}}
 
                     </div>
 
@@ -286,7 +270,7 @@ $save = function () {
                         @error('bio')
                         <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
                         @enderror
-                        <p class="mt-1 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
+                        <p class="mt-1 text-sm leading-6 text-gray-600">Écris quelque phrase à propos de toi</p>
                     </div>
 
 

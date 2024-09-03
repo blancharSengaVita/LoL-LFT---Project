@@ -31,7 +31,7 @@ mount(function () {
     </x-slot>
     <section class="h-full">
         <h2 class="sr-only">
-            Recherche de partenaire
+            Missions
         </h2>
         <!--
         This example requires updating your template:
@@ -52,10 +52,7 @@ mount(function () {
               Open: "fixed inset-0 z-40 overflow-y-auto", Closed: ""
             -->
             <livewire:partials.dashboard-header/>
-            <div class="h-full flex items-center mt-20 flex-col" >
-                    <p class="text-xl font-bold text-gray-900 sm:text-2xl">Cooming soon</p>
-                    <p class="mt-2 text-sm text-gray-900" >Page en construction</p>
-            </div>
+            <livewire:partials.cooming-soon/>
         </div>
     </section>
 </main>

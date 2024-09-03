@@ -129,16 +129,6 @@ displayedOnce : $wire.entangle('displayedOnce'),
                                 </div>
                             </div>
                         </div>
-                        {{-- modale de confirmation de suppression --}}
-{{--                        <div class="mt-5 relative flex items-start">--}}
-{{--                            <div class="flex h-6 items-center">--}}
-{{--                                <input wire:model="displayedTemp" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">--}}
-{{--                            </div>--}}
-{{--                            <div class="ml-3 text-sm leading-6">--}}
-{{--                                <label for="offers" class="font-medium text-gray-900">Afficher cette section au--}}
-{{--                                    public</label>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
                                 Enregistrer les changements

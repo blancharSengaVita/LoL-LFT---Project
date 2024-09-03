@@ -219,9 +219,6 @@ $cancelProfilePicture = function () {
         {{ $user->game_name }}
     </x-slot>
     <section class="h-full">
-        <h2 class="sr-only">
-            Recherche de partenaire
-        </h2>
         <!--
         This example requires updating your template:
 
@@ -403,20 +400,7 @@ $cancelProfilePicture = function () {
                         {{--                                @if()--}}
                         <p class="mt-1 text-sm text-gray-500" id="password-description">
                             {{ $messageJob }}</p>
-                        {{--                                @endif--}}
                     </div>
-                        {{--                        <div class="col-span-3">--}}
-                        {{--                            <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>--}}
-                        {{--                            <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">--}}
-                        {{--                                <option value="">-- choisissez votre nationalité --</option>--}}
-                        {{--                                @foreach($nationalities as $nationality)--}}
-                        {{--                                    <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>--}}
-                        {{--                                @endforeach--}}
-                        {{--                            </select>--}}
-                        {{--                            @error('nationality')--}}
-                        {{--                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>--}}
-                        {{--                            @enderror--}}
-                        {{--                        </div>--}}
                 </div>
                 <div class="flex items-center justify-end gap-x-6 px-4 py-4 sm:px-8">
                     <button wire:click="cancelProfilePicture" type="button" class="text-sm font-semibold leading-6 text-gray-900">Annuler</button>

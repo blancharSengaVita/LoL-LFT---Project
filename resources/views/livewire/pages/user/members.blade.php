@@ -32,7 +32,7 @@ mount(function (User $user) {
     </x-slot>
     <section>
         <h2 class="sr-only">
-            Profile
+            Membres
         </h2>
         <!--
         This example requires updating your template:
