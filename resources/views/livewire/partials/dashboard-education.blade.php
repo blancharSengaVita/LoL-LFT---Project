@@ -150,11 +150,11 @@ $saveSingleEducation = function () {
     $this->renderChange();
     $this->dispatch('renderOnboarding');
     $this->openSingleEducationModal = false;
-    if($this->id === 0){
+    if ($this->id === 0) {
         Toaster::success('Formation ajouté avec succès');
     }
 
-    if($this->id !== 0){
+    if ($this->id !== 0) {
         Toaster::success('Formation modifiée avec succès');
     }
 };
@@ -195,17 +195,15 @@ on(['render' => function () {
 }]);
 ?>
 
-<article x-data="{
+<div x-data="{
 openAccordion: $wire.entangle('openAccordion'),
 openEducationModal: $wire.entangle('openEducationModal'),
 openSingleEducationModal: $wire.entangle('openSingleEducationModal'),
 deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
-}"
->
-
-    <div x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+}">
+    <article x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Formations'}}</h3>
             <div class="flex">
@@ -224,13 +222,13 @@ displayedOnce:$wire.entangle('displayedOnce'),
         </div>
         <div class=" sm:w-12/12">
             <ul role="list" class="divide-y divide-gray-100">
-{{--                @dd($educationsShow);--}}
+                {{--                @dd($educationsShow);--}}
                 @foreach($educationsShow as $education)
                     <li class="flex gap-x-4 py-5 w-full" wire:key="{{ $education->id }}">
                         <div class="min-w-0">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{$education->diploma}}</p>
                             <p class="truncate text-sm leading-5 text-gray-900"> {{$education->establishment}}
-                                 {{$education->event}}</p>
+                                {{$education->event}}</p>
                             <p class="truncate text-sm leading-5 text-gray-500">{{'Du ' . $education->entry_date . ' au ' . $education->exit_date}}</p>
                         </div>
                         <div class="ml-auto">
@@ -275,14 +273,16 @@ displayedOnce:$wire.entangle('displayedOnce'),
             @if(count($this->educationsHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                            Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                            Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
@@ -292,7 +292,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                 </div>
             @endif
         </div>
-    </div>
+    </article>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openEducationModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--
@@ -505,4 +505,5 @@ displayedOnce:$wire.entangle('displayedOnce'),
             </div>
         </div>
     </div>
-</article>
+</div>
+

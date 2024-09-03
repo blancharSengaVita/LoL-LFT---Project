@@ -196,8 +196,9 @@ on(['renderOnboarding' => function () {
     {{--openSinglePlayerExperienceModal: $wire.entangle('openSinglePlayerExperienceModal'),--}}
     {{--deleteModal: $wire.entangle('deleteModal'),--}}
     }"
+    x-cloak x-show="displayed"
     >
-    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6" x-cloak x-show="displayed">
+    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Complétez votre profile !'}}</h3>
             <div class="flex">
@@ -477,7 +478,7 @@ on(['renderOnboarding' => function () {
                         </dl>
                     </div>
                     <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-x-2">
-                        <a href="{{ route('members') }}" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  sm:w-auto">
+                        <a href="{{ route('members') }}" title="vers la page des membres" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  sm:w-auto">
                             Aller sur l'onglet membre
                         </a>
                         <button @click="openModalMember = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">

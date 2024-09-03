@@ -29,21 +29,21 @@ mount(function (User $user) {
             <div class="flex">
                 <div class="space-x-6 space-y-1 sm:space-y-0 sm:ml-6  ml-4 sm:flex flex-wrap sm:space-x-8">
                     <!-- Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-                    <a wire:navigate href="{{route('user', ['user' => $user->username]) }}" class="{{ Route::is('user') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">Profile</a>
+                    <a wire:navigate href="{{route('user', ['user' => $user->username]) }}" title="vers le profile de {{$user->username}}" class="{{ Route::is('user') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium">Profile</a>
 
                     @if($user->account_type === 'team')
-                        <a wire:navigate href="{{ route('user-members', ['user' => $user->username]) }}" class="{{ Route::is('user-members') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Membres</a>
+                        <a wire:navigate href="{{ route('user-members', ['user' => $user->username]) }}" title="vers les membres de {{$user->username}}" class="{{ Route::is('user-members') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Membres</a>
                     @endif
                     @if($user->account_type !== 'team')
-                        <a wire:navigate href="{{ route('user-match-history', ['user' => $user->username]) }}"
+                        <a wire:navigate href="{{ route('user-match-history', ['user' => $user->username]) }}" title="vers l'historique de matchs de {{$user->username}}"
                            class="{{ Route::is('user-match-history') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}
                            inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Historiques
                             des matchs</a>
-                        <a wire:navigate href="{{ route('user-stats', ['user' => $user->username]) }}" class="{{ Route::is('user-stats') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Stats</a>
+                        <a wire:navigate href="{{ route('user-stats', ['user' => $user->username]) }}" title="vers les stats de {{$user->username}}" class="{{ Route::is('user-stats') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Stats</a>
                     @endif
-                    <a wire:navigate href="{{ route('user-guestbook', ['user' => $user->username]) }}" class="{{ Route::is('user-guestbook') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Livres
+                    <a wire:navigate href="{{ route('user-guestbook', ['user' => $user->username]) }}" title="vers le livres d'or de {{$user->username}}" class="{{ Route::is('user-guestbook') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Livres
                         d'or</a>
-                    <a wire:navigate href="{{ route('user-mates', ['user' => $user->username]) }}" class="{{ Route::is('user-mates') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Amis</a>
+                    <a wire:navigate href="{{ route('user-mates', ['user' => $user->username]) }}" title="vers les amis de {{$user->username}}" class="{{ Route::is('user-mates') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center border-b-2  px-1 pt-1 text-sm font-medium text-gray-500">Amis</a>
                 </div>
             </div>
         </div>

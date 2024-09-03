@@ -81,7 +81,6 @@ mount(function () {
     $this->renderChange();
 
 
-
     $this->openAccordion = false;
     $this->openAwardModal = false;
     $this->openSingleAwardModal = false;
@@ -158,11 +157,11 @@ $saveSingleAward = function () {
     $this->renderChange();
     $this->dispatch('renderOnboarding');
     $this->openSingleAwardModal = false;
-    if($this->id === 0){
+    if ($this->id === 0) {
         Toaster::success('Prix ajouté avec succès');
     }
 
-    if($this->id !== 0){
+    if ($this->id !== 0) {
         Toaster::success('Prix modifiée avec succès');
     }
 };
@@ -203,7 +202,8 @@ on(['render' => function () {
 }]);
 ?>
 
-<article x-data="{
+<div
+    x-data="{
 openAccordion: $wire.entangle('openAccordion'),
 openAwardModal: $wire.entangle('openAwardModal'),
 openSingleAwardModal: $wire.entangle('openSingleAwardModal'),
@@ -211,8 +211,7 @@ deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }">
-
-    <div x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+    <article x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Récompenses'}}</h3>
             <div class="flex">
@@ -281,14 +280,16 @@ displayedOnce:$wire.entangle('displayedOnce'),
             @if(count($this->awardsHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                            Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                            Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
@@ -298,8 +299,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                 </div>
             @endif
         </div>
-    </div>
-
+    </article>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openAwardModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--
@@ -337,10 +337,10 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model="displayedTemp" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="displayedTemp" id="displayed" aria-describedby="displayed-description" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
-                                <label for="offers" class="font-medium text-gray-900">Afficher cette section au
+                                <label for="displayed" class="font-medium text-gray-900">Afficher cette section au
                                     public</label>
                             </div>
                         </div>
@@ -511,4 +511,4 @@ displayedOnce:$wire.entangle('displayedOnce'),
             </div>
         </div>
     </div>
-</article>
+</div>

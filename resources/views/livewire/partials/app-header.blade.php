@@ -114,8 +114,8 @@ $logout = function (Logout $logout) {
                     -->
                     <div x-cloak x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100", Not Active: "" -->
-                        <a href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
-                        <a href="{{route('settings')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>
+                        <a href="{{route('dashboard')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                        <a href="{{route('settings')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>
                         <boutton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</boutton>
                     </div>
                 </div>
@@ -129,12 +129,12 @@ $logout = function (Logout $logout) {
             </h2>
             <div class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
                 <!-- Current: "bg-gray-100 text-gray-900", Default: "hover:bg-gray-50" -->
-                <a href="{{route('dashboard')}}"  class="{{ Route::is('dashboard') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} {{ Route::is('dashboard') ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50' }} rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
-                <a href="{{route('find-teammate')}}" class="{{ Route::is('find-teammate') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Recherche de partenaires</a>
-                <a href="{{route('messages')}}" class="{{ Route::is('messages') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Messages</a>
-                <a href="{{route('notifications')}}" class="{{ Route::is('notifications') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Notifications</a>
-                <a href="{{route('missions')}}" class="{{ Route::is('missions') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Missions</a>
-                <a href="{{route('settings')}}" class="{{ Route::is('settings') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Paramètres</a>
+                <a href="{{route('dashboard')}}"   title="Vers la page dashboard" class="{{ Route::is('dashboard') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} {{ Route::is('dashboard') ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50' }} rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
+                <a href="{{route('find-teammate')}}" title="Vers la page recherche de partenaires" class="{{ Route::is('find-teammate') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Recherche de partenaires</a>
+                <a href="{{route('messages')}}"  title="Vers la page messages" class="{{ Route::is('messages') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Messages</a>
+                <a href="{{route('notifications')}}"  title="Vers la page notification" class="{{ Route::is('notifications') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Notifications</a>
+                <a href="{{route('missions')}}"  title="Vers la page missions" class="{{ Route::is('missions') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Missions</a>
+                <a href="{{route('settings')}}"  title="Vers la page paramêtres" class="{{ Route::is('settings') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Paramètres</a>
 
 {{--                <a href="{{route('dashboard')}}" aria-current="page" class=" bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>--}}
 {{--                <a href="#" class="block rounded-md py-2 px-3 text-base font-medium">Calendar</a>--}}

@@ -27,7 +27,7 @@ mount(function () {
 
 <main class="lg:pl-72">
     <x-slot name="h1">
-        {{ $user->game_name }}
+        {{ 'Mon dashboard' }}
     </x-slot>
     <section>
         <h2 class="sr-only">
