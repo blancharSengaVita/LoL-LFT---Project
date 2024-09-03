@@ -147,7 +147,7 @@ $acceptNotificationTeam = function (Notification $notification){
     </x-slot>
     <section class="h-full">
         <h2 class="sr-only">
-            Recherche de partenaire
+            Notification
         </h2>
         <!--
         This example requires updating your template:
@@ -167,7 +167,8 @@ $acceptNotificationTeam = function (Notification $notification){
 
               Open: "fixed inset-0 z-40 overflow-y-auto", Closed: ""
             -->
-            <livewire:partials.dashboard-header/>
+            <livewire:partials.app-header :title="'Notifications'"/>
+{{--            <livewire:partials.dashboard-header/>--}}
             <div class="">
                 @if(!count($notifications))
                     <p class="bg-white border-t border-b p-4">Aucune notification</p>

@@ -34,7 +34,7 @@ mount(function (User $user) {
     <h2 class="sr-only"> Informations Complémentaires </h2>
     <!--  Secondary column (hidden on smaller screens) -->
     <div class="rounded-md font-medium px-3 pt-3 flex grow flex-col gap-y-5 overflow-y-auto border border-gray-200 bg-white">
-        <span> Pages recommandés </span>
+        <span> Recommandation aléatoire </span>
         <ul role="list" class="divide-y divide-gray-100">
             @foreach($users as $user)
                 <li class="flex items-center justify-between gap-x-6 py-5">

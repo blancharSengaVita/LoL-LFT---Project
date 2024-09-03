@@ -140,7 +140,7 @@ $listenForMessage = function ($data) {
         {{ 'salut' }}
     </x-slot>
     <!-- This is an example component -->
-    <div class="container mx-auto shadow-lg rounded-lg min-h-screen flex flex-col">
+    <div class="mx-auto shadow-lg rounded-lg min-h-screen flex flex-col">
         <livewire:partials.app-header :title="'Messages'"/>
         <!-- end header -->
         <!-- Chatting -->

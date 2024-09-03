@@ -97,7 +97,7 @@ $newConversation = function ($userId) {
         {{ 'salut' }}
     </x-slot>
     <!-- This is an example component -->
-    <div class="container mx-auto shadow-lg rounded-lg min-h-screen max-h-min flex flex-col">
+    <div class="mx-auto shadow-lg rounded-lg min-h-screen max-h-min flex flex-col">
         <livewire:partials.app-header :title="'Messages'"/>
         <!-- end header -->
         <!-- Chatting -->
@@ -165,7 +165,7 @@ $newConversation = function ($userId) {
                                             :class="isHovered ? 'text-white bg-indigo-600' : 'text-gray-900'"
                                             class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabindex="-1"
                                         >
-                                            <a class="flex items-center"
+                                            <button type="button" title='Creér une conversation avec {{ $player->game_name }}' class="flex items-center"
 {{--                                               href="{{route('user', ['user' => $player->username])}}" title="Discuter avec {{$player->game_name}}"--}}
                                                 wire:click="newConversation({{$player->id}})"
                                             >
@@ -173,7 +173,7 @@ $newConversation = function ($userId) {
                                                 <!-- Selected: "font-semibold" -->
                                                 <span class="ml-3 truncate">{{ $player->game_name }}</span>
                                                 <span :class="isHovered ? 'text-indigo-200' : 'text-gray-500'" class="ml-2 truncate text-gray-500">{{ $player->username }}</span>
-                                            </a>
+                                            </button>
 
                                             <!--
                                               Checkmark, only display for selected option.

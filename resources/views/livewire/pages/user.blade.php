@@ -24,11 +24,11 @@ mount(function (User $user) {
 
 <main class="lg:pl-72">
     <x-slot name="h1">
-        {{ $user->game_name . 'salut'}}
+        {{  $user->game_name }}
     </x-slot>
     <section>
         <h2 class="sr-only">
-            {{ $user->game_name }}
+            {{ 'Profil' }}
         </h2>
         <div class="xl:pr-96">
             <livewire:partials.dashboard-header/>

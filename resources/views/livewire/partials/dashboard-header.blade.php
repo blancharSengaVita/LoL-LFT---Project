@@ -187,9 +187,9 @@ $logout = function (Logout $logout) {
                     -->
                     <div x-cloak x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100", Not Active: "" -->
-                        <a wire:navigate href="{{route('dashboard')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
-                        <a wire:navigate href="{{route('settings')}}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1 cursor-pointer">Paramètres</a>
-                        <a wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Se déconnecter</a>
+                        <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard"  class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                        <a wire:navigate href="{{route('settings')}}" title="vers la page settings" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1 cursor-pointer">Paramètres</a>
+                        <bouton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Se déconnecter</bouton>
                     </div>
                 </div>
             </div>
@@ -202,13 +202,13 @@ $logout = function (Logout $logout) {
             </h2>
             <div class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
                 <!-- Current: "bg-gray-100 text-gray-900", Default: "hover:bg-gray-50" -->
-                <a wire:navigate href="{{route('dashboard')}}"  class="{{ Route::is('dashboard') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
+                <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard" class="{{ Route::is('dashboard') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
 
-                <a wire:navigate href="{{route('find-teammate')}}" class="{{ Route::is('find-teammate') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Recherche de partenaires</a>
-                <a wire:navigate href="{{route('messages')}}" class="{{ Route::is('messages') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Messages</a>
-                <a wire:navigate href="{{route('notifications')}}" class="{{ Route::is('notifications') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Notifications</a>
-                <a wire:navigate href="{{route('missions')}}" class="{{ Route::is('missions') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Missions</a>
-                <a wire:navigate href="{{route('settings')}}" class="{{ Route::is('settings') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Paramètres</a>
+                <a wire:navigate href="{{route('find-teammate')}}" title="vers la page recherche de partenaires" class="{{ Route::is('find-teammate') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Recherche de partenaires</a>
+                <a wire:navigate href="{{route('messages')}}" title="vers la page messages" class="{{ Route::is('messages') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Messages</a>
+                <a wire:navigate href="{{route('notifications')}}" title="vers la page notifcation" class="{{ Route::is('notifications') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Notifications</a>
+                <a wire:navigate href="{{route('missions')}}" title="vers la page missions" class="{{ Route::is('missions') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Missions</a>
+                <a wire:navigate href="{{route('settings')}}" title="vers la page de settings" class="{{ Route::is('settings') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Paramètres</a>
 
 {{--                <a wire:navigate href="{{route('dashboard')}}" aria-current="page" class=" bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>--}}
 {{--                <a wire:navigate href="#" class="block rounded-md py-2 px-3 text-base font-medium">Calendar</a>--}}
@@ -226,8 +226,8 @@ $logout = function (Logout $logout) {
                     </div>
                 </div>
                 <div class="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">
-                    <a wire:navigate href="{{route('dashboard')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Profil</a>
-                    <a wire:navigate href="{{route('settings')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Paramètres</a>
+                    <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Profil</a>
+                    <a wire:navigate href="{{route('settings')}}"  title="vers la page settings" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Paramètres</a>
                     <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">Se déconnecter</button>
                 </div>
             </div>

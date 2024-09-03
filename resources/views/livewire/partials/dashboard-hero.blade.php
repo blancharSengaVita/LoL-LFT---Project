@@ -288,14 +288,14 @@ $saveMyLftPost = function () {
                                 To: "transform opacity-0 scale-95"
                             -->
                             <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
-                                <div class="py-1" role="none">
-                                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Ajouter un CV sur le profil</a>
-                                    {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
-                                    {{--                                        CV</a>--}}
-                                    {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande--}}
-                                    {{--                                        d'ami</a>--}}
-                                </div>
+{{--                                <div class="py-1" role="none">--}}
+{{--                                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->--}}
+{{--                                    <button type="button" href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Ajouter un CV sur le profil</button>--}}
+{{--                                    --}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
+{{--                                    --}}{{--                                        CV</a>--}}
+{{--                                    --}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande--}}
+{{--                                    --}}{{--                                        d'ami</a>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                     </div>

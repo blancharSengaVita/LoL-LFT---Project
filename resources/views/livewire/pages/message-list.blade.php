@@ -84,7 +84,7 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
 <ul class="flex flex-col">
     @foreach($conversations as $conversation)
         <li>
-            <a wire:navigate class="flex flex-row py-3 px-2 items-center h-full
+            <a type="button" title="Envoyer des messages à {{$conversation->game_name}}"  wire:navigate class="flex flex-row py-3 px-2 items-center h-full
             {{ $currentConversation->id === $conversation->id ? 'border-l-4 bg border-l-indigo-600 border-b bg-gray-50' : 'border-b hover:bg-white' }}"
 
                href="{{ route('conversation', ['conversation' => $conversation->id]) }}">

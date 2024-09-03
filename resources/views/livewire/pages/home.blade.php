@@ -45,7 +45,7 @@ layout('layouts.guest');
                             </p>
                         </div>
                     </div>
-                    <img src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png" alt="Product screenshot" class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0" width="2432" height="1442">
+                    <img src="{{ Vite::asset('resources/images/lookingForTeammate.png') }}" alt="Product screenshot" class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0" width="2432" height="1442">
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@ layout('layouts.guest');
                         </div>
                     </div>
                     <div class="flex items-start justify-end lg:order-first">
-                        <img src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png" alt="Product screenshot" class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]" width="2432" height="1442">
+                        <img src="{{ Vite::asset('resources/images/dashboard.png') }}" alt="Product screenshot" class="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]" width="2432" height="1442">
                     </div>
                 </div>
             </div>
@@ -105,11 +105,11 @@ layout('layouts.guest');
                             voyage vers le succès !
                         </p>
                         <div class="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-                            <a href="{{ route('register')  }}" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">S'inscrire</a>
+                            <a href="{{ route('register')  }}" title="Aller vers la page d'inscription" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">S'inscrire</a>
                         </div>
                     </div>
                     <div class="relative mt-16 h-80 lg:mt-8">
-                        <img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png" alt="App screenshot" width="1824" height="1080">
+                        <img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10" src="{{ Vite::asset('resources/images/message.png') }}" alt="App screenshot" width="1824" height="1080">
                     </div>
                 </div>
             </div>
