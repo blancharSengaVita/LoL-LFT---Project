@@ -25,7 +25,14 @@ state([
 ]);
 
 mount(function (Conversation $conversation) {
+
 	$this->conversation = $conversation;
+
+
+    if ($conversation->user_one_id !== Auth::id() && $conversation->user_two_id !== Auth::id()) {
+        $this->redirect(route('messages', absolute: false), navigate: true);
+    }
+
 
 	if ($conversation->user_one_id === Auth::id()) {
 		$this->user_two = User::find($conversation->user_two_id);

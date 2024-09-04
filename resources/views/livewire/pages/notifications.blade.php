@@ -78,9 +78,8 @@ $acceptNotification = function (Notification $notification){
 		$this->conversation = Conversation::create([
 			'user_one_id' => Auth::id(),
 			'user_two_id' => $this->user->id,
-		])->get();
+		]);
 	}
-
 
 	$user = User::find($notification->from);
 	$this->message = 'Demande LFT accepté !';
@@ -88,6 +87,8 @@ $acceptNotification = function (Notification $notification){
     $this->message = '';
 	$notification->delete();
     $this->renderChange();
+    Toaster::success('Demande accepté');
+    $this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
 };
 
 $acceptNotificationTeam = function (Notification $notification){
@@ -104,7 +105,7 @@ $acceptNotificationTeam = function (Notification $notification){
         $this->conversation = Conversation::create([
             'user_one_id' => Auth::id(),
             'user_two_id' => $this->user->id,
-        ])->get();
+        ]);
     }
 
     TeamMember::updateOrCreate([
@@ -138,6 +139,7 @@ $acceptNotificationTeam = function (Notification $notification){
     $this->message = '';
     $notification->delete();
 	$this->renderChange();
+    $this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
 };
 ?>
 
@@ -179,10 +181,10 @@ $acceptNotificationTeam = function (Notification $notification){
                             <div class="p-4">
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0 pt-0.5">
-                                        <img class="h-10 w-10 rounded-full" src="{{$notification->receiver->src}}" alt="">
+                                        <a  href="{{route('user', ['user' => $notification->receiver->username])}}" title="vers la page de {{$notification->receiver->game_name}}" class="text-sm font-medium text-gray-900 hover:underline"><img class="h-10 w-10 rounded-full" src="{{$notification->receiver->src}}" alt="photo de profile de {{$notification->receiver->game_name}}"></a>
                                     </div>
                                     <div class="ml-3 w-0 flex-1">
-                                        <p class="text-sm font-medium text-gray-900">{{$notification->receiver->game_name}}</p>
+                                        <a  href="{{route('user', ['user' => $notification->receiver->username])}}" title="vers la page de {{$notification->receiver->game_name}}" class="text-sm font-medium text-gray-900 hover:underline">{{$notification->receiver->game_name}}</a>
                                         <p class="mt-1 text-sm text-gray-500">{{$notification->description}}</p>
                                         <div class="mt-4 flex">
                                             @if($notification->receiver->account_type === 'team')

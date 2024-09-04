@@ -12,38 +12,38 @@ use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-	state,
-	mount,
-	computed,
-	rules,
+    state,
+    mount,
+    computed,
+    rules,
 };
 
 layout('layouts.dashboard');
 
 
 state([
-	'mobileMenu',
-	'lftModal',
-	'user',
-	'displayed_informations',
-	'conversation',
-	'jobs',
-	'job' => '',
-	'myJob',
-	'goals',
-	'goal' => '',
-	'myGoal',
-	'ambiances',
-	'ambiance' => '',
-	'myAmbiance',
-	'levels',
-	'level' => '',
-	'myLevel',
-	'description',
-	'published',
-	'publishedTemp',
-	'myLftPost',
-	'id',
+    'mobileMenu',
+    'lftModal',
+    'user',
+    'displayed_informations',
+    'conversation',
+    'jobs',
+    'job' => '',
+    'myJob',
+    'goals',
+    'goal' => '',
+    'myGoal',
+    'ambiances',
+    'ambiance' => '',
+    'myAmbiance',
+    'levels',
+    'level' => '',
+    'myLevel',
+    'description',
+    'published',
+    'publishedTemp',
+    'myLftPost',
+    'id',
 ]);
 
 //rules([
@@ -64,85 +64,92 @@ state([
 
 
 mount(function () {
-	$this->mobileMenu = false;
-	$this->lftModal = false;
-	$this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
-	$this->goals = require __DIR__ . '/../../../../app/enum/lookingFors.php';
-	$this->ambiances = require __DIR__ . '/../../../../app/enum/ambiances.php';
-	$this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
-	$this->user = Auth::user();
+    $this->mobileMenu = false;
+    $this->lftModal = false;
+    $this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
+    $this->goals = require __DIR__ . '/../../../../app/enum/lookingFors.php';
+    $this->ambiances = require __DIR__ . '/../../../../app/enum/ambiances.php';
+    $this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
+    $this->user = Auth::user();
 
-	$this->myLftPost = $this->user->lftPost()->first();
+    $this->myLftPost = $this->user->lftPost()->first();
 //    dd($this->myLftPost);
 
-	$this->id = $this->myLftPost->id ?? 0;
-	$this->myJob = $this->myLftPost->job ?? '';
-	$this->myAmbiance = $this->myLftPost->ambiance ?? '';
-	$this->myGoal = $this->myLftPost->goal ?? '';
-	$this->description = $this->myLftPost->description ?? '';
-	$this->published = $this->myLftPost->published ?? '';
+    $this->id = $this->myLftPost->id ?? 0;
+    $this->myJob = $this->myLftPost->job ?? '';
+    $this->myAmbiance = $this->myLftPost->ambiance ?? '';
+    $this->myGoal = $this->myLftPost->goal ?? '';
+    $this->description = $this->myLftPost->description ?? '';
+    $this->published = $this->myLftPost->published ?? 0;
 //    $this->publishedTemp = ;
 
-	if ($this->published === 1) {
-		$this->publishedTemp = true;
-	} else {
-		$this->publishedTemp = false;
-	}
+    if ($this->published === 1) {
+        $this->publishedTemp = true;
+    } else {
+        $this->publishedTemp = false;
+    }
 
 });
 
 
 $lftPosts = computed(function () {
 //	$posts = \App\Models\LftPost::where('job', 'like', '%' . $this->job . '%');
-	$posts = \App\Models\LftPost::whereHas('user', function ($query) {
-		if ($this->job === 'Undefined') {
-			$query->where('account_type', 'player');
-		} else {
-			$query->where('job', 'like', '%' . $this->job . '%');
-		}
-		$query->where('level', 'like', '%' . $this->level . '%');
-	})->where('goal', 'like', '%' . $this->goal . '%')
-		->where('ambiance', 'like', '%' . $this->ambiance . '%')
-		->where('published', true)
-		->get();
+    $posts = \App\Models\LftPost::whereHas('user', function ($query) {
+        if ($this->job === 'Undefined') {
+            $query->where('account_type', 'player');
+        } else {
+            $query->where('job', 'like', '%' . $this->job . '%');
+        }
+        $query->where('level', 'like', '%' . $this->level . '%');
+    })->where('goal', 'like', '%' . $this->goal . '%')
+        ->where('ambiance', 'like', '%' . $this->ambiance . '%')
+        ->where('published', true)
+        ->get();
 
-	foreach ($posts as $post) {
-		$post['user'] = User::find($post->user_id);
-		if ($post->user->profil_picture) {
-			$post->user['src'] = '/storage/images/1024/' . $post->user->profil_picture;
-		} else {
-			$post->user['src'] = 'https://ui-avatars.com/api/?length=1&name=' . $post->user->game_name;
-		}
-	}
-	return $posts;
+    foreach ($posts as $post) {
+        $post['user'] = User::find($post->user_id);
+        if ($post->user->profil_picture) {
+            $post->user['src'] = '/storage/images/1024/' . $post->user->profil_picture;
+        } else {
+            $post->user['src'] = 'https://ui-avatars.com/api/?length=1&name=' . $post->user->game_name;
+        }
+
+        $post->job = $post->job ?: 'Peu importe' ;
+        $post->goal = $post->goal ?: 'Peu importe' ;
+        $post->ambiance = $post->ambiance ?: 'Peu importe' ;
+//        $post->job = $post->job ?: 'Peu importe' ;
+//        dd($post->level);
+    }
+
+    return $posts;
 });
 
 $openMobileMenu = function () {
-	$this->mobileMenu = !$this->mobileMenu;
+    $this->mobileMenu = !$this->mobileMenu;
 };
 
 $openLFTModal = function () {
-	$this->publishedTemp = $this->published;
+    $this->publishedTemp = $this->myLftPost->published ?? 0;
 
-	if ($this->publishedTemp === 1) {
-		$this->publishedTemp = true;
-	} else {
-		$this->publishedTemp = false;
-	}
-	$this->lftModal = true;
+    if ($this->publishedTemp === 1) {
+        $this->publishedTemp = true;
+    } else {
+        $this->publishedTemp = false;
+    }
+    $this->lftModal = true;
 };
 
 $closeLFTModal = function () {
-	$this->published = $this->myLftPost->published ?? '';
+    $this->published = $this->myLftPost->published ?? 0;
 
-	$this->publishedTemp = $this->published;
+    $this->publishedTemp = $this->published;
 
-	if ($this->publishedTemp === 1) {
-		$this->publishedTemp = true;
-	} else {
-		$this->publishedTemp = false;
-	}
-	$this->lftModal = false;
+    if ($this->publishedTemp === 1) {
+        $this->publishedTemp = true;
+    } else {
+        $this->publishedTemp = false;
+    }
+    $this->lftModal = false;
 };
 
 $saveMyLftPost = function () {
@@ -152,59 +159,59 @@ $saveMyLftPost = function () {
 //        throw $e;
 //    }
 
-	$this->published = $this->publishedTemp;
+    $this->published = $this->publishedTemp;
 
-	LftPost::updateOrCreate([
-		'user_id' => Auth::id(),
-		'id' => $this->id
-	],
-		[
-			'job' => $this->myJob,
-			'ambiance' => $this->myAmbiance,
-			'goal' => $this->myGoal,
-			'description' => $this->description,
-			'published' => $this->published,
-		]);
+    LftPost::updateOrCreate([
+        'user_id' => Auth::id(),
+        'id' => $this->id
+    ],
+        [
+            'job' => $this->myJob,
+            'ambiance' => $this->myAmbiance,
+            'goal' => $this->myGoal,
+            'description' => $this->description,
+            'published' => $this->published,
+        ]);
 
-	$this->lftModal = false;
+    $this->lftModal = false;
 
-	if ($this->id === 0) {
-		Toaster::success('Post LFT crée avec succès');
-	}
+    if ($this->id === 0) {
+        Toaster::success('Post LFT crée avec succès');
+    }
 
-	if ($this->id !== 0) {
-		Toaster::success('Post LFT modifiée avec succès');
-	}
+    if ($this->id !== 0) {
+        Toaster::success('Post LFT modifiée avec succès');
+    }
 
 };
 
 $sendLftInvitation = function ($userId) {
-	Notification::firstOrCreate([
-		'to' => $userId,
-		'from' => Auth::id(),
-		'description' => 'veut jouer avec toi.',
-	]);
-	NotificationEvent::dispatch($userId, Auth::id(), 'veut jouer avec toi.');
-	Toaster::success('Demande envoyé');
+    Notification::firstOrCreate([
+        'to' => $userId,
+        'from' => Auth::id(),
+        'description' => 'veut jouer avec toi.',
+    ]);
+    NotificationEvent::dispatch($userId, Auth::id(), 'veut jouer avec toi.');
+    Toaster::success('Demande envoyé');
 };
 
 $newConversation = function ($userId) {
-	$this->conversation = Conversation::where(function ($query) use ($userId) {
-		$query->where('user_one_id', Auth::id())
-			->where('user_two_id', $userId);
-	})->orWhere(function ($query) use ($userId) {
-		$query->where('user_one_id', $userId)
-			->where('user_two_id', Auth::id());
-	})->first();
+    $this->conversation = Conversation::where(function ($query) use ($userId) {
+        $query->where('user_one_id', Auth::id())
+            ->where('user_two_id', $userId);
+    })->orWhere(function ($query) use ($userId) {
+        $query->where('user_one_id', $userId)
+            ->where('user_two_id', Auth::id());
+    })->first();
 
-	if (!$this->conversation) {
-		$this->conversation = Conversation::create([
-			'user_one_id' => Auth::id(),
-			'user_two_id' => $userId,
-		])->get();
-	}
+    if (!$this->conversation) {
+        $this->conversation = Conversation::create([
+            'user_one_id' => Auth::id(),
+            'user_two_id' => $userId,
+        ])->get();
+    }
 
-	$this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
+    $this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
 };
 ?>
 
@@ -470,60 +477,66 @@ $newConversation = function ($userId) {
             </div>
 
             <article>
-                <div class="border-y border-gray-200 bg-white py-4 px-4 sm:px-6">
+                <div class="border-y border-gray-200 bg-white ">
                     {{--                    <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">--}}
                     {{--                        <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Expérience'}}</h3>--}}
 
                     {{--                    </div>--}}
-                    <div class=" sm:w-12/12">
+                    <div class=" sm:w-12/12 divide-y divide-gray-100">
                         @if(!count($this->lftPosts))
-                            <p> Aucun resultat
+                            <p class="px-4 py-4"> Aucun resultat
                             </p>
                         @endif
                         <ul role="list" class="divide-y divide-gray-100">
                             @foreach($this->lftPosts as $post)
-                                <li class="flex gap-x-4 w-full" wire:key="{{ $post->id }}">
-                                    {{--                                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
-                                    <a class=" h-12 w-12 flex-none rounded-full" href="{{route('user', ['user' => $post->user->username])}}" title="aller vers la page de {{$post->user->game_name}}">
-                                        <img class="h-12 w-12 flex-none rounded-full bg-gray-50" src="{{$post->user->src}}" alt="photo de profile de {{$post->user->game_name}}">
-                                    </a>
-                                    <div class="w-full">
-                                        <a class="hover:underline" href="{{route('user', ['user' => $post->user->username])}}" title="aller vers la page de {{$post->user->game_name}}">
-                                            <span class="text-base font-medium leading-6 text-gray-900  ">{{$post->user->game_name}} </span>
+                                <div class="">
+                                    <li class="flex gap-x-4 w-full py-4 px-4" wire:key="{{ $post->id }}">
+                                        {{--                                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
+                                        <a class=" h-12 w-12 flex-none rounded-full" href="{{route('user', ['user' => $post->user->username])}}" title="aller vers la page de {{$post->user->game_name}}">
+                                            <img class="h-12 w-12 flex-none rounded-full bg-gray-50" src="{{$post->user->src}}" alt="photo de profile de {{$post->user->game_name}}">
                                         </a>
+                                        {{--                                        {{$post}}--}}
+                                        <div class="w-full">
+                                            <a class="hover:underline" href="{{route('user', ['user' => $post->user->username])}}" title="aller vers la page de {{$post->user->game_name}}">
+                                                <span class="text-base font-medium leading-6 text-gray-900  ">{{$post->user->game_name}} </span>
+                                            </a>
 
-                                        <p class="truncate font-sans text-sm leading-5 text-gray-900 lg:mb-4 mb-4">{{$post->user->job}}
-                                            · {{$post->user->level}}</p>
-                                        <dl class="divide-y divide-gray-100">
-                                            <div class="  pb-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                                <dt class="text-sm font-medium leading-6 text-gray-900">Recherche
-                                                    un/une
-                                                </dt>
-                                                <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $post->job }}</dd>
+                                            <p class="truncate font-sans text-sm leading-5 text-gray-900 lg:mb-4 mb-4">{{$post->user->job}}
+                                                · {{$post->user->level}}</p>
+                                            <dl class="divide-y divide-gray-100">
+                                                <div class="  pb-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                                    <dt class="text-sm font-medium leading-6 text-gray-900">Recherche
+                                                        un/une
+                                                    </dt>
+                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $post->job}}</dd>
+                                                </div>
+                                                <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                                    <dt class="text-sm font-medium leading-6 text-gray-900">Pour</dt>
+                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->goal}}</dd>
+                                                </div>
+                                                <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                                    <dt class="text-sm font-medium leading-6 text-gray-900">Ambiance
+                                                    </dt>
+                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->ambiance}}</dd>
+                                                </div>
+                                                <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                                                    <dt class="text-sm font-medium leading-6 text-gray-900">
+                                                        Description
+                                                    </dt>
+                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->description}}</dd>
+                                                </div>
+                                            </dl>
+                                            <div class="my-2 flex justify-end gap-x-2">
+                                                <button wire:click="sendLftInvitation({{$post->user->id}})" type="button" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                                    Demande LFT
+                                                </button>
+                                                <button wire:click="newConversation({{$post->user->id}})" type="button" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                                    Message
+                                                </button>
                                             </div>
-                                            <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                                <dt class="text-sm font-medium leading-6 text-gray-900">Pour</dt>
-                                                <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->goal}}</dd>
-                                            </div>
-                                            <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                                <dt class="text-sm font-medium leading-6 text-gray-900">Ambiance</dt>
-                                                <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->ambiance}}</dd>
-                                            </div>
-                                            <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                                <dt class="text-sm font-medium leading-6 text-gray-900">Description</dt>
-                                                <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->description}}</dd>
-                                            </div>
-                                        </dl>
-                                        <div class="my-2 flex justify-end gap-x-2">
-                                            <button wire:click="sendLftInvitation({{$post->user->id}})" type="button" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                                Demande LFT
-                                            </button>
-                                            <button wire:click="newConversation({{$post->user->id}})" type="button" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                                Message
-                                            </button>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                </div>
                             @endforeach
                         </ul>
                     </div>
@@ -637,7 +650,8 @@ $newConversation = function ($userId) {
                                                 <input wire:model="publishedTemp" id="displayed" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
                                             </div>
                                             <div class="ml-3 text-sm leading-6">
-                                                <label for="displayed" class="font-medium text-gray-900">Publier mon post</label>
+                                                <label for="displayed" class="font-medium text-gray-900">Publier mon
+                                                    post</label>
                                             </div>
                                         </div>
                                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
