@@ -476,7 +476,7 @@ class PlayerSeeder extends Seeder
             [
                 'user_id' => $blanchar->id,
                 'description' => 'salut',
-                'job' => 'Undefined', //job
+                'job' => '', //job
                 'goal' => 'Ranked', //looking_for
                 'ambiance' => 'Fun', //ambiance
                 'published' => true,

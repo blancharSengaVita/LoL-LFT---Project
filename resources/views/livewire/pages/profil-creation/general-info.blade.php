@@ -46,18 +46,13 @@ mount(function () {
         $this->gameNameInput = 'Nom d\'utilisateur';
         $this->gameNameDescription = 'Celui-ci sera Le nom de votre compte';
     }
-
-    if ($this->type !== 'team') {
-        rules(fn() => [
-            'nationality' => 'required',
-            'birthday' => 'required|date',
-        ]);
-    }
 });
 
 rules([
     'game_name' => 'required|string|max:20',
     'username' => ['required', 'string', Rule::unique('users')->ignore(Auth::user()->id), new StartsWithAt, 'max:20'],
+    'nationality' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
+    'birthday' => Auth::user()->account_type !== 'team' ? 'required' : 'required|date',
 ])->messages([
     'nationality.required' => 'Votre nationalité est requis',
     'game_name.required' => 'Votre pseudo est requis',
@@ -73,6 +68,9 @@ $save = function () {
     $user = Auth::user();
     $user->game_name = $this->game_name;
     $user->username = $this->username;
+    $user->birthday = $this->birthday;
+    $user->nationality = $this->nationality;
+
 
     UserMission::create([
         'user_id' => $user->id,

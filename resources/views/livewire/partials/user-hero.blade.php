@@ -38,6 +38,7 @@ mount(function (User $user) {
 	}
 });
 
+
 $newConversation = function () {
     $userId = $this->user->id;
     $this->conversation = Conversation::where(function ($query) use ($userId) {
@@ -48,11 +49,13 @@ $newConversation = function () {
             ->where('user_two_id', Auth::id());
     })->first();
 
+//    dd($this->conversation);
+
 	if(!$this->conversation){
         $this->conversation = Conversation::create([
             'user_one_id' => Auth::id(),
             'user_two_id' => $this->user->id,
-        ])->get();
+        ]);
     }
 
 	$this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
