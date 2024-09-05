@@ -208,7 +208,7 @@ $newConversation = function ($userId) {
         $this->conversation = Conversation::create([
             'user_one_id' => Auth::id(),
             'user_two_id' => $userId,
-        ])->get();
+        ]);
     }
 
     $this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);

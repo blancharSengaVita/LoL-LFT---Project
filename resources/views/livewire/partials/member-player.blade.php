@@ -153,7 +153,7 @@ $editSingleModel = function (TeamMember $model) {
 	$this->openSingleModal = true;
 	$this->username = $model->username;
 	$this->job = $model->job;
-	$this->nationality = $model->nationality;
+	$this->nationality = ucfirst($model->nationality);
 	$this->entry_date = $model->entry_date;
     if ($model->archived === 1) {
         $model->archived = true;
@@ -249,7 +249,7 @@ deleteModal: $wire.entangle('deleteModal'),
                             <tr class="flex" >
                                 <td class="truncate flex-1 whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $player->username }}</td>
                                 <td class="flex-1 whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{  __('jobs.'.$player->job)  }}</td>
-                                <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ __('nationalities.'.$player->nationality) }}</td>
+                                <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ __('nationalities.'.ucfirst($player->nationality)) }}</td>
                                 <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 md:table-cell">{{ $player->entry_date }}</td>
                                 <td class="flex-1 relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                     <div class="ml-auto">
@@ -430,7 +430,7 @@ deleteModal: $wire.entangle('deleteModal'),
 
                                 <div class="mt-4">
                                     <label for="entry_date" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Date
+                                        Date d'entrée
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="entry_date" type="date" name="entry_date" id="entry_date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="1">

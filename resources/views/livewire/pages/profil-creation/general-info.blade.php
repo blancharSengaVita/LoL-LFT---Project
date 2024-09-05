@@ -52,7 +52,7 @@ rules([
     'game_name' => 'required|string|max:20',
     'username' => ['required', 'string', Rule::unique('users')->ignore(Auth::user()->id), new StartsWithAt, 'max:20'],
     'nationality' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
-    'birthday' => Auth::user()->account_type !== 'team' ? 'required' : 'required|date',
+    'birthday' => Auth::user()->account_type !== 'team' ? 'required|date' : 'nullable',
 ])->messages([
     'nationality.required' => 'Votre nationalité est requis',
     'game_name.required' => 'Votre pseudo est requis',
@@ -68,8 +68,12 @@ $save = function () {
     $user = Auth::user();
     $user->game_name = $this->game_name;
     $user->username = $this->username;
-    $user->birthday = $this->birthday;
-    $user->nationality = $this->nationality;
+	if (Auth::user()->account_type !== 'team'){
+        $user->birthday = $this->birthday;
+        $user->nationality = $this->nationality;
+    } else {
+        $user->birthday = \Carbon\Carbon::now()->locale('fr_FR')->format('Y-m-d');
+    }
 
 
     UserMission::create([

@@ -199,7 +199,7 @@ $save = function () {
                                 <div class="mt-2 justify-center flex text-sm leading-6 text-gray-600">
                                     <label for="profilePicture" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                         <span>{{ $profilPictureLabel }}</span>
-                                        <input wire:model.live="profilPicture" id="profilePicture" name="profilePicture" type="file" class="sr-only">
+                                        <input wire:model.live="profilPicture" id="profilePicture" name="profilePicture" accept="image/png, image/jpeg" type="file" class="sr-only">
                                     </label>
                                 </div>
                                 <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF en-dessous de 10MB</p>
@@ -276,11 +276,11 @@ $save = function () {
 
                 </div>
 
-                <div class="justify-center flex">
-                    <button type="submit" class="flex justify-center rounded-md bg-rose-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Ajouter un compte riot
-                    </button>
-                </div>
+{{--                <div class="justify-center flex">--}}
+{{--                    <button type="submit" class="flex justify-center rounded-md bg-rose-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">--}}
+{{--                        Ajouter un compte riot--}}
+{{--                    </button>--}}
+{{--                </div>--}}
 
                 <div class="justify-center flex">
                     <button type="submit" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

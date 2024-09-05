@@ -475,10 +475,54 @@ class PlayerSeeder extends Seeder
         LftPost::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
-                'description' => 'salut',
+                'description' => 'Cherche un duo avec qui s\'amuser peu importe le mode de jeux',
                 'job' => '', //job
-                'goal' => 'Ranked', //looking_for
+                'goal' => '', //looking_for
                 'ambiance' => 'Fun', //ambiance
+                'published' => true,
+            ],
+        ]);
+
+        LftPost::factory()->createMany([
+            [
+                'user_id' => $UwU->id,
+                'description' => 'Cherche des gens avec qui on pourrait souvent clash',
+                'job' => '', //job
+                'goal' => 'Clash', //looking_for
+                'ambiance' => 'Try-hard', //ambiance
+                'published' => true,
+            ],
+        ]);
+
+        LftPost::factory()->createMany([
+            [
+                'user_id' => $doki->id,
+                'description' => 'Je suis une personne calme qui aime beaucoup jouer Neeko et Gwen, je cherche un coach qui pourrait m\'aider à ameliorer mon niveau de jeu',
+                'job' => 'Performance coach', //job
+                'goal' => 'Ranked', //looking_for
+                'ambiance' => '', //ambiance
+                'published' => true,
+            ],
+        ]);
+
+        LftPost::factory()->createMany([
+            [
+                'user_id' => $striker->id,
+                'description' => 'Recherche une équipe pour gagner les championnat du monde',
+                'job' => 'team', //job
+                'goal' => 'Major Ligue', //looking_for
+                'ambiance' => 'Try-hard', //ambiance
+                'published' => true,
+            ],
+        ]);
+
+        LftPost::factory()->createMany([
+            [
+                'user_id' => $squirtle->id,
+                'description' => 'Chercher une personne avec qui je pourrais monter haut dans le classement',
+                'job' => 'ADC', //job
+                'goal' => 'Ranked', //looking_for
+                'ambiance' => 'Serious', //ambiance
                 'published' => true,
             ],
         ]);

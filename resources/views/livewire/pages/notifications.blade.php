@@ -75,7 +75,7 @@ $acceptNotification = function (Notification $notification){
     })->first();
 
     if(!$this->conversation) {
-		$this->conversation = Conversation::create([
+		$this->conversation = Conversation::createOrFirst([
 			'user_one_id' => Auth::id(),
 			'user_two_id' => $this->user->id,
 		]);
@@ -102,9 +102,9 @@ $acceptNotificationTeam = function (Notification $notification){
     })->first();
 
     if(!$this->conversation) {
-        $this->conversation = Conversation::create([
+        $this->conversation = Conversation::createOrFirst([
             'user_one_id' => Auth::id(),
-            'user_two_id' => $this->user->id,
+            'user_two_id' => $notification->from,
         ]);
     }
 
@@ -116,7 +116,7 @@ $acceptNotificationTeam = function (Notification $notification){
             'username' => $this->user->username,
             'job' => $this->user->job,
             'nationality' => $this->user->nationality,
-            'entry_date' => $this->user->entry_date,
+            'entry_date' => Carbon::now()->locale('fr_FR')->format('Y-m-d'),
             'type' => $this->user->account_type,
             'archived' => false,
         ]);
