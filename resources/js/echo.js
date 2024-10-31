@@ -14,6 +14,7 @@ window.Echo = new Echo({
     disableStats: true,
     enabledTransports: ['ws', 'wss'],
 });
-console.log(import.meta.env.VITE_PUSHER_HOST);
-console.log(import.meta.env.VITE_PUSHER_HOST);
-console.log(import.meta.env.VITE_PUSHER_HOST);
+// console.log(import.meta.env.VITE_PUSHER_HOST);
+// console.log(import.meta.env.VITE_PUSHER_HOST);
+// console.log(import.meta.env.VITE_PUSHER_HOST);
+
