@@ -96,14 +96,235 @@ class PlayerSeeder extends Seeder
                 'nationality' => 'belgian',
                 'region' => 'EUW',
                 'job' => 'Assistant coach',
-                'bio' => 'Toujours cute, toujours kawainé',
+                'bio' => 'Un coach très impliqué, très serieux',
                 'setup_completed' => true,
-                'level' => 'Ligue majeure',
+                'level' => 'Major league',
             ]);
 
-        $users = [$squirtle, $blanchar, $doki, $striker];
+
+        $g2 = User::factory()
+            ->create([
+                'email' => 'g2@proteam.gg',
+                'game_name' => 'G2 Esports',
+                'username' => '@G2',
+                'account_type' => 'team',
+                'birthday' => '2014-02-24',
+                'nationality' => 'spanish',
+                'region' => 'EUW',
+                'job' => 'Staff',
+                'bio' => 'Dominating the EU since 2014',
+                'setup_completed' => true,
+                'level' => 'Major league',
+            ]);
+
+        $kcorp = User::factory()
+            ->create([
+                'email' => 'kcorp@proteam.gg',
+                'game_name' => 'Karmine Corp',
+                'username' => '@Kcorp',
+                'account_type' => 'team',
+                'birthday' => '2020-03-01',
+                'nationality' => 'french',
+                'region' => 'EUW',
+                'job' => 'Staff',
+                'bio' => 'Blue Wall of EU',
+                'setup_completed' => true,
+                'level' => 'Major league',
+            ]);
+
+        $bds = User::factory()
+            ->create([
+                'email' => 'bds@proteam.gg',
+                'game_name' => 'Team BDS',
+                'username' => '@BDS',
+                'account_type' => 'team',
+                'birthday' => '2019-10-10',
+                'nationality' => 'swiss',
+                'region' => 'EUW',
+                'job' => 'Staff',
+                'bio' => 'Swiss precision on the Rift',
+                'setup_completed' => true,
+                'level' => 'Major league',
+            ]);
+
+        $nuc = User::factory()
+            ->create([
+                'email' => 'nuc@proplayer.gg',
+                'game_name' => 'Nuclearint',
+                'username' => '@Nuc',
+                'account_type' => 'player',
+                'birthday' => '2002-01-15',
+                'nationality' => 'french',
+                'region' => 'EUW',
+                'job' => 'Mid',
+                'bio' => 'Joueur mid laner pour la scène professionnelle, toujours prêt à carry.',
+                'setup_completed' => true,
+                'level' => 'Major league',
+            ]);
+
+        $skeanz = User::factory()
+            ->create([
+                'email' => 'skeanz@proplayer.gg',
+                'game_name' => 'Skeanz',
+                'username' => '@Skeanz',
+                'account_type' => 'player',
+                'birthday' => '1999-08-02',
+                'nationality' => 'french',
+                'region' => 'EUW',
+                'job' => 'Jungle',
+                'bio' => 'Main jungle avec un flair pour les combats intenses et les ganks bien calculés.',
+                'setup_completed' => true,
+                'level' => 'Professional',
+            ]);
+
+        $oneonethree = User::factory()
+            ->create([
+                'email' => '113@proplayer.gg',
+                'game_name' => '113',
+                'username' => '@113',
+                'account_type' => 'player',
+                'birthday' => '2003-02-13',
+                'nationality' => 'turkish',
+                'region' => 'EUW',
+                'job' => 'Jungle',
+                'bio' => 'Jeune talent prometteur, prêt à tout donner sur la faille.',
+                'setup_completed' => true,
+                'level' => 'Major league',
+            ]);
+
+        $jesus = User::factory()
+            ->create([
+                'email' => 'jesus@proplayer.gg',
+                'game_name' => 'Jezu',
+                'username' => '@Jesus',
+                'account_type' => 'player',
+                'birthday' => '2000-11-05',
+                'nationality' => 'french',
+                'region' => 'EUW',
+                'job' => 'ADC',
+                'bio' => 'Spécialiste du rôle de ADC, prêt à découper l\'équipe adverse.',
+                'setup_completed' => true,
+                'level' => 'Professional',
+            ]);
+
+        $canna = User::factory()
+            ->create([
+                'email' => 'canna@proplayer.gg',
+                'game_name' => 'Canna',
+                'username' => '@Canna',
+                'account_type' => 'player',
+                'birthday' => '2000-10-20',
+                'nationality' => 'korean',
+                'region' => 'KR',
+                'job' => 'Top',
+                'bio' => 'Force inébranlable de la toplane, défenseur de la victoire.',
+                'setup_completed' => true,
+                'level' => 'Major league',
+            ]);
+
+        $keria = User::factory()
+            ->create([
+                'email' => 'keria@proplayer.gg',
+                'game_name' => 'Keria',
+                'username' => '@Keria',
+                'account_type' => 'player',
+                'birthday' => '2002-10-14',
+                'nationality' => 'korean',
+                'region' => 'KR',
+                'job' => 'Support',
+                'bio' => 'Support exceptionnel avec une vision de jeu hors pair, prêt à protéger et guider l’équipe.',
+                'setup_completed' => true,
+                'level' => 'Challenger',
+            ]);
 
 
+        $users = [$squirtle, $blanchar, $doki, $striker, $nuc, $canna, $oneonethree, $jesus, $skeanz, $keria];
+        $teams = [$g2, $bds, $kcorp];
+
+        //Displayed things
+        foreach ($users as $user) {
+            DisplayedInformation::factory()->createMany([
+                [
+                    'user_id' => $user->id,
+                ]
+            ]);
+
+            DisplayedInformationsOnce::factory()->createMany([
+                [
+                    'user_id' => $user->id,
+                    'bio' => true,
+                    'player_experiences' => true,
+                    'awards' => true,
+                    'skills' => true,
+                    'languages' => true,
+                ]
+            ]);
+        }
+        foreach ($teams as $team) {
+            DisplayedInformation::factory()->createMany([
+                [
+                    'user_id' => $team->id,
+                ]
+            ]);
+
+            DisplayedInformationsOnce::factory()->createMany([
+                [
+                    'user_id' => $team->id,
+                    'bio' => true,
+                    'player_experiences' => true,
+                    'awards' => true,
+                    'skills' => true,
+                    'languages' => true,
+                ]
+            ]);
+        }
+
+
+        //BLANCHAR
+        Award::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur rookie',
+                'event' => 'LEC',
+                'team' => 'Junkyard',
+                'date' => '2024-06-23',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'MVP du split',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-04-15',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur carry AD',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-05-10',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur joueur des playoffs',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-06-30',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur KDA',
+                'event' => 'LEC',
+                'team' => 'Junkies',
+                'date' => '2024-06-01',
+            ],
+            [
+                'user_id' => $blanchar->id,
+                'title' => 'Meilleur joueur d\'Europe',
+                'event' => 'Worlds',
+                'team' => 'Junkies',
+                'date' => '2024-10-15',
+            ]
+        ]);
         PlayerExperience::factory()->createMany([
             [
                 'user_id' => $blanchar->id,
@@ -154,121 +375,6 @@ class PlayerSeeder extends Seeder
                 'date' => '2024-06-15',
             ],
         ]);
-
-        foreach ($users as $user) {
-            DisplayedInformation::factory()->createMany([
-                [
-                    'user_id' => $user->id,
-                ]
-            ]);
-        }
-
-        DisplayedInformation::factory()->createMany([
-            [
-                'user_id' => $UwU->id,
-            ]
-        ]);
-
-        DisplayedInformationsOnce::factory()->createMany([
-            [
-                'user_id' => $blanchar->id,
-                'bio' => true,
-                'player_experiences' => true,
-                'awards' => true,
-                'skills' => true,
-                'languages' => true,
-            ]
-        ]);
-
-        DisplayedInformationsOnce::factory()->createMany([
-            [
-                'user_id' => $striker->id,
-                'bio' => true,
-                'player_experiences' => true,
-                'awards' => true,
-                'skills' => true,
-                'languages' => true,
-            ]
-        ]);
-
-        DisplayedInformationsOnce::factory()->createMany([
-            [
-                'user_id' => $doki->id,
-                'bio' => true,
-                'player_experiences' => true,
-                'awards' => true,
-                'skills' => true,
-                'languages' => true,
-            ]
-        ]);
-
-        DisplayedInformationsOnce::factory()->createMany([
-            [
-                'user_id' => $UwU->id,
-                'bio' => true,
-                'player_experiences' => true,
-                'awards' => true,
-                'skills' => true,
-                'languages' => true,
-            ]
-        ]);
-
-        DisplayedInformationsOnce::factory()->createMany([
-            [
-                'user_id' => $squirtle->id,
-                'bio' => true,
-                'player_experiences' => true,
-                'awards' => true,
-                'skills' => true,
-                'languages' => true,
-            ]
-        ]);
-
-        Award::factory()->createMany([
-            [
-                'user_id' => $blanchar->id,
-                'title' => 'Meilleur rookie',
-                'event' => 'LEC',
-                'team' => 'Junkyard',
-                'date' => '2024-06-23',
-            ],
-            [
-                'user_id' => $blanchar->id,
-                'title' => 'MVP du split',
-                'event' => 'LEC',
-                'team' => 'Junkies',
-                'date' => '2024-04-15',
-            ],
-            [
-                'user_id' => $blanchar->id,
-                'title' => 'Meilleur carry AD',
-                'event' => 'LEC',
-                'team' => 'Junkies',
-                'date' => '2024-05-10',
-            ],
-            [
-                'user_id' => $blanchar->id,
-                'title' => 'Meilleur joueur des playoffs',
-                'event' => 'LEC',
-                'team' => 'Junkies',
-                'date' => '2024-06-30',
-            ],
-            [
-                'user_id' => $blanchar->id,
-                'title' => 'Meilleur KDA',
-                'event' => 'LEC',
-                'team' => 'Junkies',
-                'date' => '2024-06-01',
-            ],
-            [
-                'user_id' => $blanchar->id,
-                'title' => 'Meilleur joueur d\'Europe',
-                'event' => 'Worlds',
-                'team' => 'Junkies',
-                'date' => '2024-10-15',
-            ]
-        ]);
-
         //TODO: Limiter le nombre de skills à 3 pour les top 3 skills
         Skill::factory()->createMany([
             [
@@ -331,6 +437,7 @@ class PlayerSeeder extends Seeder
             ],
         ]);
 
+        //TOUT LE MONDE
         OnboardingMission::factory()->createMany([
             [
                 'name' => 'addSection',
@@ -430,9 +537,8 @@ class PlayerSeeder extends Seeder
             'archived' => false,
         ]);
 
-        $m1 = OnboardingMission::where('name', 'addSection')->get()->first();
-        $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
 
+        //Doki et Moi Conversation
         Conversation::factory()->create([
             'user_one_id' => $blanchar->id,
             'user_two_id' => $doki->id,
@@ -461,72 +567,23 @@ class PlayerSeeder extends Seeder
             ],
         ]);
 
-        UserMission::factory()->createMany([
-            [
-                'user_id' => $UwU->id,
-                'mission_id' => $m1->id,
-            ],
-            [
-                'user_id' => $UwU->id,
-                'mission_id' => $m2->id,
-            ]
-        ]);
+        //ASSIGNING MISSION
+        $m1 = OnboardingMission::where('name', 'addSection')->get()->first();
+        $m2 = OnboardingMission::where('name', 'addMember')->get()->first();
 
-        LftPost::factory()->createMany([
-            [
-                'user_id' => $blanchar->id,
-                'description' => 'Cherche un duo avec qui s\'amuser peu importe le mode de jeux',
-                'job' => '', //job
-                'goal' => '', //looking_for
-                'ambiance' => 'Fun', //ambiance
-                'published' => true,
-            ],
-        ]);
 
-        LftPost::factory()->createMany([
-            [
-                'user_id' => $UwU->id,
-                'description' => 'Cherche des gens avec qui on pourrait souvent clash',
-                'job' => '', //job
-                'goal' => 'Clash', //looking_for
-                'ambiance' => 'Try-hard', //ambiance
-                'published' => true,
-            ],
-        ]);
-
-        LftPost::factory()->createMany([
-            [
-                'user_id' => $doki->id,
-                'description' => 'Je suis une personne calme qui aime beaucoup jouer Neeko et Gwen, je cherche un coach qui pourrait m\'aider à ameliorer mon niveau de jeu',
-                'job' => 'Performance coach', //job
-                'goal' => 'Ranked', //looking_for
-                'ambiance' => '', //ambiance
-                'published' => true,
-            ],
-        ]);
-
-        LftPost::factory()->createMany([
-            [
-                'user_id' => $striker->id,
-                'description' => 'Recherche une équipe pour gagner les championnat du monde',
-                'job' => 'team', //job
-                'goal' => 'Major Ligue', //looking_for
-                'ambiance' => 'Try-hard', //ambiance
-                'published' => true,
-            ],
-        ]);
-
-        LftPost::factory()->createMany([
-            [
-                'user_id' => $squirtle->id,
-                'description' => 'Chercher une personne avec qui je pourrais monter haut dans le classement',
-                'job' => 'ADC', //job
-                'goal' => 'Ranked', //looking_for
-                'ambiance' => 'Serious', //ambiance
-                'published' => true,
-            ],
-        ]);
-
+        foreach ($teams as $team){
+            UserMission::factory()->createMany([
+                [
+                    'user_id' => $team->id,
+                    'mission_id' => $m1->id,
+                ],
+                [
+                    'user_id' => $team->id,
+                    'mission_id' => $m2->id,
+                ]
+            ]);
+        }
         foreach ($users as $user) {
             UserMission::factory()->createMany([
                 [
@@ -535,5 +592,97 @@ class PlayerSeeder extends Seeder
                 ]
             ]);
         }
+
+        //LFT POST
+        LftPost::factory()->createMany([
+            [
+                'user_id' => $blanchar->id,
+                'description' => 'salut',
+                'job' => 'Undefined', //job
+                'goal' => 'Ranked', //looking_for
+                'ambiance' => 'Fun', //ambiance
+                'published' => true,
+            ],
+        ]);
+
+        //POST LFT
+        LftPost::factory()->createMany([
+            // Équipes
+            [
+                'user_id' => $g2->id,
+                'description' => 'G2 cherche des opportunités en Major League pour conquérir la scène !',
+                'job' => $g2->job,
+                'goal' => 'Major Ligue',
+                'ambiance' => 'Try-hard',
+                'published' => true,
+            ],
+            [
+                'user_id' => $kcorp->id,
+                'description' => 'Kcorp est prêt pour la prochaine Minor League, à fond pour l\'ambiance sérieuse !',
+                'job' => $kcorp->job,
+                'goal' => 'Minor Ligue',
+                'ambiance' => 'Serious',
+                'published' => true,
+            ],
+            [
+                'user_id' => $bds->id,
+                'description' => 'Team BDS est ouvert pour de nouvelles opportunités compétitives en Major League.',
+                'job' => $bds->job,
+                'goal' => 'Major Ligue',
+                'ambiance' => 'Try-hard',
+                'published' => true,
+            ],
+
+            // Joueurs
+            [
+                'user_id' => $nuc->id,
+                'description' => 'Nuclearint cherche une équipe sérieuse en Minor League.',
+                'job' => $nuc->job,
+                'goal' => 'Minor Ligue',
+                'ambiance' => 'Serious',
+                'published' => true,
+            ],
+            [
+                'user_id' => $skeanz->id,
+                'description' => 'Skeanz en recherche d\'une nouvelle aventure en Major League. Prêt à try-hard !',
+                'job' => $skeanz->job,
+                'goal' => 'Major Ligue',
+                'ambiance' => 'Try-hard',
+                'published' => true,
+            ],
+            [
+                'user_id' => $oneonethree->id,
+                'description' => '113 est disponible pour une Minor League avec une ambiance sérieuse.',
+                'job' => $oneonethree->job,
+                'goal' => 'Minor Ligue',
+                'ambiance' => 'Serious',
+                'published' => true,
+            ],
+            [
+                'user_id' => $jesus->id,
+                'description' => 'Jezu est prêt pour une nouvelle aventure compétitive en Major League.',
+                'job' => $jesus->job,
+                'goal' => 'Major Ligue',
+                'ambiance' => 'Try-hard',
+                'published' => true,
+            ],
+            [
+                'user_id' => $canna->id,
+                'description' => 'Canna est disponible pour rejoindre une Minor League avec une ambiance sérieuse.',
+                'job' => $canna->job,
+                'goal' => 'Minor Ligue',
+                'ambiance' => 'Serious',
+                'published' => true,
+            ],
+            [
+                'user_id' => $keria->id,
+                'description' => 'Keria recherche une équipe try-hard en Major League.',
+                'job' => $keria->job,
+                'goal' => 'Major Ligue',
+                'ambiance' => 'Try-hard',
+                'published' => true,
+            ],
+        ]);
+
     }
 }
