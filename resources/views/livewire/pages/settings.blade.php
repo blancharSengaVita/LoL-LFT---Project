@@ -343,7 +343,7 @@ $cancelProfilePicture = function () {
                                 <div class="mt-2 justify-center flex text-sm leading-6 text-gray-600">
                                     <label for="profilePicture" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                         <span>{{ $profilPictureLabel }}</span>
-                                        <input wire:model.live="profilPicture" id="profilePicture" name="profilePicture" type="file" class="sr-only">
+                                        <input wire:model.live="profilPicture" id="profilePicture" name="profilePicture" accept="image/png, image/jpeg" type="file" class="sr-only">
                                     </label>
                                 </div>
                                 <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF en-dessous de 10MB</p>

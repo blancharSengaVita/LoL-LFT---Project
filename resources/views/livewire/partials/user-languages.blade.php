@@ -92,7 +92,7 @@ showSection:$wire.entangle('showSection'),
                     </div>
                     <div class="min-w-0">
                         <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
-                        <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
+                        <p class="truncate text-sm leading-5 text-gray-900">{{ __($language->level)  }}</p>
                     </div>
                 </li>
             @endforeach
@@ -104,7 +104,7 @@ showSection:$wire.entangle('showSection'),
                     <div class="min-w-0">
                         <p class="text-sm font-semibold leading-6 text-gray-900">
                             {{ __('languages.'.$language->name) }} </p>
-                        <p class="truncate text-sm leading-5 text-gray-900">{{$language->level}}</p>
+                        <p class="truncate text-sm leading-5 text-gray-900">{{ __($language->level) }}</p>
                     </div>
                 </li>
             @endforeach

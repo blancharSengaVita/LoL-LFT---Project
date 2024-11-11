@@ -369,8 +369,8 @@ on(['renderOnboarding' => function () {
                                     <button type="button" wire:click="newAward">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             récompense</p>
-                                        <p class="mt-1 truncate text-sm leading-5 text-gray-500">Vous avez gagnez les
-                                            worlds ou la lan de la région ? Dites-le nous !</p>
+                                        <p class="mt-1 truncate text-sm leading-5 text-gray-500">Vous avez gagnez le prix du meilleur joueur de la compétion ou celui du plus meurtrier
+                                            ? Dites-le nous !</p>
                                     </button>
                                 </div>
                             </li>
