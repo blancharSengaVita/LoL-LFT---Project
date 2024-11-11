@@ -14,5 +14,6 @@ return [
     'Challenger' => 'Challenger',
     'Semi-professional' => 'Semi-professionnel',
     'Professional' => 'Professionnel',
+    'Minor league' => 'Ligue mineur',
     'Major league' => 'Ligue majeure',
 ];

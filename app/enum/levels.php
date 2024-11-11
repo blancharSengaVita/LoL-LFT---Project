@@ -14,5 +14,6 @@ return [
     'Challenger',
     'Semi-professional',
     'Professional',
+    'Minor league',
     'Major league',
 ];
