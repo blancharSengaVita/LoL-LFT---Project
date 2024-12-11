@@ -22,6 +22,7 @@ state([
 mount(function () {
     $this->user = Auth::user();
     $this->displayed_informations = $this->user->displayedInformation()->first();
+    event(new \App\Events\TestEvent('hello world'));
 });
 ?>
 
