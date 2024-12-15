@@ -3,8 +3,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-
 use function Livewire\Volt\layout;
+use App\Events\TestEvent;
 use function Livewire\Volt\{
     state,
     mount,
@@ -22,6 +22,7 @@ state([
 mount(function () {
     $this->user = Auth::user();
     $this->displayed_informations = $this->user->displayedInformation()->first();
+//    TestEvent::dispatch('hello world');
 });
 ?>
 
@@ -64,9 +65,6 @@ mount(function () {
         </div>
     </section>
 </main>
-
-
-
 
 
 
