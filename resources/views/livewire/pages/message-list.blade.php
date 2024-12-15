@@ -35,10 +35,11 @@ $renderChange = function () {
 
 	$realConversation = Conversation::find($this->currentConversation->id);
 	if ($realConversation) {
-		Message::whereHas('conversation', function ($query) use ($realConversation) {
-			$query->where('id', $realConversation->id);
-		})->whereNot('user_id', Auth::id())->whereNull('read_at')
-			->orderBy('created_at', 'desc')->update(['read_at' => now()]);
+        Message::whereHas('conversation', function ($query) use ($realConversation) {
+            $query->where('id', $realConversation->id);
+        })->whereNot('user_id', Auth::id())
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
 	}
 
 	$this->conversations = Conversation::where('user_one_id', Auth::id())
