@@ -91,7 +91,7 @@ $resetPassword = function () {
                 <div>
                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
                     <div class="mt-2">
-                        <input wire:model="email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input wire:model="email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6">
                     </div>
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
@@ -99,7 +99,7 @@ $resetPassword = function () {
                 <div>
                     <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Mot de passe</label>
                     <div class="mt-2">
-                        <input wire:model="password" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input wire:model="password" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6">
                     </div>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
@@ -107,7 +107,7 @@ $resetPassword = function () {
                 <div>
                     <label for="password_confirmation" class="block text-sm font-medium leading-6 text-gray-900">Confirmation du mot de passe</label>
                     <div class="mt-2">
-                        <input wire:model="password_confirmation" id="password_confirmation" name="password_confirmation" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input wire:model="password_confirmation" id="password_confirmation" name="password_confirmation" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6">
                     </div>
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                 </div>

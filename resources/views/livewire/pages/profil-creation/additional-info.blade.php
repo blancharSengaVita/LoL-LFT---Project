@@ -195,7 +195,7 @@ $save = function () {
                         <div class="mt-2 flex flex-col items-center  rounded-lg border border-dashed border-gray-900/25 px-6 py-4">
                             <div class="text-center">
                                 <div class="profil-picture flex items-center justify-center"></div>
-                                <p class="flex justify-center items-center">{{ $profilPictureFilename }}</p>
+                                <p class="flex justify-center items-center text-black">{{ $profilPictureFilename }}</p>
                                 <div class="mt-2 justify-center flex text-sm leading-6 text-gray-600">
                                     <label for="profilePicture" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
                                         <span>{{ $profilPictureLabel }}</span>
@@ -220,7 +220,7 @@ $save = function () {
                         @if($type !== 'team')
                             <div class="col-span-3 mb-4">
                                 <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
-                                <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                     <option value="">-- choisissez votre poste --</option>
                                     @foreach($jobs as $job)
                                         <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
@@ -233,7 +233,7 @@ $save = function () {
                         @endif()
                         <div class="col-span-3 mb-4">
                             <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région<span class="text-red-500">*</span></label>
-                            <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                 <option value="">-- choisissez votre region --</option>
                                 @foreach($regions as $region)
                                     <option value="{{ $region }}">{{ $region }}</option>
@@ -246,7 +246,7 @@ $save = function () {
 {{--                        @if($type !== 'staff')--}}
                             <div class="col-span-3">
                                 <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-500">*</span></label>
-                                <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                     <option value="">-- choisissez votre niveau --</option>
                                     @foreach($levels as $level)
                                         <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
@@ -265,7 +265,7 @@ $save = function () {
                     <div class="col-span-full">
                         <label for="bio" class="block text-sm font-medium leading-6 text-gray-900">Bio</label>
                         <div class="mt-2">
-                            <textarea wire:model="bio" id="bio" name="bio" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                            <textarea wire:model="bio" id="bio" name="bio" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6"></textarea>
                         </div>
                         @error('bio')
                         <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>

@@ -25,7 +25,7 @@ layout('layouts.guest');
                 <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
                     <div class="text-center">
                         <p class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">LoL LFT</p>
-                        <p class="mt-6 text-lg leading-8 text-gray-600">Trouvez les partenaires qui te permettront
+                        <p class="mt-6 text-lg leading-8 text-gray-900 ">Trouvez les partenaires qui te permettront
                             d’atteindre des sommets</p>
                     </div>
                 </div>
@@ -41,7 +41,7 @@ layout('layouts.guest');
                         <div class="lg:max-w-lg">
                             <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Trouvez des
                                 partenaires idéaux pour vos parties professionnels ou amateurs</h2>
-                            <p class="mt-6 text-lg leading-8 text-gray-600">Que vous cherchiez à rejoindre une équipe professionnelle pour participer à un championnat, que vous souhaitiez simplement trouver un partenaire pour vous amuser lors de vos parties, ou que vous envisagiez d'aider une équipe en tant que membre du staff, notre plateforme est là pour vous. Nous vous offrons la possibilité de trouver les partenaires idéaux pour concrétiser vos objectifs dans le monde de League of Legends.
+                            <p class="mt-6 text-lg leading-8 text-gray-900 ">Que vous cherchiez à rejoindre une équipe professionnelle pour participer à un championnat, que vous souhaitiez simplement trouver un partenaire pour vous amuser lors de vos parties, ou que vous envisagiez d'aider une équipe en tant que membre du staff, notre plateforme est là pour vous. Nous vous offrons la possibilité de trouver les partenaires idéaux pour concrétiser vos objectifs dans le monde de League of Legends.
                             </p>
                         </div>
                     </div>
@@ -56,7 +56,7 @@ layout('layouts.guest');
                         <div class="lg:max-w-lg">
                             <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Montrez votre
                                 vrai potentiel</p>
-                            <p class="mt-6 text-lg leading-8 text-gray-600">
+                            <p class="mt-6 text-lg leading-8 text-gray-900 ">
                                 Créer votre profil sur notre plateforme qui ne sera pas simplement une liste de
                                 compétences et d'expériences, mais une représentation visuelle de votre parcours et de
                                 vos compétences. Mettez en avant votre classement, vos champions préférés, votre style
@@ -76,7 +76,7 @@ layout('layouts.guest');
                 <div class="mx-auto max-w-2xl lg:text-center">
                     <H2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Connectez-vous avec des
                         passionnés partageant les mêmes intérêts</H2>
-                    <p class="mt-6 text-lg leading-8 text-gray-600">Grâce à notre plateforme, vous pouvez vous connecter
+                    <p class="mt-6 text-lg leading-8 text-gray-900 ">Grâce à notre plateforme, vous pouvez vous connecter
                         avec d'autres passionnés de League of Legends qui partagent vos intérêts. Que vous soyez un
                         joueur professionnel ou amateur, un jeune coach ou un coach experimenté, une équipe pour clash
                         ou une équipe LEC, vous trouverez des personnes qui comprennent votre passion pour le jeu et

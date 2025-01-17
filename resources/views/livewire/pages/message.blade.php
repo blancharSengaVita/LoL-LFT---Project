@@ -101,9 +101,9 @@ $newConversation = function ($userId) {
         <livewire:partials.app-header :title="'Messages'"/>
         <!-- end header -->
         <!-- Chatting -->
-        <div class="h-full flex flex-row flex-grow justify-between bg-white border-t">
+        <div class="h-full flex flex-row flex-grow justify-between bg-white border-t border-gray-200">
             <!-- chat list -->
-            <div class="flex flex-col w-2/5 border-r bg-gray">
+            <div class="flex flex-col w-2/5 border-r border-gray-200 bg-gray">
                 <!-- user list -->
                 <livewire:pages.message-list/>
                 <!-- end user list -->
@@ -116,7 +116,7 @@ $newConversation = function ($userId) {
 {{--                        <p class="text-lg font-medium text-gray-900 sm:text-xl">Sélectionnez un message.</p>--}}
                         <p class="text-base font-semibold leading-6 text-gray-900">Sélectionnez un message.</p>
 {{--                        <p class="text-xl font-bold text-gray-900 sm:text-2xl">Sélectionnez un message</p>--}}
-                        <p class="text-base"> Faites un choix dans vos conversations existantes ou commencez-en une nouvelle.
+                        <p class="text-black"> Faites un choix dans vos conversations existantes ou commencez-en une nouvelle.
                         </p>
                         <div class="mt-4">
                             <label for="search" class="sr-only">Search</label>
@@ -136,7 +136,7 @@ $newConversation = function ($userId) {
                                     @focus="clearTimeout(blurTimeout); isFocused = true"
                                     @blur="blurTimeout = setTimeout(() => { isFocused = false }, 200)"
                                     wire:model.live="search"
-                                    id="search" name="search" class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="Search" type="search">
+                                    id="search" name="search" class="block w-full rounded-md border-0 border-gray-200 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Search" type="search">
                                 <ul
                                     x-data="{
                                                     searchValue: $wire.entangle('search'),

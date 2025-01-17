@@ -30,11 +30,11 @@ mount(function (User $user) {
 });
 ?>
 
-<aside class="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-2 py-3 sm:px-2 lg:px-4 xl:block">
+<aside class="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-2 py-3 sm:px-2 lg:px-4 xl:block bg-white">
     <h2 class="sr-only"> Informations Complémentaires </h2>
     <!--  Secondary column (hidden on smaller screens) -->
     <div class="rounded-md font-medium px-3 pt-3 flex grow flex-col gap-y-5 overflow-y-auto border border-gray-200 bg-white">
-        <span> Recommandation aléatoire </span>
+        <span class="text-gray-900" > Recommandation aléatoire </span>
         <ul role="list" class="divide-y divide-gray-100">
             @foreach($users as $user)
                 <li class="flex items-center justify-between gap-x-6 py-5">

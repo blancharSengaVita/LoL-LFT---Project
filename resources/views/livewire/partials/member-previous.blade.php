@@ -220,7 +220,7 @@ deleteModal: $wire.entangle('deleteModal'),
         <div class=" sm:w-12/12">
             <ul role="list" class="divide-y divide-gray-100">
                 @if(count($models)===0 || null)
-                    <p class="mt-1 mb-1 flex justify-center">Il n'y a aucun ancien membre dans cette équipe</p>
+                    <p class="mt-1 mb-1 flex justify-center text-black">Il n'y a aucun ancien membre dans cette équipe</p>
                 @else
                     <table class="min-w-full divide-y divide-gray-300">
                     <thead>
@@ -321,7 +321,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                                 autocomplete="off"
                                                 @focus="clearTimeout(blurTimeout); isFocused = true"
                                                 @blur="blurTimeout = setTimeout(() => { isFocused = false }, 200)"
-                                                wire:model.live="search" id="player" type="search" class="w-80 rounded-md border-0 bg-white py-1.5 pl-8 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" role="combobox" aria-controls="options" aria-expanded="false">
+                                                wire:model.live="search" id="player" type="search" class="w-80 rounded-md border-0 bg-white py-1.5 pl-8 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" role="combobox" aria-controls="options" aria-expanded="false">
                                             <button type="button" class="absolute inset-y-0 left-0 flex items-center rounded-r-md px-2 focus:outline-none">
                                                 <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"/>
@@ -391,7 +391,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                         Nom<span class="text-red-500">*</span>
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="username" type="text" name="username" id="username" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Faker">
+                                        <input wire:model="username" type="text" name="username" id="username" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Faker">
                                     </div>
                                     @if ($messages = $errors->get('username'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -401,7 +401,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                 </div>
                                 <div class="col-span-3 mt-4">
                                     <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
-                                    <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez votre poste --</option>
                                         @foreach($jobs as $job)
                                             <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
@@ -413,7 +413,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-500">*</span></label>
-                                    <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez votre nationalité --</option>
                                         @foreach($nationalities as $nationality)
                                             <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
@@ -429,7 +429,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                         Date
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="entry_date" type="date" name="entry_date" id="entry_date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="1">
+                                        <input wire:model="entry_date" type="date" name="entry_date" id="entry_date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
                                     </div>
                                     @if ($messages = $errors->get('entry_date'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -439,7 +439,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                 </div>
                                 <div class="mt-5 relative flex items-start">
                                     <div class="flex h-6 items-center">
-                                        <input wire:model="archived" id="archived" aria-describedby="offers-description" name="archived" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                        <input wire:model="archived" id="archived" aria-describedby="offers-description" name="archived" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                                     </div>
                                     <div class="ml-3 text-sm leading-6">
                                         <label for="archived" class="font-medium text-gray-900">Archiver ce membre</label>

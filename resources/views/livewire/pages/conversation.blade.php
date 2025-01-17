@@ -53,7 +53,7 @@ mount(function (Conversation $conversation) {
 			} else {
 				$this->convos[] = '<div class="flex justify-center my-8">
                         <div
-                            class="py-4 px-6 border-gray-50 bg-green-600 border rounded-lg text-gray-900 text-white text-md max-w-96"
+                            class="py-4 px-6 border-gray-200 bg-green-600 border rounded-lg text-md max-w-96"
                         >'
 					. htmlspecialchars($message->message) .
 					'</div>
@@ -69,7 +69,7 @@ mount(function (Conversation $conversation) {
 			} else {
 				$this->convos[] = '<div class="flex justify-start mb-4">
                         <div
-                            class="ml-2 py-2 px-3 border-gray-50 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
+                            class="ml-2 py-2 px-3 border-gray-200 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
                         >'
 					. htmlspecialchars($message->message) .
 					'</div>
@@ -111,7 +111,7 @@ $listenForLftInvitation = function ($data) {
 	} else {
 		$this->convos[] = '<div class="message flex justify-start mb-4">
                         <div
-                            class="ml-2 py-2 px-3 border-gray-50 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
+                            class="ml-2 py-2 px-3 border-gray-200 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
                         >'
 			. htmlspecialchars($data['message']) .
 			'</div>
@@ -131,7 +131,7 @@ $listenForMessage = function ($data) {
 	} else {
 		$this->convos[] = '<div class="message flex justify-start mb-4">
                         <div
-                            class="ml-2 py-2 px-3 border-gray-50 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
+                            class="ml-2 py-2 px-3 border-gray-200 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
                         >'
 			. htmlspecialchars($data['message']) .
 			'</div>
@@ -151,15 +151,15 @@ $listenForMessage = function ($data) {
         <livewire:partials.app-header :title="'Messages'"/>
         <!-- end header -->
         <!-- Chatting -->
-        <div class="h-full flex flex-row flex-grow justify-between bg-white border-t">
+        <div class="h-full flex flex-row flex-grow justify-between bg-white border-t border-gray-200">
             <!-- chat list -->
-            <div class="flex flex-col w-2/5 border-r bg-white">
+            <div class="flex flex-col w-2/5 border-r border-gray-200 bg-white">
                 <livewire:pages.message-list/>
             </div>
             <!-- messages -->
             <div class="w-full flex flex-col justify-between">
-                <div class="flex items-center px-6 py-4 border-b">
-                    <p class="text-lg font-medium"> {{ $user_two->game_name }} </p>
+                <div class="flex items-center px-6 py-4 border-b border-gray-200">
+                    <p class="text-lg font-medium text-gray-900"> {{ $user_two->game_name }} </p>
                 </div>
                 <div
                         id="messagesContainer" class="flex flex-col
@@ -176,8 +176,10 @@ $listenForMessage = function ($data) {
                 <form wire:submit.prevent="submitMessage" class="pb-5 px-3 pt-2 flex">
                     <input
                         wire:model="message"
-                        class="text-sm w-full bg-white py-2 px-3 rounded-lg border-gray-300
-                         focus:ring-indigo-500"
+                        class="
+                        text-sm w-full bg-white text-gray-900 py-2 px-3 rounded-lg border-gray-300
+                         block border-0 pr-3 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6
+                         "
                         type="text"
                         placeholder="type your message here..."
                     />

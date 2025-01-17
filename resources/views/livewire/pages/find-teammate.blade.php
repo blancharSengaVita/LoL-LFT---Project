@@ -296,7 +296,7 @@ $newConversation = function ($userId) {
                         <div @click.away="$wire.openMobileMenu" class="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl">
                             <div class="flex items-center justify-between px-4">
                                 <h2 class="text-lg font-medium text-gray-900">Filtre</h2>
-                                <button wire:click="openMobileMenu" type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <button wire:click="openMobileMenu" type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-700">
                                     <span class="sr-only">Close menu</span>
                                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -313,7 +313,7 @@ $newConversation = function ($userId) {
                                             <label for="job" class="block text-sm font-medium leading-6 text-gray-900">
                                                 Recherche un/une
                                             </label>
-                                            <select wire:model.live="job" id="job" name="job" class="text-base w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <select wire:model.live="job" id="job" name="job" class="bg-white text-base w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                 <option value="">Peu importe</option>
                                                 <optgroup label="JOUEUR">
                                                     @foreach($jobs['player'] as $job)
@@ -341,7 +341,7 @@ $newConversation = function ($userId) {
                                             <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                                 Niveau
                                             </label>
-                                            <select wire:model.live="level" id="level" name="level" class="w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <select wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                 <option value="">Peu importe</option>
                                                 @foreach($levels as $level)
                                                     <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
@@ -358,7 +358,7 @@ $newConversation = function ($userId) {
                                                 <label for="goal" class="block text-sm font-medium leading-6 text-gray-900">
                                                     Pour
                                                 </label>
-                                                <select wire:model.live="goal" id="goal" name="goal" class="w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                <select wire:model.live="goal" id="goal" name="goal" class="bg-white w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                     <option value="">Peu importe</option>
                                                     @foreach($goals['team'] as $goal)
                                                         <option value="{{ $goal }}">{{ __('lookingFors.'.$goal) }}</option>
@@ -378,7 +378,7 @@ $newConversation = function ($userId) {
                                             <label for="ambiance" class="block text-sm font-medium leading-6 text-gray-900">
                                                 Ambiance
                                             </label>
-                                            <select wire:model.live="ambiance" id="ambiance" name="ambiance" class="w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <select wire:model.live="bg-white ambiance" id="ambiance" name="ambiance" class="w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                 <option value="">Peu importe</option>
                                                 @foreach($ambiances as $ambiance)
                                                     <option value="{{ $ambiance }}">{{ __('ambiances.'.$ambiance) }}</option>
@@ -393,7 +393,7 @@ $newConversation = function ($userId) {
                 </div>
 
                 {{--                FILTERS --}}
-                <div class="bg-white border-t mx-auto px-4 text-center sm:px-6 lg:max-w-7xl lg:px-8">
+                <div class="bg-white border-t mx-auto px-4 text-center sm:px-6 lg:max-w-7xl lg:px-8 border-gray-200">
                     <section aria-labelledby="filter-heading" class="border-gray-200 py-3">
                         <h2 id="filter-heading" class="sr-only">Product filters</h2>
 
@@ -415,7 +415,7 @@ $newConversation = function ($userId) {
                                     <label for="job" class="block text-sm font-medium leading-6 text-gray-900">
                                         Recherche un/une
                                     </label>
-                                    <select wire:model.live="job" id="job" name="job" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model.live="job" id="job" name="job" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">Peu importe</option>
                                         <optgroup label="JOUEUR">
                                             @foreach($jobs['player'] as $job)
@@ -438,7 +438,7 @@ $newConversation = function ($userId) {
                                     <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                         Niveau
                                     </label>
-                                    <select wire:model.live="level" id="level" name="level" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">Peu importe</option>
                                         @foreach($levels as $level)
                                             <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
@@ -449,7 +449,7 @@ $newConversation = function ($userId) {
                                     <label for="goal" class="block text-sm font-medium leading-6 text-gray-900">
                                         Pour
                                     </label>
-                                    <select wire:model.live="goal" id="goal" name="goal" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model.live="goal" id="goal" name="goal" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">Peu importe</option>
                                         @foreach($goals['team'] as $goal)
                                             <option value="{{ $goal }}">{{ __('lookingFors.'.$goal) }}</option>
@@ -463,7 +463,7 @@ $newConversation = function ($userId) {
                                     <label for="ambiance" class="block text-sm font-medium leading-6 text-gray-900">
                                         Ambiance
                                     </label>
-                                    <select wire:model.live="ambiance" id="ambiance" name="ambiance" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model.live="ambiance" id="ambiance" name="ambiance" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">Peu importe</option>
                                         @foreach($ambiances as $ambiance)
                                             <option value="{{ $ambiance }}">{{ __('ambiances.'.$ambiance) }}</option>
@@ -578,7 +578,7 @@ $newConversation = function ($userId) {
                                             <div class="mt-4">
                                                 <label for="myJob" class="block text-sm font-medium leading-6 text-gray-900">Recherche
                                                     un/une</label>
-                                                <select wire:model.live="myJob" id="myJob" name="myJob" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                <select wire:model.live="myJob" id="myJob" name="myJob" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                     <option value="">Peu importe</option>
                                                     <optgroup label="JOUEUR">
                                                         @foreach($jobs['player'] as $job)
@@ -604,7 +604,7 @@ $newConversation = function ($userId) {
                                             </div>
                                             <div class="mt-4">
                                                 <label for="myGoal" class="block text-sm font-medium leading-6 text-gray-900">Pour</label>
-                                                <select wire:model.live="myGoal" id="myGoal" name="myGoal" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                <select wire:model.live="myGoal" id="myGoal" name="myGoal" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                     <option value="">Peu importe</option>
                                                     @foreach($goals['team'] as $goal)
                                                         <option value="{{ $goal }}">{{ __('lookingFors.'.$goal) }}</option>
@@ -621,7 +621,7 @@ $newConversation = function ($userId) {
                                             </div>
                                             <div class="mt-4">
                                                 <label for="myAmbiance" class="block text-sm font-medium leading-6 text-gray-900">Ambiance</label>
-                                                <select wire:model.live="myAmbiance" id="myAmbiance" name="myAmbiance" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                                <select wire:model.live="myAmbiance" id="myAmbiance" name="myAmbiance" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                     <option value="">Peu importe</option>
                                                     @foreach($ambiances as $ambiance)
                                                         <option value="{{ $ambiance }}">{{ __('ambiances.'.$ambiance) }}</option>
@@ -637,7 +637,7 @@ $newConversation = function ($userId) {
                                         <div class="mt-4">
                                             <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
                                             <div class="mt-2">
-                                                <textarea wire:model="description" id="description" name="description" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                                                <textarea wire:model="description" id="description" name="description" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6"></textarea>
                                             </div>
                                             @error('description')
                                             <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
@@ -647,7 +647,7 @@ $newConversation = function ($userId) {
                                         </div>
                                         <div class="mt-5 relative flex items-start">
                                             <div class="flex h-6 items-center">
-                                                <input wire:model="publishedTemp" id="displayed" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                                <input wire:model="publishedTemp" id="displayed" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                                             </div>
                                             <div class="ml-3 text-sm leading-6">
                                                 <label for="displayed" class="font-medium text-gray-900">Publier mon

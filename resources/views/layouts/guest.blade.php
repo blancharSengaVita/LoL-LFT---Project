@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="h-full">
+<body class="h-full kaki">
 <h1 class="sr-only">{{$h1}} </h1>
 {{ $slot }}
 </body>

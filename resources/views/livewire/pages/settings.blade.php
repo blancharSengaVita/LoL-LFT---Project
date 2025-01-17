@@ -266,7 +266,7 @@ $cancelProfilePicture = function () {
                         <div class="mb-4">
                             <label for="game_name" class="block text-sm font-medium leading-6 text-gray-900">{{ $this->pseudoInput  }}<span class="text-red-500">*</span></label>
                             <div class="mt-2">
-                                <input wire:model="game_name" type="text" name="game_name" id="game_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Lee">
+                                <input wire:model="game_name" type="text" name="game_name" id="game_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Lee">
                             </div>
                             @error('game_name')
                             <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
@@ -279,7 +279,7 @@ $cancelProfilePicture = function () {
                             <label for="surname" class="block text-sm font-medium leading-6 text-gray-900">Nom
                                 d'utilisateur<span class="text-red-500">*</span></label>
                             <div class="mt-2">
-                                <input wire:model="username" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
+                                <input wire:model="username" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
                             </div>
                             @error('username')
                             <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
@@ -293,7 +293,7 @@ $cancelProfilePicture = function () {
                         @if($type !== 'team')
                             <div class="mb-4">
                                 <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-500">*</span></label>
-                                <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                     <option value="">-- choisissez votre nationalité --</option>
                                     @foreach($nationalities as $nationality)
                                         <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
@@ -308,7 +308,7 @@ $cancelProfilePicture = function () {
                                 <label for="birthday" class="block text-sm font-medium leading-6 text-gray-900">Date de
                                     naissance<span class="text-red-500">*</span></label>
                                 <div class="mt-2">
-                                    <input wire:model="birthday" type="date" name="birthday" id="birthday" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="">
+                                    <input wire:model="birthday" type="date" name="birthday" id="birthday" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="">
                                 </div>
                                 @error('birthday')
                                 <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
@@ -336,7 +336,7 @@ $cancelProfilePicture = function () {
                         <div class="mt-2 flex flex-col items-center  rounded-lg border border-dashed border-gray-900/25 px-6 py-4">
                             <div class="text-center">
                                 <div class="profil-picture flex items-center justify-center"></div>
-                                <p class="flex justify-center items-center">{{ $profilPictureFilename }}</p>
+                                <p class="flex justify-center items-center text-black">{{ $profilPictureFilename }}</p>
                                 {{--                                <svg class="mx-auto h-12 w-12 text-gray-300 profil-picture-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">--}}
                                 {{--                                    <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd"/>--}}
                                 {{--                                </svg>--}}
@@ -363,7 +363,7 @@ $cancelProfilePicture = function () {
                         @if($type !== 'team')
                             <div class="col-span-3 mb-4">
                                 <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
-                                <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                     <option value="">-- choisissez votre poste --</option>
                                     @foreach($jobs as $job)
                                         <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
@@ -377,7 +377,7 @@ $cancelProfilePicture = function () {
 
                         <div class="col-span-3">
                             <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région<span class="text-red-500">*</span></label>
-                            <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                 <option value="">-- choisissez votre region --</option>
                                 @foreach($regions as $region)
                                     <option value="{{ $region }}">{{ $region }}</option>
@@ -390,7 +390,7 @@ $cancelProfilePicture = function () {
 
                     <div class="col-span-3">
                         <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-500">*</span></label>
-                        <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                             <option value="">-- choisissez votre niveau --</option>
                             @foreach($levels as $level)
                                 <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>

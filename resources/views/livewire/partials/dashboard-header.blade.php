@@ -89,7 +89,7 @@ $logout = function (Logout $logout) {
                                 @focus="clearTimeout(blurTimeout); isFocused = true"
                                 @blur="blurTimeout = setTimeout(() => { isFocused = false }, 200)"
                                 wire:model.live="search"
-                                id="search" name="search" class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="Search" type="search">
+                                id="search" name="search" class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Search" type="search">
                             <ul
                                 x-data="{
                                                     searchValue: $wire.entangle('search'),
@@ -134,7 +134,7 @@ $logout = function (Logout $logout) {
             </div>
             <div class="flex items-center md:absolute md:inset-y-0 md:right-0 lg:hidden">
                 <!-- Mobile menu button -->
-                <button wire:click="openMobileMenu" type="button" class="relative -mx-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                <button wire:click="openMobileMenu" type="button" class="relative -mx-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-700" aria-expanded="false">
                     <span class="absolute -inset-0.5"></span>
                     <span class="sr-only">Open menu</span>
                     <!--
@@ -156,7 +156,7 @@ $logout = function (Logout $logout) {
                 </button>
             </div>
             <div class="hidden lg:flex lg:items-center lg:justify-end xl:col-span-6">
-{{--                <button type="button" class="relative ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">--}}
+{{--                <button type="button" class="relative ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2">--}}
 {{--                    <span class="absolute -inset-1.5"></span>--}}
 {{--                    <span class="sr-only">View notifications</span>--}}
 {{--                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">--}}
@@ -168,7 +168,7 @@ $logout = function (Logout $logout) {
                 <!-- Profile dropdown -->
                 <div class="relative ml-5 flex-shrink-0">
                     <div>
-                        <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">Open user menu</span>
                             <img class="h-8 w-8 rounded-full" src="{{$profilePictureSource}}" alt="">
@@ -189,7 +189,7 @@ $logout = function (Logout $logout) {
                         <!-- Active: "bg-gray-100", Not Active: "" -->
                         <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard"  class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
                         <a wire:navigate href="{{route('settings')}}" title="vers la page settings" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1 cursor-pointer">Paramètres</a>
-                        <bouton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Se déconnecter</bouton>
+                        <bouton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1" id="user-menu-item-0">Se déconnecter</bouton>
                     </div>
                 </div>
             </div>

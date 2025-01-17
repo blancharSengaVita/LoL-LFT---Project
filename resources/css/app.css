@@ -1,5 +1,29 @@
-[x-cloak] { display: none;}
+[x-cloak] {
+    display: none;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    textarea {
+        @apply bg-white !important;
+    }
+
+    select {
+        @apply bg-white !important;
+    }
+
+    input:not([type="checkbox"]) {
+        @apply bg-white !important;
+    }
+
+    input[type="date"] {
+        color-scheme: dark;
+    }
+}
+
+
+
 

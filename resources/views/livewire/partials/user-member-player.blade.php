@@ -51,7 +51,7 @@ mount(function (User $user) {
         <div class=" sm:w-12/12">
             <ul role="list" class="divide-y divide-gray-100">
                 @if(count($models)===0 || null)
-                    <p class="mt-1 mb-1 flex justify-center">Il n'y a aucun joueur dans cette équipe</p>
+                    <p class="mt-1 mb-1 flex justify-center text-black">Il n'y a aucun joueur dans cette équipe</p>
                 @else
                     <table class="min-w-full divide-y divide-gray-300">
                         <thead>

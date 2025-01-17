@@ -86,7 +86,7 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
     @foreach($conversations as $conversation)
         <li>
             <a type="button" title="Envoyer des messages à {{$conversation->game_name}}"  wire:navigate class="flex flex-row py-3 px-2 items-center h-full
-            {{ $currentConversation->id === $conversation->id ? 'border-l-4 bg border-l-indigo-600 border-b bg-gray-50' : 'border-b hover:bg-white' }}"
+            {{ $currentConversation->id === $conversation->id ? 'border-l-4 bg border-l-indigo-600 border-b border-gray-200 bg-gray-50' : 'border-gray-200 border-b hover:bg-white' }}"
 
                href="{{ route('conversation', ['conversation' => $conversation->id]) }}">
                 <div class="w-1/4">
@@ -95,7 +95,7 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
                     />
                 </div>
                 <div class="w-full">
-                    <p class="text-sm font-semibold">{{$conversation->game_name}}</p>
+                    <p class="text-sm font-semibold text-gray-700">{{$conversation->game_name}}</p>
                     <p class="text-sm text-gray-500 truncate">{{$conversation->username}}</p>
                 </div>
                 @if($conversation->unSeenMessage)

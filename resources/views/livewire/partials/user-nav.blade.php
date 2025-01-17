@@ -20,7 +20,7 @@ mount(function (User $user) {
 });
 ?>
 
-<nav class="bg-white shadow border-b">
+<nav class="bg-white shadow border-b border-gray-200">
     <h3 class="sr-only">
         Menu de navigation du profil
     </h3>

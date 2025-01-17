@@ -56,7 +56,7 @@ $login = function () {
                 <div>
                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
                     <div class="mt-2">
-                        <input wire:model="form.email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input wire:model="form.email" id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6">
                     </div>
                     <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
                 </div>
@@ -64,14 +64,14 @@ $login = function () {
                 <div>
                     <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Mot de passe</label>
                     <div class="mt-2">
-                        <input wire:model="form.password" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input wire:model="form.password" id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6">
                     </div>
                     <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
                 </div>
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                        <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700">
                         <label for="remember-me" class="ml-3 block text-sm leading-6 text-gray-900">Se souvenir de moi</label>
                     </div>
 
