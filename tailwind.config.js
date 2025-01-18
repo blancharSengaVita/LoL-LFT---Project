@@ -1,6 +1,5 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
-import colors from 'tailwindcss/colors.js';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -20,7 +19,7 @@ export default {
                 'gray-600': '#C8AA6E',
                 'gray-500': '#BCC2BE',
                 'gray-400': '#BCC2BE',
-                'gray-300' : '#52696A',
+                'gray-300': '#52696A',
                 'gray-200': '#52696A',
                 'gray-100': '#52696A',
                 'gray-50': '#183B44',
@@ -29,8 +28,8 @@ export default {
                 'indigo-700': '#C8AA6E',
                 'black': '#F0E6D2',
                 'white': '#0A323C',
-                'red-600' : '#f87171',
-                'red-500' : '#dc2626'
+                'red-600': '#f87171',
+                'red-500': '#dc2626'
             },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],

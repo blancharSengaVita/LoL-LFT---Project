@@ -8,15 +8,16 @@
 
 @layer base {
     textarea {
-        @apply bg-white !important;
+        @apply bg-white;
     }
 
     select {
-        @apply bg-white !important;
+        @apply bg-white;
+        background-image: url("../images/chevron-down.svg");
     }
 
     input:not([type="checkbox"]) {
-        @apply bg-white !important;
+        @apply bg-white;
     }
 
     input[type="date"] {
