@@ -162,7 +162,7 @@ $newConversation = function ($userId) {
                                             x-data="{ isHovered: false }"
                                             @mouseenter="isHovered = true"
                                             @mouseleave="isHovered = false"
-                                            :class="isHovered ? 'text-white bg-indigo-600' : 'text-gray-900'"
+                                            :class="isHovered ? 'text-gray-900 bg-gray-50' : 'text-gray-900'"
                                             class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabindex="-1"
                                         >
                                             <button type="button" title='Creér une conversation avec {{ $player->game_name }}' class="flex items-center"
