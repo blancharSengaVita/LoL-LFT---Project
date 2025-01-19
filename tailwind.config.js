@@ -12,6 +12,10 @@ export default {
 
     theme: {
         extend: {
+            backgroundImage: {
+                // 'hero': "url('./resources/images/hero.webp')",
+                // 'footer': "url('./resources/images/footer.webp')",
+            },
             colors: {
                 'gray-900': '#F6F0E5',
                 'gray-800': '#F0E6D2',

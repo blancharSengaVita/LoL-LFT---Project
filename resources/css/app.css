@@ -23,6 +23,17 @@
     input[type="date"] {
         color-scheme: dark;
     }
+
+    .bg-hero {
+        background-image: url('../../public/images/hero.webp');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0.5;
+        z-index: 20;
+    }
 }
 
 
