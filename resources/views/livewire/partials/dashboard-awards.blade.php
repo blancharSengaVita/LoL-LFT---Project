@@ -280,7 +280,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
             @if(count($this->awardsHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -288,7 +288,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -337,7 +337,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model="displayedTemp" id="displayed" aria-describedby="displayed-description" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="displayedTemp" id="displayed" aria-describedby="displayed-description" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
                                 <label for="displayed" class="font-medium text-gray-900">Afficher cette section au
@@ -394,7 +394,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         Titre
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="title" type="text" name="title" id="title" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">
+                                        <input wire:model="title" type="text" name="title" id="title" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">
                                     </div>
                                     @if ($messages = $errors->get('title'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -407,7 +407,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         Évènement
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="event" type="text" name="event" id="event" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Clash : coupe d'Europe">
+                                        <input wire:model="event" type="text" name="event" id="event" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Clash : coupe d'Europe">
                                     </div>
                                     @if ($messages = $errors->get('event'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -420,7 +420,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         Équipe
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="team" type="text" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="T1">
+                                        <input wire:model="team" type="text" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="T1">
                                     </div>
                                     @if ($messages = $errors->get('team'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -433,7 +433,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         Date
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="date" type="date" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="1">
+                                        <input wire:model="date" type="date" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
                                     </div>
                                     @if ($messages = $errors->get('date'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">

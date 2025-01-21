@@ -272,14 +272,14 @@ displayedOnce:$wire.entangle('displayedOnce'),
             @if(count($this->languagesHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">Afficher
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
@@ -327,7 +327,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model="displayedTemp" id="displayed" aria-describedby="section-displayed-or-not" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="displayedTemp" id="displayed" aria-describedby="section-displayed-or-not" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
                                 <label for="displayed" class="font-medium text-gray-900">Afficher cette section aux
@@ -381,7 +381,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     Langues</h3>
                                 <div class="mt-4">
                                     <label for="name" class="block text-sm font-medium leading-6 text-gray-900">name</label>
-                                    <select wire:model="name" id="name" name="name" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model="name" id="name" name="name" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez une langue --</option>
                                         @foreach($availableLanguages as $language)
                                             <option value="{{ $language }}">{{ __('languages.'.$language) }}</option>
@@ -395,14 +395,14 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                         Niveau
                                     </label>
-                                    <select wire:model="level" id="level" name="level" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <select wire:model="level" id="level" name="level" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez un niveau --</option>
                                         @foreach($languageLevels as $level)
                                             <option value="{{ $level }}">{{ __('languageLevels.'.$level) }}</option>
                                         @endforeach
                                     </select>
 {{--                                    <div class="mt-2">--}}
-{{--                                        <input wire:model.live="level" type="text" name="level" id="level" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">--}}
+{{--                                        <input wire:model.live="level" type="text" name="level" id="level" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">--}}
 {{--                                    </div>--}}
                                     @if ($messages = $errors->get('level'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">

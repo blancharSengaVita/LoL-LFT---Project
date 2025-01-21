@@ -72,7 +72,7 @@ $sendLftInvitation = function ($userId) {
 };
 ?>
 
-<div class="divide-y divide-gray-200 border-b"
+<div class="divide-y divide-gray-200 border-b border-gray-200"
      x-data="{
         openDropdownMenu: false,
         openModal: $wire.entangle('openModal'),

@@ -56,12 +56,12 @@ $logout = function (Logout $logout) {
         <div class="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
             <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
                 <div class="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
-                    <h2 class="text-lg font-medium" > {{$title}} </h2>
+                    <h2 class="text-lg font-medium text-black"> {{$title}} </h2>
                 </div>
             </div>
             <div class="flex items-center md:absolute md:inset-y-0 md:right-0 lg:hidden">
                 <!-- Mobile menu button -->
-                <button wire:click="openMobileMenu" type="button" class="relative -mx-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                <button wire:click="openMobileMenu" type="button" class="relative -mx-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-700" aria-expanded="false">
                     <span class="absolute -inset-0.5"></span>
                     <span class="sr-only">Open menu</span>
                     <!--
@@ -83,7 +83,7 @@ $logout = function (Logout $logout) {
                 </button>
             </div>
             <div class="hidden lg:flex lg:items-center lg:justify-end xl:col-span-6">
-{{--                <button type="button" class="relative ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">--}}
+{{--                <button type="button" class="relative ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2">--}}
 {{--                    <span class="absolute -inset-1.5"></span>--}}
 {{--                    <span class="sr-only">View notifications</span>--}}
 {{--                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">--}}
@@ -95,7 +95,7 @@ $logout = function (Logout $logout) {
                 <!-- Profile dropdown -->
                 <div class="relative ml-5 flex-shrink-0">
                     <div>
-                        <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">Open user menu</span>
                             <img class="h-8 w-8 rounded-full" src="{{$profilePictureSource}}" alt="">
@@ -116,7 +116,7 @@ $logout = function (Logout $logout) {
                         <!-- Active: "bg-gray-100", Not Active: "" -->
                         <a href="{{route('dashboard')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
                         <a href="{{route('settings')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>
-                        <boutton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</boutton>
+                        <boutton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</boutton>
                     </div>
                 </div>
             </div>
@@ -154,7 +154,7 @@ $logout = function (Logout $logout) {
                 <div class="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">
                     <a href="{{route('dashboard')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Profil</a>
                     <a href="{{route('settings')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Paramètres</a>
-                    <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Se déconnecter</button>
+                    <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">Se déconnecter</button>
                 </div>
             </div>
         </nav>

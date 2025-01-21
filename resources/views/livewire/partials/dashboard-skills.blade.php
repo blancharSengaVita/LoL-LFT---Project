@@ -260,7 +260,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
             @if(count($this->skillsHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -268,7 +268,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -317,7 +317,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         {{-- modale de confirmation de suppression --}}
                         <div class="mt-5 relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model="displayedTemp" id="displayed" aria-describedby="section-displayed-or-not" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                <input wire:model="displayedTemp" id="displayed" aria-describedby="section-displayed-or-not" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                             </div>
                             <div class="ml-3 text-sm leading-6">
                                 <label for="displayed" class="font-medium text-gray-900">Afficher cette section au
@@ -374,7 +374,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         Titre
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="name" type="text" name="name" id="title" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">
+                                        <input wire:model="name" type="text" name="name" id="title" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">
                                     </div>
                                     @if ($messages = $errors->get('name'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">

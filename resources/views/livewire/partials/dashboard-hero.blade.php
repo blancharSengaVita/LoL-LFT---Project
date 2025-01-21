@@ -52,6 +52,7 @@ mount(function () {
         $this->profilePictureSource = '/storage/images/1024/'.$this->user->profil_picture;
     }else {
         $this->profilePictureSource =  'https://ui-avatars.com/api/?length=1&name='. $this->user->game_name;
+		//&background=C8AA6E
     }
 
     $this->mobileMenu = false;
@@ -192,12 +193,6 @@ $closeLFTModal = function () {
 };
 
 $saveMyLftPost = function () {
-//    try {
-//        $this->validate();
-//    } catch (\Illuminate\Validation\ValidationException $e) {
-//        throw $e;
-//    }
-
     $this->published = $this->publishedTemp ;
 
     LftPost::updateOrCreate([
@@ -226,7 +221,7 @@ $saveMyLftPost = function () {
 
 ?>
 
-<div class="divide-y divide-gray-200 border-b"
+<div class="divide-y divide-gray-200 border-b border-gray-200"
      x-data="{
         openDropdownMenu: false,
         openModal: $wire.entangle('openModal'),
@@ -467,7 +462,7 @@ $saveMyLftPost = function () {
                                     <div class="mt-4">
                                         <label for="myJob" class="block text-sm font-medium leading-6 text-gray-900">Recherche
                                             un/une</label>
-                                        <select wire:model.live="myJob" id="myJob" name="myJob" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <select wire:model.live="myJob" id="myJob" name="myJob" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                             <option value="">Peu importe</option>
                                             <optgroup label="JOUEUR">
                                                 @foreach($jobs['player'] as $job)
@@ -493,7 +488,7 @@ $saveMyLftPost = function () {
                                     </div>
                                     <div class="mt-4">
                                         <label for="myGoal" class="block text-sm font-medium leading-6 text-gray-900">Pour</label>
-                                        <select wire:model.live="myGoal" id="myGoal" name="myGoal" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <select wire:model.live="myGoal" id="myGoal" name="myGoal" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                             <option value="">Peu importe</option>
                                             @foreach($goals['team'] as $goal)
                                                 <option value="{{ $goal }}">{{ __('lookingFors.'.$goal) }}</option>
@@ -510,7 +505,7 @@ $saveMyLftPost = function () {
                                     </div>
                                     <div class="mt-4">
                                         <label for="myAmbiance" class="block text-sm font-medium leading-6 text-gray-900">Ambiance</label>
-                                        <select wire:model.live="myAmbiance" id="myAmbiance" name="myAmbiance" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <select wire:model.live="myAmbiance" id="myAmbiance" name="myAmbiance" class="w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                             <option value="">Peu importe</option>
                                             @foreach($ambiances as $ambiance)
                                                 <option value="{{ $ambiance }}">{{ __('ambiances.'.$ambiance) }}</option>
@@ -526,7 +521,7 @@ $saveMyLftPost = function () {
                                 <div class="mt-4">
                                     <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
                                     <div class="mt-2">
-                                        <textarea wire:model="description" id="description" name="description" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+                                        <textarea wire:model="description" id="description" name="description" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6"></textarea>
                                     </div>
                                     @error('description')
                                     <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
@@ -536,7 +531,7 @@ $saveMyLftPost = function () {
                                 </div>
                                 <div class="mt-5 relative flex items-start">
                                     <div class="flex h-6 items-center">
-                                        <input wire:model="publishedTemp" id="displayed" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">
+                                        <input wire:model="publishedTemp" id="displayed" aria-describedby="" name="offers" type="checkbox" class="bg-black h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                                     </div>
                                     <div class="ml-3 text-sm leading-6">
                                         <label for="displayed" class="font-medium text-gray-900">Publier mon post</label>

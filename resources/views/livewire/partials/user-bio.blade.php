@@ -124,7 +124,7 @@ mount(function (User $user) {
 {{--                                <div>--}}
 {{--                                    <label for="comment" class=" block text-sm font-medium leading-6 text-gray-900"></label>--}}
 {{--                                    <div class="mt-2 w-full">--}}
-{{--                                        <textarea wire:model="bio" rows="4" name="comment" id="comment" class=" block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>--}}
+{{--                                        <textarea wire:model="bio" rows="4" name="comment" id="comment" class=" block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6"></textarea>--}}
 {{--                                    </div>--}}
 {{--                                </div>--}}
 {{--                            </div>--}}
@@ -132,7 +132,7 @@ mount(function (User $user) {
 {{--                        --}}{{-- modale de confirmation de suppression --}}
 {{--                        <div class="mt-5 relative flex items-start">--}}
 {{--                            <div class="flex h-6 items-center">--}}
-{{--                                <input wire:model="displayedTemp" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 checked:">--}}
+{{--                                <input wire:model="displayedTemp" id="offers" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">--}}
 {{--                            </div>--}}
 {{--                            <div class="ml-3 text-sm leading-6">--}}
 {{--                                <label for="offers" class="font-medium text-gray-900">Afficher cette section au--}}

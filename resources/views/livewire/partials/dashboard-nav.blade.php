@@ -21,7 +21,7 @@ mount(function () {
 
 ?>
 
-<nav class="bg-white shadow border-b">
+<nav class="bg-white shadow border-b border-gray-300">
     <h3 class="sr-only">
         Menu de navigation du profil
     </h3>

@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use function Livewire\Volt\layout;
@@ -12,17 +11,14 @@ use function Livewire\Volt\{
 
 layout('layouts.dashboard');
 
-
 state([
     'user',
     'displayed_informations'
 ]);
 
-
 mount(function () {
     $this->user = Auth::user();
     $this->displayed_informations = $this->user->displayedInformation()->first();
-//    TestEvent::dispatch('hello world');
 });
 ?>
 

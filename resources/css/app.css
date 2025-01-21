@@ -1,5 +1,41 @@
-[x-cloak] { display: none;}
+[x-cloak] {
+    display: none;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    textarea {
+        @apply bg-white;
+    }
+
+    select {
+        @apply bg-white;
+        background-image: url("../images/chevron-down.svg");
+    }
+
+    input:not([type="checkbox"]) {
+        @apply bg-white;
+    }
+
+    input[type="date"] {
+        color-scheme: dark;
+    }
+
+    .bg-hero {
+        background-image: url('../../public/images/hero.webp');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0.5;
+        z-index: 20;
+    }
+}
+
+
+
 

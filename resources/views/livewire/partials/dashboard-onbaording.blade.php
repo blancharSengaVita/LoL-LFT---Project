@@ -218,7 +218,7 @@ on(['renderOnboarding' => function () {
         <div class=" sm:w-12/12">
             <ul role="list" class="divide-y divide-gray-100">
                 @if(!count($missionsShow))
-                    <p class="mb-2">Toutes vos missions ont été accompli !</p>
+                    <p class="mb-2 text-gray-900">Toutes vos missions ont été accompli !</p>
                     <button wire:click="stopDisplay" type="button" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  sm:w-auto">
                         Archiver cette section
                     </button>
@@ -246,7 +246,7 @@ on(['renderOnboarding' => function () {
                                     <div @class([ "h-2 rounded-full", 'bg-green-600' => $mission->completed,'bg-indigo-600' =>!$mission->completed,])
                                          style="width: {{$mission->percent}}%"></div>
                                 </div>
-                                <p> {{$mission->sectionCompletion}}/{{$mission->number}} </p>
+                                <p class="text-black">{{$mission->sectionCompletion}}/{{$mission->number}}</p>
                             </div>
                             <p class="truncate mt-2 text-sm leading-5 text-gray-500">{{ $mission->completion }}</p>
                         </div>
@@ -279,7 +279,7 @@ on(['renderOnboarding' => function () {
                                 <div class="max-h-2 grow-1 w-full overflow-hidden rounded-full bg-gray-200">
                                     <div class="h-2 rounded-full bg-indigo-600" style="width: {{$percent}}"></div>
                                 </div>
-                                <p> 1/{{count($sections)}} </p>
+                                <p class=""> 1/{{count($sections)}} </p>
                             </div>
                         </div>
                     </li>
@@ -290,7 +290,7 @@ on(['renderOnboarding' => function () {
             @if(count($this->missionsHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -298,7 +298,7 @@ on(['renderOnboarding' => function () {
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
