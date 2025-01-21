@@ -28,7 +28,7 @@ rules([
         'required',
         'string',
         'confirmed',
-        Rules\Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised()
+        Rules\Password::min(8)->mixedCase()->numbers()->symbols()
     ],
 ]);
 
