@@ -185,6 +185,12 @@ $editSingleExperience = function (PlayerExperience $experience) {
     $this->renderChange();
 };
 
+$openDeleteModal = function (PlayerExperience $experience) {
+    $this->deleteModal = true;
+    $this->experience = $experience;
+    $this->renderChange();
+};
+
 $deleteSingleExperience = function () {
     $this->experience->delete();
     $this->deleteModal = false;
@@ -192,11 +198,7 @@ $deleteSingleExperience = function () {
     $this->renderChange();
 };
 
-$openDeleteModal = function (PlayerExperience $experience) {
-    $this->deleteModal = true;
-    $this->experience = $experience;
-    $this->renderChange();
-};
+
 
 $closeDeleteModal = function () {
     $this->deleteModal = false;

@@ -193,12 +193,6 @@ $closeLFTModal = function () {
 };
 
 $saveMyLftPost = function () {
-//    try {
-//        $this->validate();
-//    } catch (\Illuminate\Validation\ValidationException $e) {
-//        throw $e;
-//    }
-
     $this->published = $this->publishedTemp ;
 
     LftPost::updateOrCreate([

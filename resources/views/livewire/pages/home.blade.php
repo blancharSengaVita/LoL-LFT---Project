@@ -37,7 +37,7 @@ layout('layouts.guest');
                 <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
                     <div class="text-center">
                         <p class="text-4xl font-bold tracking-tight text-gray-600 sm:text-6xl">LoL LFT</p>
-                        <p class="mt-6 text-lg leading-8 text-gray-900 ">Trouvez les partenaires qui te permettront
+                        <p class="mt-6 text-lg leading-8 text-gray-900 ">Trouve les partenaires qui te permettront
                             d’atteindre des sommets</p>
                     </div>
                 </div>

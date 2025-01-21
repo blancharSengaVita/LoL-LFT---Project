@@ -82,7 +82,7 @@ class PlayerSeeder extends Seeder
                 'region' => 'EUW',
                 'job' => 'Staff',
                 'bio' => 'Toujours cute, toujours kawainé',
-                'setup_completed' => false,
+                'setup_completed' => true,
                 'level' => 'Argent',
             ]);
 
@@ -239,7 +239,7 @@ class PlayerSeeder extends Seeder
 
 
         $users = [$squirtle, $blanchar, $doki, $striker, $nuc, $canna, $oneonethree, $jesus, $skeanz, $keria];
-        $teams = [$g2, $bds, $kcorp];
+        $teams = [$g2, $bds, $kcorp, $UwU];
 
         //Displayed things
         foreach ($users as $user) {
