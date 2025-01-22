@@ -13,9 +13,10 @@ state([
 	'users',
 ]);
 
-mount(function (User $user) {
-
+mount(function () {
 	$this->users = User::whereNot('id', Auth::user()->id)
+        ->whereNotNull('username')
+        ->where('setup_completed', true)
 		->inRandomOrder()
 		->limit(3)
 		->get();
@@ -39,13 +40,16 @@ mount(function (User $user) {
             @foreach($users as $user)
                 <li class="flex items-center justify-between gap-x-6 py-5">
                     <div class="flex min-w-0 gap-x-4">
-                        <img class="h-10 w-10 flex-none rounded-full bg-gray-50" src="{{$user->src}}" alt="photo de profil de {{$user->src}}">
+                        <img class="h-10 w-10 flex-none rounded-full bg-gray-50" src="{{$user->src}}" alt="photo de profil de {{$user->game_name}}">
                         <div class="min-w-0 flex-auto">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{$user->game_name}}</p>
                             <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{$user->username}}</p>
                         </div>
                     </div>
-                    <a wire:navigate href="{{route('user', ['user' => $user->username])}}" title="aller vers la page de {{$user->game_name}}" class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">View</a>
+                    <a
+                        wire:navigate
+                        href="{{route('user', ['user' => $user->username])}}"
+                        title="aller vers la page de {{$user->game_name}}" class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">View</a>
                 </li>
             @endforeach
         </ul>

@@ -6,7 +6,7 @@ return [
     'Bronze' => 'Bronze',
     'Silver' => 'Argent',
     'Gold' => 'Or',
-    'Platine' => 'Platine',
+    'Platinum' => 'Platine',
     'Emerald' => 'Émeraude',
     'Diamond' => 'Diamant',
     'Master' => 'Maître',

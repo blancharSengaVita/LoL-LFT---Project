@@ -181,7 +181,7 @@ $listenForMessage = function ($data) {
                          block border-0 pr-3 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6
                          "
                         type="text"
-                        placeholder="type your message here..."
+                        placeholder="Démarrer un nouveau message"
                     />
                     <button class="ml-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-50 group flex gap-x-3 rounded-md py-2 text-sm leading-6 font-semibold">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-gray-400 group-hover:text-indigo-600">

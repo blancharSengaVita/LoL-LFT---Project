@@ -83,6 +83,7 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
 ?>
 
 <ul class="flex flex-col">
+    @if(count($conversations))
     @foreach($conversations as $conversation)
         <li>
             <a type="button" title="Envoyer des messages à {{$conversation->game_name}}"  wire:navigate class="flex flex-row py-3 px-2 items-center h-full
@@ -106,5 +107,6 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
             </a>
         </li>
     @endforeach
+    @endif
 </ul>
 

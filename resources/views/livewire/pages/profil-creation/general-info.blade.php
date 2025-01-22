@@ -7,7 +7,8 @@ use App\Rules\StartsWithAt;
 use Illuminate\Validation\Rule;
 use \App\Models\UserMission;
 use \App\Models\OnboardingMission;
-use function Livewire\Volt\{state, rules, layout, mount};
+use \Carbon\Carbon;
+use function Livewire\Volt\{state, rules, layout, mount, updated, computed};
 
 layout('layouts.auth');
 
@@ -46,21 +47,49 @@ mount(function () {
         $this->gameNameInput = 'Nom d\'utilisateur';
         $this->gameNameDescription = 'Celui-ci sera Le nom de votre compte';
     }
+
+//	dd(now()->timestamp());
+});
+
+updated(['game_name' => function () {
+    $this->username = '@' . $this->game_name;
+}]);
+
+$usernameStartWithAt = computed(function () {
+    if (str_starts_with($this->username, '@')) {
+        return true;
+    } else {
+        return false;
+    }
+});
+
+$usernameIsTaken = computed(function () {
+	if ($this->username === $this->user->username){
+		return false;
+    }
+    return User::where('username', $this->username)->exists();
+});
+
+$dateIsBeforeOrEgale = computed(function () {
+    return $this->date < Carbon::now();
 });
 
 rules([
     'game_name' => 'required|string|max:20',
     'username' => ['required', 'string', Rule::unique('users')->ignore(Auth::user()->id), new StartsWithAt, 'max:20'],
     'nationality' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
-    'birthday' => Auth::user()->account_type !== 'team' ? 'required|date' : 'nullable',
+    'birthday' => Auth::user()->account_type !== 'team' ? 'required|date|before_or_equal:today' : 'nullable',
 ])->messages([
     'nationality.required' => 'Votre nationalité est requis',
     'game_name.required' => 'Votre pseudo est requis',
-    'game_name.string' => 'Votre pseudo doit être composé de lettre',
+    'game_name.string' => 'Votre pseudo doit être composé de lettres',
+    'game_name.max' => 'Votre pseudo doit avoir maximum 20 lettres',
     'username.required' => 'Votre nom d\'utilisateur est requis',
-    'username.string' => 'Votre nom doit être composé de lettre',
+    'username.string' => 'Votre nom d\'utilisateur doit être composé de lettre',
+    'username.max' => 'Votre nom d\'utilisateur doit avoir maximum 20 lettres',
     'birthday.required' => 'Votre date de naissance est requis',
     'birthday.date' => 'Votre date de naissance ne correspond pas au format',
+    'birthday.before_or_equal' => 'La date doit être une date antérieure ou égale à aujourd\'hui.',
 ]);
 
 $save = function () {
@@ -68,7 +97,7 @@ $save = function () {
     $user = Auth::user();
     $user->game_name = $this->game_name;
     $user->username = $this->username;
-	if (Auth::user()->account_type !== 'team'){
+    if (Auth::user()->account_type !== 'team') {
         $user->birthday = $this->birthday;
         $user->nationality = $this->nationality;
     } else {
@@ -147,9 +176,10 @@ $save = function () {
             <form wire:submit="save" class="space-y-6">
 
                 <div>
-                    <label for="game_name" class="block text-sm font-medium leading-6 text-gray-900">{{ $this->pseudoInput  }}</label>
+                    <label for="game_name" class="block text-sm font-medium leading-6 text-gray-900">{{ $this->pseudoInput  }}
+                        <span class="text-red-600">*</span></label>
                     <div class="mt-2">
-                        <input wire:model="game_name" type="text" name="game_name" id="game_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Lee">
+                        <input wire:model.live="game_name" type="text" name="game_name" id="game_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Lee">
                     </div>
                     @error('game_name')
                     <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
@@ -160,21 +190,49 @@ $save = function () {
 
                 <div>
                     <label for="surname" class="block text-sm font-medium leading-6 text-gray-900">Nom
-                        d'utilisateur</label>
+                        d'utilisateur<span class="text-red-600">*</span></label>
                     <div class="mt-2">
-                        <input wire:model="username" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
+                        <input wire:model.live="username" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
                     </div>
                     @error('username')
-                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-1"> {{ $message }}</p>
                     @enderror
+                    <div class="flex items-center gap-x-1 mt-2 mb-1">
+                        {{--                        s'il y a un @ et on affiche rien--}}
+                        {{--                        s'il y a pas de @, on affiche il y a pas de @--}}
+                        {{--                        s'il y a un @ + on affiche les 2 autre cas--}}
+                        @if($this->usernameStartWithAt)
+                            @if($this->usernameIsTaken && $username !== '@')
+                                <svg class="text-red-600 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+                                </svg>
+                                <p class="text-sm text-red-600 mt-0" id="email-error">le pseudo n'est libre pas</p>
+                            @elseif($username !== '@')
+                                <svg class="text-green-400 sm:size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/>
+                                </svg>
+                                <p class="text-sm text-green-400 mt-0" id="email-error">le pseudo est libre</p>
+                            @else
+
+                            @endif
+
+                        @else
+                            <svg class="text-red-600 sm:size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14ZM8 4a.75.75 0 0 1 .75.75v3a.75.75 0 0 1-1.5 0v-3A.75.75 0 0 1 8 4Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+                            </svg>
+                            <p class="text-sm text-red-600 mt-0" id="email-error">le pseudo doit commencer avec un @</p>
+                        @endif
+
+                        {{--                        @endif--}}
+                    </div>
                     <p class="mt-1 text-sm text-gray-500" id="password-description">Celui-ci sera votre pseudo de scène,
                         choisissez le bien</p>
                 </div>
 
                 @if($type !== 'team')
                     <div>
-                        <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité</label>
-                        <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                        <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-600">*</span></label>
+                        <select wire:model.live="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                             <option value="">-- choisissez votre nationalité --</option>
                             @foreach($nationalities as $nationality)
                                 <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
@@ -187,9 +245,9 @@ $save = function () {
 
                     <div>
                         <label for="birthday" class="block text-sm font-medium leading-6 text-gray-900">Date de
-                            naissance</label>
+                            naissance<span class="text-red-600">*</span></label>
                         <div class="mt-2">
-                            <input wire:model="birthday" type="date" name="birthday" id="birthday" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="">
+                            <input wire:model.live="birthday" type="date" name="birthday" id="birthday" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="">
                         </div>
                         @error('birthday')
                         <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
