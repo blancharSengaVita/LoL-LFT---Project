@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\ProfilSetupCompleted;
+use App\Http\Middleware\UserProfilSetupNotCompleted;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -20,15 +22,18 @@ Volt::route('/home', 'pages.home')
     ->middleware('guest')
     ->name('home');
 
-Route::middleware('auth')->group(function () {
-    //PROFILE CREATION
-    Volt::route('/profil-creation/general-info', 'pages.profil-creation.general-info')
-        ->name('pages.profil-creation.general-info');
-    Volt::route('/profil-creation/additional-info', 'pages.profil-creation.additional-info')
-        ->name('pages.profil-creation.additional-info');
-    Volt::route('/profil-creation/account-type', 'pages.profil-creation.account-type')
-        ->name('pages.profil-creation.account-type');
+//PROFILE CREATION
+Volt::route('/profil-creation/general-info', 'pages.profil-creation.general-info')
+    ->name('pages.profil-creation.general-info')
+    ->middleware(['auth', UserProfilSetupNotCompleted::class]);
+Volt::route('/profil-creation/additional-info', 'pages.profil-creation.additional-info')
+    ->name('pages.profil-creation.additional-info')
+    ->middleware(['auth', UserProfilSetupNotCompleted::class]);
+Volt::route('/profil-creation/account-type', 'pages.profil-creation.account-type')
+    ->name('pages.profil-creation.account-type')
+    ->middleware(['auth', UserProfilSetupNotCompleted::class]);
 
+Route::middleware(['auth', ProfilSetupCompleted::class])->group(function () {
     //PROFILE DASHBOARD
     Volt::route('/dashboard', 'pages.dashboard')
         ->name('dashboard');

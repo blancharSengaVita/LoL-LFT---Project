@@ -15,7 +15,7 @@ class StartsWithAt implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (!str_starts_with($value, '@')) {
-            $fail('The :attribute must start with an @.');
+            $fail('Le :attribute doit commencer avec un <i>@<i>');
         }
     }
 }

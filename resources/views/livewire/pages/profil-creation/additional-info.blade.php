@@ -3,8 +3,9 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
-use Intervention\Image\ImageManagerStatic as Image;
+//use Intervention\Image\Laravel\Facades\Image;
 use \Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 use function Livewire\Volt\{
     state,
     rules,
@@ -42,10 +43,8 @@ mount(function () {
 
     if ($this->user->account_type === 'staff') {
         $this->jobs = $this->jobs['staff'];
-		$this->messageJob = 'Choisissez votre niveau jeu ou dans votre profession';
+        $this->messageJob = 'Choisissez votre niveau jeu ou dans votre profession';
     }
-
-//    $user->account_type === 'team' ? ': ';
 
     if ($this->user->account_type === 'player') {
         $this->jobs = $this->jobs['player'];
@@ -70,7 +69,7 @@ mount(function () {
 
 rules([
     'job' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
-    'level' =>  'required',
+    'level' => 'required',
     'region' => 'required',
     'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
 ])->messages([
@@ -88,15 +87,18 @@ rules([
 updated(['profilPictureFilename' => fn() => $this->profilPictureFilename]);
 layout('layouts.auth');
 
-$save = function () {
+$isRealRole = computed(function () {
+    return in_array($this->job, ['Top', 'Jungle', 'Mid', 'ADC', 'Support']);
+});
 
+$save = function () {
     if (isset($this->profilPicture)) {
         $tmpPath = $this->profilPicture->getPathname();
         $originalFilename = $this->profilPicture->getClientOriginalName();
         $filenameParts = explode('.', $originalFilename);
         $extension = $filenameParts[array_key_last($filenameParts)];
         $newFilename = sha1_file($tmpPath) . '.' . $extension;
-        $image = Image::make($this->profilPicture);
+        $image = Image::read($this->profilPicture);
         $width = $image->width();
         $height = $image->height();
         $ratio = $width / $height;
@@ -106,14 +108,9 @@ $save = function () {
             if (!file_exists(storage_path('app/public/images/' . $size))) {
                 Storage::makeDirectory(('public/images/' . $size));
             }
-
-            $image->resize($size, null, function ($constraint) {
-                $constraint->aspectRatio(); // Maintient le ratio original
-                $constraint->upsize(); // Empêche l'agrandissement
-            });
-
+            $image->cover($size, $size);
+            $image->orient();
             $image->save(storage_path('app/public/images/' . $size . '/') . $newFilename, 100);
-            $image->destroy();
         }
 
         Auth::user()->profil_picture = $newFilename;
@@ -219,20 +216,26 @@ $save = function () {
                     <div class="col-span-3">
                         @if($type !== 'team')
                             <div class="col-span-3 mb-4">
-                                <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-500">*</span></label>
-                                <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-600">*</span></label>
+                                <select wire:model.live="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+                                        @if($this->isRealRole) style="background-image:url({{
+	Vite::asset('resources/images/'. $job .'.svg') }});"
+                                        @else
+                                            style="background-image:url({{
+	Vite::asset('resources/images/chevron-down.svg') }});"
+	@endif>
                                     <option value="">-- choisissez votre poste --</option>
-                                    @foreach($jobs as $job)
-                                        <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                @foreach($jobs as $job)
+                                    <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
                                     @endforeach
-                                </select>
-                                @error('job')
-                                <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                                @enderror
+                                    </select>
+                                    @error('job')
+                                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                                    @enderror
                             </div>
-                        @endif()
+                        @endif
                         <div class="col-span-3 mb-4">
-                            <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région<span class="text-red-500">*</span></label>
+                            <label for="region" class="block text-sm font-medium leading-6 text-gray-900">Région<span class="text-red-600">*</span></label>
                             <select wire:model="region" id="region" name="region" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                 <option value="">-- choisissez votre region --</option>
                                 @foreach($regions as $region)
@@ -243,22 +246,32 @@ $save = function () {
                             <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                             @enderror
                         </div>
-{{--                        @if($type !== 'staff')--}}
-                            <div class="col-span-3">
-                                <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-500">*</span></label>
-                                <select wire:model="level" id="levels" name="levels" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
-                                    <option value="">-- choisissez votre niveau --</option>
-                                    @foreach($levels as $level)
-                                        <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
-                                    @endforeach
-                                </select>
-                                @error('level')
-                                <p class="text-sm text-red-600 space-y-1 mt-2 mb-2"> {{ $message }}</p>
-                                @enderror
-                                <p class="mt-1 text-sm text-gray-500" id="password-description">
-                                    {{ $messageJob }}</p>
-                            </div>
+                        {{--                        @if($type !== 'staff')--}}
+                        <div class="col-span-3">
+                            <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-600">*</span></label>
+                            <select wire:model.live="level" id="levels" name="levels"
+                                    class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6
+                                    after:content-[url('http://codeskulptor-demos.commondatastorage.googleapis.com/descent/bomb_24_24.png')]
+                                    "
+                                    @if($level) style="background-image:url({{ Vite::asset('resources/images/'. $level .'.svg') }});" @endif
+                            >
 
+                                <option value="">-- choisissez votre niveau --</option>
+                                @foreach($levels as $level)
+                                    <option
+                                        class=""
+                                        value="{{ $level }}"
+                                    >
+                                        {{ __('levels.'.$level) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('level')
+                            <p class="text-sm text-red-600 space-y-1 mt-2 mb-2"> {{ $message }}</p>
+                            @enderror
+                            <p class="mt-1 text-sm text-gray-500" id="password-description">
+                                {{ $messageJob }}</p>
+                        </div>
                     </div>
 
 
@@ -276,11 +289,11 @@ $save = function () {
 
                 </div>
 
-{{--                <div class="justify-center flex">--}}
-{{--                    <button type="submit" class="flex justify-center rounded-md bg-rose-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">--}}
-{{--                        Ajouter un compte riot--}}
-{{--                    </button>--}}
-{{--                </div>--}}
+                {{--                <div class="justify-center flex">--}}
+                {{--                    <button type="submit" class="flex justify-center rounded-md bg-rose-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">--}}
+                {{--                        Ajouter un compte riot--}}
+                {{--                    </button>--}}
+                {{--                </div>--}}
 
                 <div class="justify-center flex">
                     <button type="submit" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
@@ -306,9 +319,9 @@ $save = function () {
             e.currentTarget.value = ''; // Réinitialiser le champ de fichier
         }
 
-        const maxSize = 10 * 1024 * 1024; // 10 MB
+        const maxSize = 5 * 1024 * 1024; // 10 MB
         if (file.size > maxSize) {
-            alert('La taille du fichier doit être inférieure à 10 MB.');
+            alert('La taille du fichier doit être inférieure à 5 MB.');
             e.currentTarget.value = ''; // Réinitialiser le champ de fichier
             return;
         }

@@ -6,7 +6,7 @@ return [
     'Bronze',
     'Silver',
     'Gold',
-    'Platine',
+    'Platinum',
     'Emerald',
     'Diamond',
     'Master',
