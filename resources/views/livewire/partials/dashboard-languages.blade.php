@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\DisplayedInformation;
 use App\Models\DisplayedInformationsOnce;
-use App\Models\language;
+use App\Models\Language;
 use Carbon\Carbon;
 use Masmerise\Toaster\Toaster;
 use function Livewire\Volt\layout;
