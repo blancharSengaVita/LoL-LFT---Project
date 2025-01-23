@@ -1,28 +1,29 @@
 <?php
 
 return [
-    'en' => 'English',
-    'id' => 'Indonesian',
-    'ms' => 'Malaysian',
-    'pt' => 'Portuguese',
-    'cs' => 'Czech',
-    'fr' => 'French',
     'de' => 'German',
-    'el' => 'Greek',
-    'hu' => 'Hungarian',
-    'it' => 'Italian',
-    'ja' => 'Japanese',
+    'en' => 'English',
+    'zh-hans' => 'Simplified Chinese',
+    'zh-hant' => 'Traditional Chinese',
     'ko' => 'Korean',
     'es' => 'Spanish',
+    'fr' => 'French',
+    'el' => 'Greek',
+    'hu' => 'Hungarian',
+    'id' => 'Indonesian',
+    'it' => 'Italian',
+    'ja' => 'Japanese',
+    'ms' => 'Malaysian',
     'pl' => 'Polish',
+    'pt' => 'Portuguese',
     'ro' => 'Romanian',
     'ru' => 'Russian',
-    'zh-hans' => 'Simplified  Chinese',
     'th' => 'Thai',
-    'zh-hant' => 'Traditional Chinese',
     'tr' => 'Turkish',
     'vi' => 'Vietnamese',
+    'cs' => 'Czech',
 ];
+
 
 //Comment ça doit être affiché dans le choix de langue
 //ENGLISH (NA)
