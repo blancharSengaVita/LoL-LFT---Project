@@ -222,12 +222,12 @@ displayedOnce:$wire.entangle('displayedOnce'),
             <ul role="list" class="divide-y divide-gray-100">
                 @foreach($languagesShow as $language)
                     <li class="flex items-center gap-x-4 py-5 w-full" wire:key="{{ $language->id }}">
-                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
-                            <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600 ">
+                            <p class="text-3xl text-center text-white m-4"> {{  ucfirst(array_search($language->name, $availableLanguages)) }} </p>
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
-                            <p class="truncate text-sm leading-5 text-gray-900">{{ __($language->level)  }}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{ __('languageLevels.'.$language->level)  }}</p>
                         </div>
                         <div class="ml-auto">
                             <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
@@ -245,12 +245,12 @@ displayedOnce:$wire.entangle('displayedOnce'),
                 @endforeach
                 @foreach($languagesHidden as $language)
                     <li :class="openAccordion ? '' : 'hidden'" class="flex items-center gap-x-4 py-5">
-                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">
+                        <div class="h-14 w-14 flex justify-center items-center bg-indigo-600 p-4">
                             <p class="text-3xl text-center text-white">{{ ucfirst(array_search($language->name, $availableLanguages)) }}</p>
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-semibold leading-6 text-gray-900">{{ __('languages.'.$language->name) }}</p>
-                            <p class="truncate text-sm leading-5 text-gray-900">{{ __($language->level)  }}</p>
+                            <p class="truncate text-sm leading-5 text-gray-900">{{ __('languageLevels.'.$language->level)  }}</p>
                         </div>
                         <div class="ml-auto">
                             <button wire:click="editsingleLanguage({{$language}})" type="button" class="text-gray-700 group rounded-md p-2 text-sm leading-6 font-semibold ">
@@ -380,7 +380,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
                                     Langues</h3>
                                 <div class="mt-4">
-                                    <label for="name" class="block text-sm font-medium leading-6 text-gray-900">name</label>
+                                    <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Langue</label>
                                     <select wire:model="name" id="name" name="name" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez une langue --</option>
                                         @foreach($availableLanguages as $language)

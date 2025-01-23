@@ -68,7 +68,7 @@ class PlayerSeeder extends Seeder
                 'job' => 'Top',
                 'bio' => 'Piqué par league malgré moi',
                 'setup_completed' => true,
-                'level' => 'Platine',
+                'level' => 'Platinum',
             ]);
 
         $UwU = User::factory()
@@ -83,7 +83,7 @@ class PlayerSeeder extends Seeder
                 'job' => 'Staff',
                 'bio' => 'Toujours cute, toujours kawainé',
                 'setup_completed' => true,
-                'level' => 'Argent',
+                'level' => 'Silver',
             ]);
 
         $striker = User::factory()
@@ -423,17 +423,36 @@ class PlayerSeeder extends Seeder
             [
                 'user_id' => $blanchar->id,
                 'name' => 'French',
-                'level' => 'C2 - Langues maternelle',
+                'level' => 'Native language',
             ],
             [
                 'user_id' => $blanchar->id,
                 'name' => 'English',
-                'level' => 'B1 - Intermédiaire',
+                'level' => 'B1 - Intermediate',
             ],
             [
                 'user_id' => $blanchar->id,
                 'name' => 'Japanese',
-                'level' => 'Je sais dire bonjour',
+                'level' => 'A1 - Beginner',
+            ],
+        ]);
+
+        //#UwU
+        Language::factory()->createMany([
+            [
+                'user_id' => $UwU->id,
+                'name' => 'French',
+                'level' => 'Native language',
+            ],
+            [
+                'user_id' => $UwU->id,
+                'name' => 'English',
+                'level' => 'B1 - Intermediate',
+            ],
+            [
+                'user_id' => $UwU->id,
+                'name' => 'Japanese',
+                'level' => 'A1 - Beginner',
             ],
         ]);
 

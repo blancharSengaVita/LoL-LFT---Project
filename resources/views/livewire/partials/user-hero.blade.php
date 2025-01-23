@@ -39,6 +39,7 @@ mount(function (User $user) {
 });
 
 
+
 $newConversation = function () {
     $userId = $this->user->id;
     $this->conversation = Conversation::where(function ($query) use ($userId) {
