@@ -189,10 +189,10 @@ $save = function () {
                 </div>
 
                 <div>
-                    <label for="surname" class="block text-sm font-medium leading-6 text-gray-900">Nom
+                    <label for="usurname" class="block text-sm font-medium leading-6 text-gray-900">Nom
                         d'utilisateur<span class="text-red-600">*</span></label>
                     <div class="mt-2">
-                        <input wire:model.live="username" type="text" name="surname" id="surname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
+                        <input wire:model.live="username" type="text" name="usurname" id="usurname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Sang-hyeo">
                     </div>
                     @error('username')
                     <p class="text-sm text-red-600 space-y-1 mt-2 mb-1"> {{ $message }}</p>

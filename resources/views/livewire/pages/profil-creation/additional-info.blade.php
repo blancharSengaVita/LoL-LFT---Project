@@ -3,7 +3,6 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
-//use Intervention\Image\Laravel\Facades\Image;
 use \Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use function Livewire\Volt\{
@@ -177,8 +176,7 @@ $save = function () {
                 </li>
             </ol>
         </nav>
-        <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Etape 3 : Dites-moi en
-            plus sur vous</p>
+        <p class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Etape 3 : Dites-moi en plus sur vous</p>
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[720px]">
@@ -205,13 +203,6 @@ $save = function () {
                         <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                         @enderror
                     </div>
-                    {{--                    @if ($profilPicture->getClientOriginalExtension())--}}
-                    {{--                        @if (('profilPicture'))--}}
-                    {{--                            <img alt="aezr" src="{{ $profilPicture->temporaryUrl() }}">--}}
-                    {{--                        @endif--}}
-                    {{--                    @endif--}}
-
-
                     <div class="col-span-3">
                         @if($type !== 'team')
                             <div class="col-span-3 mb-4">
@@ -247,8 +238,8 @@ $save = function () {
                         </div>
                         {{--                        @if($type !== 'staff')--}}
                         <div class="col-span-3">
-                            <label for="levels" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-600">*</span></label>
-                            <select wire:model.live="level" id="levels" name="levels"
+                            <label for="level" class="block text-sm font-medium leading-6 text-gray-900">Niveau<span class="text-red-600">*</span></label>
+                            <select wire:model.live="level" id="level" name="level"
                                     class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6
                                     after:content-[url('http://codeskulptor-demos.commondatastorage.googleapis.com/descent/bomb_24_24.png')]
                                     "
@@ -295,9 +286,7 @@ $save = function () {
                 {{--                </div>--}}
 
                 <div class="justify-center flex">
-                    <button type="submit" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Suivant
-                    </button>
+                    <button type="submit" class="flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Entre dans la faille !</button>
                 </div>
             </form>
         </div>

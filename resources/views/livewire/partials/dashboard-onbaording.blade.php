@@ -356,17 +356,16 @@ on(['renderOnboarding' => function () {
                             {{--                            </li>--}}
                             <li class="flex gap-x-4 py-5">
                                 <div class="min-w-0">
-                                    <button type="button" wire:click="newExperience">
+                                    <button type="button" dusk="onBoardingExperience" wire:click="newExperience">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             expérience</p>
-                                        <p class="text-left mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une
-                                            saison en LEC qu'une demi-finale de clash</p>
+                                        <p class="text-left mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une saison en LEC qu'une demi-finale de clash</p>
                                     </button>
                                 </div>
                             </li>
                             <li class="flex gap-x-4 py-5">
                                 <div class="min-w-0">
-                                    <button type="button" wire:click="newAward">
+                                    <button type="button" dusk="onBoardingAward" wire:click="newAward">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             récompense</p>
                                         <p class="text-left mt-1 text-sm leading-5 text-gray-500">Vous avez gagnez le prix du meilleur joueur de la compétion ou celui du plus meurtrier
@@ -377,7 +376,7 @@ on(['renderOnboarding' => function () {
                             @if($user->account_type !== 'team')
                                 <li class="flex gap-x-4 py-5">
                                     <div class="min-w-0">
-                                        <button type="button" wire:click="newSkill">
+                                        <button type="button" wire:click="newSkill" dusk="onBoardingSkill">
                                             <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter
                                                 une compétence</p>
                                             <p class="text-left mt-1 text-sm leading-5 text-gray-500"> Faites nous
@@ -391,7 +390,7 @@ on(['renderOnboarding' => function () {
                             @if($user->account_type === 'staff')
                                 <li class="flex gap-x-4 py-5">
                                     <div class="min-w-0">
-                                        <button type="button" wire:click="newEducation">
+                                        <button type="button" wire:click="newEducation" dusk="onBoardingEducation">
                                             <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter
                                                 une formation</p>
                                             <p class="text-left mt-1 text-sm leading-5 text-gray-500">
@@ -405,7 +404,7 @@ on(['renderOnboarding' => function () {
                             @endif
                             <li class="flex gap-x-4 py-5">
                                 <div class="min-w-0">
-                                    <button type="button" wire:click="newLanguage">
+                                    <button type="button" wire:click="newLanguage" dusk="onBoardingLanguage">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             langue</p>
                                         <p class="text-left mt-1 text-sm leading-5 text-gray-500"> Agrandissez votre champ de
