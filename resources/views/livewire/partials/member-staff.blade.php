@@ -14,179 +14,183 @@ use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-	state,
-	on,
-	mount,
-	rules,
-	computed,
+    state,
+    on,
+    mount,
+    rules,
+    computed,
 };
 
 layout('layouts.dashboard');
 
 state([
-	'user',
-	'openModal',
-	'openSingleModal',
-	'openAccordion',
-	'singleModel',
-	'models',
-	'model',
-	'nationalities',
-	'jobs',
-	'username',
-	'job',
-	'nationality',
-	'entry_date',
+    'user',
+    'openModal',
+    'openSingleModal',
+    'openAccordion',
+    'singleModel',
+    'models',
+    'model',
+    'nationalities',
+    'jobs',
+    'username',
+    'job',
+    'nationality',
+    'entry_date',
     'archived',
-	'id',
-	'deleteModal',
-	'search' => '',
-	'create',
+    'id',
+    'deleteModal',
+    'search' => '',
+    'create',
 ]);
 
 
 rules([
-	'username' => 'required|',
-	'job' => 'required',
-	'nationality' => 'required',
-	'entry_date' => 'date'
+    'username' => 'required|',
+    'job' => 'required',
+    'nationality' => 'required',
+    'entry_date' => 'date'
 ])->messages([
-	'username.required' => 'Le champ est obligatoire.',
-	'job.required' => 'Le champ est obligatoire.',
-	'nationality.required' => 'Le champ est obligatoire.',
-	'entry_date.date' => 'Le champ doit être une date',
+    'username.required' => 'Le champ est obligatoire.',
+    'job.required' => 'Le champ est obligatoire.',
+    'nationality.required' => 'Le champ est obligatoire.',
+    'entry_date.date' => 'Le champ doit être une date',
 ])->attributes([
 
 ]);
 
 $renderChange = function () {
-	$this->models = $this->user->players()
+    $this->models = $this->user->players()
         ->where('type', 'staff')
         ->where('archived', false)
         ->get();
 
-	foreach ($this->models as $model) {
-		$model->entry_date = Carbon::parse($model->entry_date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
-	}
+    foreach ($this->models as $model) {
+        $model->entry_date = Carbon::parse($model->entry_date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+    }
 };
 
 mount(function () {
-	$this->user = Auth::user();
+    $this->user = Auth::user();
 
-	$this->renderChange();
-	$this->nationalities = require __DIR__ . '/../../../../app/enum/nationalities.php';
-	$this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
-	$this->jobs = $this->jobs['staff'];
-	$this->openAccordion = false;
-	$this->openModal = false;
-	$this->openSingleModal = false;
-	$this->deleteModal = false;
+    $this->renderChange();
+    $this->nationalities = require __DIR__ . '/../../../../app/enum/nationalities.php';
+    $this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
+    $this->jobs = $this->jobs['staff'];
+    $this->openAccordion = false;
+    $this->openModal = false;
+    $this->openSingleModal = false;
+    $this->deleteModal = false;
 
-	$this->username = '';
-	$this->job = '';
-	$this->nationality = '';
-	$this->entry_date = '';
+    $this->username = '';
+    $this->job = '';
+    $this->nationality = '';
+    $this->entry_date = '';
     $this->archived = false;
-	$this->id = 0;
+    $this->id = 0;
+});
+
+$usernameExist = computed (function (){
+    return User::where('username', $this->username)->exists();
 });
 
 $filteredUser = computed(function () {
-	return User::where('account_type', '=', 'player')
-	->orWhere('account_type', '=', 'staff')
-		->where(function ($query) {
-			$query->where('username', 'like', '%' . $this->search . '%')
-				->orWhere('game_name', 'like', '%' . $this->search . '%');
-		})
-		->limit(4)
-		->get();
+    return User::
+    whereNot('account_type', 'team')
+        ->where(function ($query) {
+            $query->where('username', 'like', '%' . $this->search . '%')
+                ->orWhere('game_name', 'like', '%' . $this->search . '%');
+        })
+        ->limit(4)
+        ->get();
 });
 
 $createSingleModel = function () {
-	$this->create = true;
-	$this->openSingleModal = true;
-	$this->username = '';
-	$this->job = '';
-	$this->nationality = '';
-	$this->entry_date = '';
+    $this->create = true;
+    $this->openSingleModal = true;
+    $this->username = '';
+    $this->job = '';
+    $this->nationality = '';
+    $this->entry_date = '';
     $this->archived = false;
-	$this->id = 0;
-	$this->renderChange();
+    $this->id = 0;
+    $this->renderChange();
 };
 
 $closeSingleModelModale = function () {
-	$this->openSingleModal = false;
+    $this->openSingleModal = false;
 };
 
 $saveSingleModel = function () {
-	try {
-		$this->validate();
-	} catch (\Illuminate\Validation\ValidationException $e) {
-		$this->renderChange();
-		throw $e;
-	}
+    try {
+        $this->validate();
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        $this->renderChange();
+        throw $e;
+    }
 
-	TeamMember::updateOrCreate([
-		'team_id' => Auth::id(),
-		'id' => $this->id
-	],
-		[
-			'username' => $this->username,
-			'job' => $this->job,
-			'nationality' => $this->nationality,
+    TeamMember::updateOrCreate([
+        'team_id' => Auth::id(),
+        'id' => $this->id
+    ],
+        [
+            'username' => $this->username,
+            'job' => $this->job,
+            'nationality' => $this->nationality,
             'type' => 'staff',
-			'entry_date' => $this->entry_date ?? Carbon::now()->format('Y-m-d'),
+            'entry_date' => $this->entry_date ?? Carbon::now()->format('Y-m-d'),
             'archived' => $this->archived,
-		]);
+        ]);
 
-	$this->renderChange();
-	$this->dispatch('renderOnboarding');
+    $this->renderChange();
+    $this->dispatch('renderOnboarding');
     $this->dispatch('archiveMember');
-	$this->openSingleModal = false;
-	if ($this->id === 0) {
-		Toaster::success('Joueurs ajouté avec succès');
-	}
+    $this->openSingleModal = false;
+    if ($this->id === 0) {
+        Toaster::success('Joueurs ajouté avec succès');
+    }
 
-	if ($this->id !== 0) {
-		Toaster::success('Joueurs modifiée avec succès');
-	}
+    if ($this->id !== 0) {
+        Toaster::success('Joueurs modifiée avec succès');
+    }
 };
 
 $editSingleModel = function (TeamMember $model) {
-	$this->create = false;
-	$this->openSingleModal = true;
-	$this->username = $model->username;
-	$this->job = $model->job;
-	$this->nationality = $model->nationality;
+    $this->create = false;
+    $this->openSingleModal = true;
+    $this->username = $model->username;
+    $this->job = $model->job;
+    $this->nationality = $model->nationality;
     if ($model->archived === 1) {
         $model->archived = true;
     } else {
         $model->archived = false;
     }
     $this->archived = $model->archived;
-	$this->entry_date = $model->entry_date;
-	$this->id = $model->id;
-	$this->renderChange();
+    $this->entry_date = $model->entry_date;
+    $this->id = $model->id;
+    $this->renderChange();
 };
 
 $deleteSingleModel = function () {
-	$this->model->delete();
-	$this->deleteModal = false;
-	$this->renderChange();
+    $this->model->delete();
+    $this->deleteModal = false;
+    $this->renderChange();
 };
 
 $openDeleteModal = function (TeamMember $model) {
-	$this->deleteModal = true;
-	$this->model = $model;
-	$this->renderChange();
+    $this->deleteModal = true;
+    $this->model = $model;
+    $this->renderChange();
 };
 
 $closeDeleteModal = function () {
-	$this->deleteModal = false;
-	$this->renderChange();
+    $this->deleteModal = false;
+    $this->renderChange();
 };
 
 on(['newAward' => function () {
-	$this->createSingleModel();
+    $this->createSingleModel();
 }]);
 
 $sendNotification = function ($userId) {
@@ -232,10 +236,12 @@ deleteModal: $wire.entangle('deleteModal'),
                     <table class="min-w-full divide-y divide-gray-300">
                         <thead>
                         <tr class="flex">
-                            <th scope="col" class= "flex-1 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                            <th scope="col" class="flex-1 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
                                 Nom
                             </th>
-                            <th scope="col" class="flex-1  px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Poste</th>
+                            <th scope="col" class="flex-1  px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Poste
+                            </th>
                             <th scope="col" class="flex-1  hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
                                 Nationalité
                             </th>
@@ -249,7 +255,7 @@ deleteModal: $wire.entangle('deleteModal'),
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                         @foreach($models as $player)
-                            <tr class="flex" >
+                            <tr class="flex">
                                 <td class="truncate  flex-1 whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $player->username }}</td>
                                 <td class="flex-1 whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{  __('jobs.'.$player->job)  }}</td>
                                 <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ __('nationalities.'.ucfirst($player->nationality)) }}</td>
@@ -313,7 +319,7 @@ deleteModal: $wire.entangle('deleteModal'),
                             <div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
                                 <div x-show="$wire.create" class="flex gap-x-4 items-center mb-4">
                                     <h3 class="w-auto text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                        Ajouter un joueur existant</h3>
+                                        Ajouter un staff existant</h3>
                                     <div x-show="$wire.create" class="w-auto">
                                         <label for="player" class="sr-only block text-sm font-medium leading-6 text-gray-900">Assigned
                                             to</label>
@@ -349,7 +355,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                                 -->
                                                 @if(!count($this->filteredUser))
                                                     <li class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabindex="-1">
-                                                        <p>Aucun résultat</p>
+                                                        <p class="text-black">Aucun résultat</p>
                                                     </li>
                                                 @endif
                                                 @foreach($this->filteredUser as $player)
@@ -391,8 +397,11 @@ deleteModal: $wire.entangle('deleteModal'),
                                 </div>
 
                                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                    Ajouter un joueur manuellement </h3>
-
+                                    @if($username === '')
+                                        Ajouter un staff manuellement
+                                    @else
+                                        Modifier un staff
+                                    @endif</h3>
                                 <div class="mt-4">
                                     <label for="username" class="block text-sm font-medium leading-6 text-gray-900">
                                         Nom<span class="text-red-600">*</span>
@@ -418,18 +427,21 @@ deleteModal: $wire.entangle('deleteModal'),
                                     <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="mt-4">
-                                    <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-600">*</span></label>
-                                    <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
-                                        <option value="">-- choisissez votre nationalité --</option>
-                                        @foreach($nationalities as $nationality)
-                                            <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('nationality')
-                                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                                    @enderror
-                                </div>
+
+                                @if(!$this->usernameExist)
+                                    <div class="mt-4">
+                                        <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-600">*</span></label>
+                                        <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                            <option value="">-- choisissez votre nationalité --</option>
+                                            @foreach($nationalities as $nationality)
+                                                <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('nationality')
+                                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                @endif
 
                                 <div class="mt-4">
                                     <label for="entry_date" class="block text-sm font-medium leading-6 text-gray-900">
@@ -449,7 +461,8 @@ deleteModal: $wire.entangle('deleteModal'),
                                         <input wire:model="archived" id="archived" aria-describedby="offers-description" name="archived" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                                     </div>
                                     <div class="ml-3 text-sm leading-6">
-                                        <label for="archived" class="font-medium text-gray-900">Archiver ce membre</label>
+                                        <label for="archived" class="font-medium text-gray-900">Archiver ce
+                                            membre</label>
                                     </div>
                                 </div>
                             </div>
@@ -457,7 +470,7 @@ deleteModal: $wire.entangle('deleteModal'),
                         </div>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                sauvegarder
+                                Sauvegarder
                             </button>
                             <button @click="openSingleModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler

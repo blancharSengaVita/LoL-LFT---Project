@@ -45,7 +45,6 @@ rules([
     'placement' => 'required|max:3',
     'team' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
     'job' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
-    'team' => '',
     'date' => 'required|date'
 ])->messages([
     'event.required' => 'Le champ est obligatoire.',
@@ -62,7 +61,6 @@ $renderChange = function () {
     foreach ($this->playerExperiences as $experience) {
         $experience->date = Carbon::parse($experience->date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
     }
-
     $this->playerExperiencesShow = $this->playerExperiences->take(2);
     $this->playerExperiencesHidden = $this->playerExperiences->skip(2);
     $this->displayedOnce = $this->user->displayedInformationsOnce->first()->player_experiences ?? 0;
@@ -180,8 +178,10 @@ $editSingleExperience = function (PlayerExperience $experience) {
     $this->placement = $experience->placement;
     $this->team = $experience->team;
     $this->job = $experience->job;
-    $this->date = $experience->date;
+    $this->date = Carbon::parse($experience->date)->locale('fr_FR')->isoFormat('Y-MM-DD');
     $this->id = $experience->id;
+
+//	dd($this->date);
     $this->renderChange();
 };
 
@@ -412,7 +412,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     Experience</h3>
                                 <div class="mt-4">
                                     <label for="event" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Évènement
+                                        Évènement<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="event" type="text" name="event" id="event" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Clash : coupe d'Europe">
@@ -426,7 +426,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 @if($user->account_type !== 'team')
                                     <div class="mt-4">
                                         <label for="team" class="block text-sm font-medium leading-6 text-gray-900">
-                                            Équipe
+                                            Équipe<span class="text-red-600">*</span>
                                         </label>
                                         <div class="mt-2">
                                             <input wire:model="team" type="text" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="T1">
@@ -438,7 +438,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         @endif
                                     </div>
                                     <div class="col-span-3 mt-4">
-                                        <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste</label>
+                                        <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-600">*</span></label>
                                         <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                             <option value="">-- choisissez votre poste --</option>
                                             @foreach($jobs as $job)
@@ -452,7 +452,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 @endif
                                 <div class="mt-4">
                                     <label for="placement" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Classement
+                                        Classement<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="placement" type="text" name="placement" id="placement" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
@@ -468,7 +468,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="date" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Date
+                                        Date<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="date" type="date" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
@@ -484,7 +484,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                sauvegarder
+                                Sauvegarder
                             </button>
                             <button @click="openSinglePlayerExperienceModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler

@@ -52,10 +52,10 @@ $logout = function (Logout $logout) {
          }"
         :class=" open ? 'fixed inset-0 z-40 overflow-y-auto' : ''"
 >
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12">
-            <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
-                <div class="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
+    <div class="mx-auto max-w-7xl px-4 sm:px-4 lg:px-4">
+        <div class="relative flex justify-between mr-4">
+            <div class="min-w-0 flex-1">
+                <div class="flex items-center py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
                     <h2 class="text-lg font-medium text-black"> {{$title}} </h2>
                 </div>
             </div>
@@ -98,7 +98,16 @@ $logout = function (Logout $logout) {
                         <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">Open user menu</span>
-                            <img class="h-8 w-8 rounded-full" src="{{$profilePictureSource}}" alt="">
+                            @if($this->user->profil_picture)
+                                <img class="h-8 w-8 rounded-full"
+                                     src="/storage/images/150/{{$this->user->profil_picture}}"
+                                     alt="Photo de profi de {{$this->user->game_name}}"
+                                     sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                            @else
+                                <div class="h-8 w-8 flex-none rounded-full bg-gray-400 flex justify-center items-center">
+                                    <p class="text-xl text-center text-gray-950">{{ ucfirst(substr($this->user->game_name, 0, 1)) }}</p>
+                                </div>
+                            @endif
                         </button>
                     </div>
 
@@ -114,9 +123,9 @@ $logout = function (Logout $logout) {
                     -->
                     <div x-cloak x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100", Not Active: "" -->
-                        <a href="{{route('dashboard')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
-                        <a href="{{route('settings')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>
-                        <boutton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</boutton>
+                        <a href="{{route('dashboard')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                        <a href="{{route('settings')}}" title="vers le dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" role="menuitem" tabindex="-1" id="user-menu-item-1">Paramètres</a>
+                        <boutton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50" role="menuitem" tabindex="-1" id="user-menu-item-2">Se déconnecter</boutton>
                     </div>
                 </div>
             </div>
@@ -144,7 +153,16 @@ $logout = function (Logout $logout) {
             <div class="border-t border-gray-200 pb-3 pt-4">
                 <div class="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="{{$profilePictureSource}}" alt="">
+                        @if($this->user->profil_picture)
+                            <img class="h-10 w-10 rounded-full"
+                                 src="/storage/images/150/{{$this->user->profil_picture}}"
+                                 alt="Photo de profi de {{$this->user->game_name}}"
+                                 sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                        @else
+                            <div class="h-10 w-10 flex-none rounded-full bg-gray-400 flex justify-center items-center">
+                                <p class="text-xl text-center text-gray-950">{{ ucfirst(substr($this->user->game_name, 0, 1)) }}</p>
+                            </div>
+                        @endif
                     </div>
                     <div class="ml-3">
                         <div class="text-base font-medium text-gray-800">{{ $user->game_name }}</div>

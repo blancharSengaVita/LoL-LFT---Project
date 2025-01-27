@@ -132,7 +132,6 @@ $save = function () {
 
     $this->redirect(route('dashboard', absolute: false), navigate: true);
 };
-
 ?>
 <div class="flex min-h-full flex-col items-center py-16 sm:px-6 lg:px-8">
     <x-slot name="h1">

@@ -151,7 +151,7 @@ $newConversation = function ($userId) {
                                     -->
                                     @if(!count($this->filteredUser))
                                         <li class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabindex="-1">
-                                            <p>Aucun résultat</p>
+                                            <p class="text-black">Aucun résultat</p>
                                         </li>
                                     @endif
                                     @foreach($this->filteredUser as $player)
@@ -169,7 +169,18 @@ $newConversation = function ($userId) {
 {{--                                               href="{{route('user', ['user' => $player->username])}}" title="Discuter avec {{$player->game_name}}"--}}
                                                 wire:click="newConversation({{$player->id}})"
                                             >
-                                                <img src="{{$player->src}}" alt="" class="h-10 w-10 flex-shrink-0 rounded-full">
+{{--                                                <img src="{{$player->src}}" alt="" class="h-10 w-10 flex-shrink-0 rounded-full">--}}
+
+                                                @if($player->profil_picture)
+                                                    <img class="h-10 w-10 flex-shrink-0 rounded-full"
+                                                         src="/storage/images/150/{{$player->profil_picture}}"
+                                                         alt="Photo de profi de {{$player->game_name}}"
+                                                         sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                                                @else
+                                                    <div class="h-10 w-10 flex-none rounded-full bg-gray-400 flex justify-center items-center">
+                                                        <p class="text-xl text-center text-gray-950">{{ ucfirst(substr($player->game_name, 0, 1)) }}</p>
+                                                    </div>
+                                                @endif
                                                 <!-- Selected: "font-semibold" -->
                                                 <span class="ml-3 truncate">{{ $player->game_name }}</span>
                                                 <span :class="isHovered ? 'text-indigo-200' : 'text-gray-500'" class="ml-2 truncate text-gray-500">{{ $player->username }}</span>

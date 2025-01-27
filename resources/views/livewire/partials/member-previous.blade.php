@@ -12,177 +12,181 @@ use App\Models\TeamMember;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-	state,
-	on,
-	mount,
-	rules,
-	computed,
+    state,
+    on,
+    mount,
+    rules,
+    computed,
 };
 
 layout('layouts.dashboard');
 
 state([
-	'user',
-	'openModal',
-	'openSingleModal',
-	'openAccordion',
-	'singleModel',
-	'models',
-	'model',
-	'nationalities',
-	'jobs',
-	'username',
-	'job',
-	'nationality',
-	'entry_date',
+    'user',
+    'openModal',
+    'openSingleModal',
+    'openAccordion',
+    'singleModel',
+    'models',
+    'model',
+    'nationalities',
+    'jobs',
+    'username',
+    'job',
+    'nationality',
+    'entry_date',
     'archived',
-	'id',
-	'deleteModal',
-	'search' => '',
-	'create',
+    'id',
+    'deleteModal',
+    'search' => '',
+    'create',
 ]);
 
 
 rules([
-	'username' => 'required|',
-	'job' => 'required',
-	'nationality' => 'required',
-	'entry_date' => 'date'
+    'username' => 'required|',
+    'job' => 'required',
+    'nationality' => 'required',
+    'entry_date' => 'date'
 ])->messages([
-	'username.required' => 'Le champ est obligatoire.',
-	'job.required' => 'Le champ est obligatoire.',
-	'nationality.required' => 'Le champ est obligatoire.',
-	'entry_date.date' => 'Le champ doit être une date',
+    'username.required' => 'Le champ est obligatoire.',
+    'job.required' => 'Le champ est obligatoire.',
+    'nationality.required' => 'Le champ est obligatoire.',
+    'entry_date.date' => 'Le champ doit être une date',
 ])->attributes([
 
 ]);
 
 $renderChange = function () {
-	$this->models = $this->user->players()
+    $this->models = $this->user->players()
         ->whereNot('archived', false)
         ->get();
 
-	foreach ($this->models as $model) {
-		$model->entry_date = Carbon::parse($model->entry_date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
-	}
+    foreach ($this->models as $model) {
+        $model->entry_date = Carbon::parse($model->entry_date)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+    }
 };
 
 mount(function () {
-	$this->user = Auth::user();
+    $this->user = Auth::user();
 
-	$this->renderChange();
-	$this->nationalities = require __DIR__ . '/../../../../app/enum/nationalities.php';
-	$this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
-	$this->jobs = array_merge($this->jobs['staff'], $this->jobs['player']);
-	$this->openAccordion = false;
-	$this->openModal = false;
-	$this->openSingleModal = false;
-	$this->deleteModal = false;
+    $this->renderChange();
+    $this->nationalities = require __DIR__ . '/../../../../app/enum/nationalities.php';
+    $this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
+    $this->jobs = array_merge($this->jobs['staff'], $this->jobs['player']);
+    $this->openAccordion = false;
+    $this->openModal = false;
+    $this->openSingleModal = false;
+    $this->deleteModal = false;
 
-	$this->username = '';
-	$this->job = '';
-	$this->nationality = '';
-	$this->entry_date = '';
-	$this->archived = false;
-	$this->id = 0;
+    $this->username = '';
+    $this->job = '';
+    $this->nationality = '';
+    $this->entry_date = '';
+    $this->archived = false;
+    $this->id = 0;
+});
+
+$usernameExist = computed(function () {
+    return User::where('username', $this->username)->exists();
 });
 
 $filteredUser = computed(function () {
-	return User::where('account_type', '=', 'player')
-	->orWhere('account_type', '=', 'staff')
-		->where(function ($query) {
-			$query->where('username', 'like', '%' . $this->search . '%')
-				->orWhere('game_name', 'like', '%' . $this->search . '%');
-		})
-		->limit(4)
-		->get();
+    return User::where('account_type', '=', 'player')
+        ->orWhere('account_type', '=', 'staff')
+        ->where(function ($query) {
+            $query->where('username', 'like', '%' . $this->search . '%')
+                ->orWhere('game_name', 'like', '%' . $this->search . '%');
+        })
+        ->limit(4)
+        ->get();
 });
 
 $createSingleModel = function () {
-	$this->create = true;
-	$this->openSingleModal = true;
-	$this->username = '';
-	$this->job = '';
-	$this->nationality = '';
-	$this->entry_date = '';
-	$this->archived = false;
-	$this->id = 0;
-	$this->renderChange();
+    $this->create = true;
+    $this->openSingleModal = true;
+    $this->username = '';
+    $this->job = '';
+    $this->nationality = '';
+    $this->entry_date = '';
+    $this->archived = false;
+    $this->id = 0;
+    $this->renderChange();
 };
 
 $closeSingleModelModale = function () {
-	$this->openSingleModal = false;
+    $this->openSingleModal = false;
 };
 
 $saveSingleModel = function () {
-	try {
-		$this->validate();
-	} catch (\Illuminate\Validation\ValidationException $e) {
-		$this->renderChange();
-		throw $e;
-	}
+    try {
+        $this->validate();
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        $this->renderChange();
+        throw $e;
+    }
 
-	TeamMember::updateOrCreate([
-		'team_id' => Auth::id(),
-		'id' => $this->id
-	],
-		[
-			'username' => $this->username,
-			'job' => $this->job,
-			'nationality' => $this->nationality,
-			'entry_date' => $this->entry_date ?? Carbon::now()->format('Y-m-d'),
+    TeamMember::updateOrCreate([
+        'team_id' => Auth::id(),
+        'id' => $this->id
+    ],
+        [
+            'username' => $this->username,
+            'job' => $this->job,
+            'nationality' => $this->nationality,
+            'entry_date' => $this->entry_date ?? Carbon::now()->format('Y-m-d'),
             'archived' => $this->archived,
-		]);
+        ]);
 
-	$this->renderChange();
-	$this->dispatch('renderOnboarding');
+    $this->renderChange();
+    $this->dispatch('renderOnboarding');
     $this->dispatch('archiveMember');
-	$this->openSingleModal = false;
-	if ($this->id === 0) {
-		Toaster::success('Joueurs ajouté avec succès');
-	}
+    $this->openSingleModal = false;
+    if ($this->id === 0) {
+        Toaster::success('Joueurs ajouté avec succès');
+    }
 
-	if ($this->id !== 0) {
-		Toaster::success('Joueurs modifiée avec succès');
-	}
+    if ($this->id !== 0) {
+        Toaster::success('Joueurs modifiée avec succès');
+    }
 };
 
 $editSingleModel = function (TeamMember $model) {
-	$this->create = false;
-	$this->openSingleModal = true;
-	$this->username = $model->username;
-	$this->job = $model->job;
-	$this->nationality = $model->nationality;
-	$this->entry_date = $model->entry_date;
+    $this->create = false;
+    $this->openSingleModal = true;
+    $this->username = $model->username;
+    $this->job = $model->job;
+    $this->nationality = $model->nationality;
+    $this->entry_date = $model->entry_date;
     if ($model->archived === 1) {
         $model->archived = true;
     } else {
         $model->archived = false;
     }
-	$this->archived = $model->archived;
-	$this->id = $model->id;
-	$this->renderChange();
+    $this->archived = $model->archived;
+    $this->id = $model->id;
+    $this->renderChange();
 };
 
 $deleteSingleModel = function () {
-	$this->model->delete();
-	$this->deleteModal = false;
-	$this->renderChange();
+    $this->model->delete();
+    $this->deleteModal = false;
+    $this->renderChange();
 };
 
 $openDeleteModal = function (TeamMember $model) {
-	$this->deleteModal = true;
-	$this->model = $model;
-	$this->renderChange();
+    $this->deleteModal = true;
+    $this->model = $model;
+    $this->renderChange();
 };
 
 $closeDeleteModal = function () {
-	$this->deleteModal = false;
-	$this->renderChange();
+    $this->deleteModal = false;
+    $this->renderChange();
 };
 
 on(['newAward' => function () {
-	$this->createSingleModel();
+    $this->createSingleModel();
 }]);
 
 on(['archiveMember' => function () {
@@ -191,8 +195,8 @@ on(['archiveMember' => function () {
 
 $sendNotification = function () {
 //    dd('salut');
-	$this->openSingleModal = false;
-	Toaster::success('Demande d\'ajout envoyé ');
+    $this->openSingleModal = false;
+    Toaster::success('Demande d\'ajout envoyé ');
 };
 
 ?>
@@ -206,65 +210,68 @@ deleteModal: $wire.entangle('deleteModal'),
 
     <div x-cloak class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
-            <h3 class="text-base font-semibold leading-6 text-gray-900 p-2">{{'Anciens membres'}}</h3>
+            <h3 class="text-base font-semibold leading-6 text-gray-900 ">{{'Anciens membres'}}</h3>
             <div class="flex">
-{{--                <button--}}
-{{--                    wire:click="createSingleModel"--}}
-{{--                        type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">--}}
-{{--                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
-{{--                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>--}}
-{{--                    </svg>--}}
-{{--                </button>--}}
+                {{--                <button--}}
+                {{--                    wire:click="createSingleModel"--}}
+                {{--                        type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">--}}
+                {{--                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">--}}
+                {{--                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>--}}
+                {{--                    </svg>--}}
+                {{--                </button>--}}
             </div>
         </div>
         <div class=" sm:w-12/12">
             <ul role="list" class="divide-y divide-gray-100">
                 @if(count($models)===0 || null)
-                    <p class="mt-1 mb-1 flex justify-center text-black">Il n'y a aucun ancien membre dans cette équipe</p>
+                    <p class="mt-1 mb-1 flex justify-center text-black">Il n'y a aucun ancien membre dans cette
+                        équipe</p>
                 @else
                     <table class="min-w-full divide-y divide-gray-300">
-                    <thead>
-                    <tr class="flex">
-                        <th scope="col" class= "flex-1 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
-                            Nom
-                        </th>
-                        <th scope="col" class="flex-1  px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Poste</th>
-                        <th scope="col" class="flex-1  hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
-                            Nationalité
-                        </th>
-                        <th scope="col" class="flex-1  hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell">
-                            Date d'entrée
-                        </th>
-                        <th scope="col" class="flex-1  relative py-3.5 pl-3 pr-4 sm:pr-0">
-                            <span class="sr-only">actions</span>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                    @foreach($models as $player)
-                        <tr class="flex" >
-                            <td class="truncate flex-1 whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $player->username }}</td>
-                            <td class="flex-1 whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{  __('jobs.'.$player->job)  }}</td>
-                            <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ __('nationalities.'.$player->nationality) }}</td>
-                            <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 md:table-cell">{{ $player->entry_date }}</td>
-                            <td class="flex-1 relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                <div class="ml-auto">
-                                    <button wire:click="editSingleModel({{$player}})" type="button" class="text-gray-700 group rounded-md px-2 text-sm leading-6 font-semibold ">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
-                                        </svg>
-                                    </button>
-                                    <button wire:click="openDeleteModal({{$player}})" type="button" class="text-gray-700 group rounded-md px-2 text-sm leading-6 font-semibold">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
+                        <thead>
+                        <tr class="flex">
+                            <th scope="col" class="flex-1 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                                Nom
+                            </th>
+                            <th scope="col" class="flex-1  px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Poste
+                            </th>
+                            <th scope="col" class="flex-1  hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
+                                Nationalité
+                            </th>
+                            <th scope="col" class="flex-1  hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 md:table-cell">
+                                Date d'entrée
+                            </th>
+                            <th scope="col" class="flex-1  relative py-3.5 pl-3 pr-4 sm:pr-0">
+                                <span class="sr-only">actions</span>
+                            </th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                        @foreach($models as $player)
+                            <tr class="flex">
+                                <td class="truncate flex-1 whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $player->username }}</td>
+                                <td class="flex-1 whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{  __('jobs.'.$player->job)  }}</td>
+                                <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">{{ __('nationalities.'.$player->nationality) }}</td>
+                                <td class="flex-1 hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 md:table-cell">{{ $player->entry_date }}</td>
+                                <td class="flex-1 relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                    <div class="ml-auto">
+                                        <button wire:click="editSingleModel({{$player}})" type="button" class="text-gray-700 group rounded-md px-2 text-sm leading-6 font-semibold ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"/>
+                                            </svg>
+                                        </button>
+                                        <button wire:click="openDeleteModal({{$player}})" type="button" class="text-gray-700 group rounded-md px-2 text-sm leading-6 font-semibold">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 @endif
 
             </ul>
@@ -342,7 +349,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                                 -->
                                                 @if(!count($this->filteredUser))
                                                     <li class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabindex="-1">
-                                                        <p>Aucun résultat</p>
+                                                        <p class="text-black">Aucun résultat</p>
                                                     </li>
                                                 @endif
                                                 @foreach($this->filteredUser as $player)
@@ -384,7 +391,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                 </div>
 
                                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                    Ajouter un joueur manuellement </h3>
+                                    Ajouter un ancien membre</h3>
 
                                 <div class="mt-4">
                                     <label for="username" class="block text-sm font-medium leading-6 text-gray-900">
@@ -411,18 +418,21 @@ deleteModal: $wire.entangle('deleteModal'),
                                     <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                                     @enderror
                                 </div>
-                                <div class="mt-4">
-                                    <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-600">*</span></label>
-                                    <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
-                                        <option value="">-- choisissez votre nationalité --</option>
-                                        @foreach($nationalities as $nationality)
-                                            <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('nationality')
-                                    <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
-                                    @enderror
-                                </div>
+
+                                @if($this->usernameExist)
+                                    <div class="mt-4">
+                                        <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-600">*</span></label>
+                                        <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                            <option value="">-- choisissez votre nationalité --</option>
+                                            @foreach($nationalities as $nationality)
+                                                <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('nationality')
+                                        <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                @endif
 
                                 <div class="mt-4">
                                     <label for="entry_date" class="block text-sm font-medium leading-6 text-gray-900">
@@ -442,7 +452,8 @@ deleteModal: $wire.entangle('deleteModal'),
                                         <input wire:model="archived" id="archived" aria-describedby="offers-description" name="archived" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                                     </div>
                                     <div class="ml-3 text-sm leading-6">
-                                        <label for="archived" class="font-medium text-gray-900">Archiver ce membre</label>
+                                        <label for="archived" class="font-medium text-gray-900">Archiver ce
+                                            membre</label>
                                     </div>
                                 </div>
                             </div>
@@ -450,7 +461,7 @@ deleteModal: $wire.entangle('deleteModal'),
                         </div>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                sauvegarder
+                                Sauvegarder
                             </button>
                             <button @click="openSingleModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler

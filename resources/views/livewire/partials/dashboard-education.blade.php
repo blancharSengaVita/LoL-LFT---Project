@@ -384,7 +384,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     Éducation</h3>
                                 <div class="mt-4">
                                     <label for="establishment" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Établissement
+                                        Établissement<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="establishment" type="text" name="establishment" id="establishment" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="HEPL">
@@ -397,7 +397,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="diploma" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Diplome
+                                        Diplome<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="diploma" type="text" name="diploma" id="diploma" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Bachelier en web design">
@@ -410,7 +410,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="entry_date" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Date d'entrée
+                                        Date d'entrée<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="entry_date" type="date" name="entry_date" id="entry_date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="T1">
@@ -423,7 +423,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="exit_date" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Date de sortie
+                                        Date de sortie<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="exit_date" type="date" name="exit_date" id="exit_date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
@@ -439,7 +439,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                sauvegarder
+                                Sauvegarder
                             </button>
                             <button @click="openSingleEducationModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler

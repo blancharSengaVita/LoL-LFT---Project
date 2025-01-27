@@ -173,6 +173,7 @@ $editSingleAward = function (Award $award) {
     $this->team = $award->team;
     $this->date = $award->date;
     $this->id = $award->id;
+    dd($award->date);
     $this->renderChange();
 };
 
@@ -391,7 +392,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     Récompense</h3>
                                 <div class="mt-4">
                                     <label for="title" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Titre
+                                        Titre<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="title" type="text" name="title" id="title" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">
@@ -404,7 +405,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="event" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Évènement
+                                        Évènement<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="event" type="text" name="event" id="event" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Clash : coupe d'Europe">
@@ -417,7 +418,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="event" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Équipe
+                                        Équipe<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="team" type="text" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="T1">
@@ -430,7 +431,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="date" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Date
+                                        Date<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
                                         <input wire:model="date" type="date" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
@@ -446,7 +447,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                sauvegarder
+                                Sauvegarder
                             </button>
                             <button @click="openSingleAwardModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler

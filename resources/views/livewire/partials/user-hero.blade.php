@@ -14,6 +14,7 @@ use function Livewire\Volt\{
 	state,
 	on,
 	mount,
+	computed,
 };
 
 state([
@@ -71,6 +72,9 @@ $sendLftInvitation = function ($userId) {
     NotificationEvent::dispatch($userId, Auth::id(), 'veut jouer avec toi.');
     Toaster::success('Demande envoyé');
 };
+$isRealRole = computed(function () {
+    return in_array($this->user->job, ['Top', 'Jungle', 'Mid', 'ADC', 'Support']);
+});
 ?>
 
 <div class="divide-y divide-gray-200 border-b border-gray-200"
@@ -97,7 +101,8 @@ $sendLftInvitation = function ($userId) {
                     <span class="text-sm text-gray-500">{{ $user->username }}</span>
                 </div>
                 <div>
-                    <p class="text-gray-900">{{ $user->job }} · {{ __('levels.'.$user->level) }} </p>
+                    <p class="text-gray-900 flex items-center gap-x-1">
+                        {{ __('jobs.' . $user->job) }} @if($this->isRealRole)<img class="flex items-center h-4" src="{{Vite::asset('resources/images/'. $user->job .'.svg') }}" alt="">@endif · {{ __('levels.'.$user->level) }} @if($user->level) <img class="flex items-center h-4" src="{{ Vite::asset('resources/images/'. $user->level .'.svg') }}" alt="" >@endif</p>
                 </div>
                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-x-3 sm:space-y-0">
                     <button wire:click="sendLftInvitation({{$user->id}})" type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
@@ -107,33 +112,33 @@ $sendLftInvitation = function ($userId) {
                         Message
                     </button>
                     <div class="ml-3 inline-flex sm:ml-0">
-                        <div class="relative inline-block text-left">
-                            <button x-cloak @click="openDropdownMenu = !openDropdownMenu" type="button" class="relative inline-flex items-center rounded-md bg-white p-2 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="options-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <span class="absolute -inset-1"></span>
-                                <span class="sr-only">Open options menu</span>
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z"/>
-                                </svg>
-                            </button>
-                            <!--
-                              Dropdown panel, show/hide based on dropdown state.
+{{--                        <div class="relative inline-block text-left">--}}
+{{--                            <button x-cloak @click="openDropdownMenu = !openDropdownMenu" type="button" class="relative inline-flex items-center rounded-md bg-white p-2 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="options-menu-button" aria-expanded="false" aria-haspopup="true">--}}
+{{--                                <span class="absolute -inset-1"></span>--}}
+{{--                                <span class="sr-only">Open options menu</span>--}}
+{{--                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">--}}
+{{--                                    <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z"/>--}}
+{{--                                </svg>--}}
+{{--                            </button>--}}
+{{--                            <!----}}
+{{--                              Dropdown panel, show/hide based on dropdown state.--}}
 
-                              Entering: "transition ease-out duration-100"
-                                From: "transform opacity-0 scale-95"
-                                To: "transform opacity-100 scale-100"
-                              Leaving: "transition ease-in duration-75"
-                                From: "transform opacity-100 scale-100"
-                                To: "transform opacity-0 scale-95"
-                            -->
-                            <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
-                                {{--                                <div class="py-1" role="none">--}}
-                                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                                {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande d'amie</a>--}}
-                                {{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
-                                {{--                                        CV</a>--}}
-                                {{--                                </div>--}}
-                            </div>
-                        </div>
+{{--                              Entering: "transition ease-out duration-100"--}}
+{{--                                From: "transform opacity-0 scale-95"--}}
+{{--                                To: "transform opacity-100 scale-100"--}}
+{{--                              Leaving: "transition ease-in duration-75"--}}
+{{--                                From: "transform opacity-100 scale-100"--}}
+{{--                                To: "transform opacity-0 scale-95"--}}
+{{--                            -->--}}
+{{--                            <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">--}}
+{{--                                --}}{{--                                <div class="py-1" role="none">--}}
+{{--                                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->--}}
+{{--                                --}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande d'amie</a>--}}
+{{--                                --}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
+{{--                                --}}{{--                                        CV</a>--}}
+{{--                                --}}{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>

@@ -1,8 +1,10 @@
 <?php
 return [
+    'Peu importe' => 'Peu importe',
 'team' => 'Équipe',
-'Major Ligue' => 'Ligue Majeure',
-'Minor Ligue' => 'Ligue Mineure',
+'Team' => 'Équipe',
+'Major league' => 'Ligue Majeure',
+'Minor league' => 'Ligue Mineure',
 'ERL 1' => 'ERL 1',
 'ERL 2' => 'ERL 2',
 'ERL 3' => 'ERL 3',

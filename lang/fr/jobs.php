@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Peu importe' => 'Peu importe',
     'Top' => 'Top',
     'Jungle' => 'Jungle',
     'Mid' => 'Mid',
@@ -18,4 +19,5 @@ return [
     'Scout' => 'Dénicheur de talent',
     'Other' => 'Autre',
     'team' => 'Équipe',
+    'Team' => 'Équipe',
 ];
