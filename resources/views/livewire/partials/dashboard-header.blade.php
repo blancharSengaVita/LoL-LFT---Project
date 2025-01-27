@@ -38,7 +38,7 @@ $filteredUser = computed(function () {
 
     foreach ($results as $result) {
         if ($result->profil_picture) {
-            $result['src'] = '/storage/images/1024/' . $result->profil_picture;
+            $result['src'] = '/storage/images/150/' . $result->profil_picture;
         } else {
             $result['src'] = 'https://ui-avatars.com/api/?length=1&name=' . $result->game_name;
         }
@@ -102,7 +102,7 @@ $logout = function (Logout $logout) {
                                 -->
                                 @if(!count($this->filteredUser))
                                     <li class="relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabindex="-1">
-                                        <p>Aucun résultat</p>
+                                        <p class="text-black">Aucun résultat</p>
                                     </li>
                                 @endif
                                 @foreach($this->filteredUser as $player)
@@ -161,25 +161,26 @@ $logout = function (Logout $logout) {
                         <button @click="openMenuDropdown = !openMenuDropdown" type="button" class="relative flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <span class="absolute -inset-1.5"></span>
                             <span class="sr-only">Open user menu</span>
-                            <img class="h-8 w-8 rounded-full" src="{{$profilePictureSource}}" alt="">
+                            @if($this->user->profil_picture)
+                                <img class="h-8 w-8 rounded-full"
+                                     src="/storage/images/150/{{$this->user->profil_picture}}"
+                                     alt="Photo de profi de {{$this->user->game_name}}"
+                                     sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                            @else
+                                <div class="h-8 w-8 flex-none rounded-full bg-gray-400 flex justify-center items-center">
+                                    <p class="text-xl text-center text-gray-950">{{ ucfirst(substr($this->user->game_name, 0, 1)) }}</p>
+                                </div>
+                            @endif
                         </button>
                     </div>
 
-                    <!--
-                      Dropdown menu, show/hide based on menu state.
-
-                      Entering: "transition ease-out duration-100"
-                        From: "transform opacity-0 scale-95"
-                        To: "transform opacity-100 scale-100"
-                      Leaving: "transition ease-in duration-75"
-                        From: "transform opacity-100 scale-100"
-                        To: "transform opacity-0 scale-95"
-                    -->
                     <div x-cloak x-show="openMenuDropdown" @click.away="openMenuDropdown = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                         <!-- Active: "bg-gray-100", Not Active: "" -->
-                        <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard"  class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
-                        <a wire:navigate href="{{route('settings')}}" title="vers la page settings" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1 cursor-pointer">Paramètres</a>
-                        <bouton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer" role="menuitem" tabindex="-1" id="user-menu-item-0">Se déconnecter</bouton>
+                        <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
+                        <a wire:navigate href="{{route('settings')}}" title="vers la page settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" role="menuitem" tabindex="-1" id="user-menu-item-1 cursor-pointer">Paramètres</a>
+                        <bouton wire:click="logout" class="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-50" role="menuitem" tabindex="-1" id="user-menu-item-0">
+                            Se déconnecter
+                        </bouton>
                     </div>
                 </div>
             </div>
@@ -191,23 +192,33 @@ $logout = function (Logout $logout) {
             </h2>
             <div class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
                 <!-- Current: "bg-gray-100 text-gray-900", Default: "hover:bg-gray-50" -->
-                <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard" class="{{ Route::is('dashboard') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
+                <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard" class="{{ Route::is('dashboard') ? 'bg-gray-100 text-gray-900' : ' text-gray-600 hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>
 
-                <a wire:navigate href="{{route('find-teammate')}}" title="vers la page recherche de partenaires" class="{{ Route::is('find-teammate') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Recherche de partenaires</a>
-                <a wire:navigate href="{{route('messages')}}" title="vers la page messages" class="{{ Route::is('messages') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Messages</a>
-                <a wire:navigate href="{{route('notifications')}}" title="vers la page notifcation" class="{{ Route::is('notifications') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Notifications</a>
-                <a wire:navigate href="{{route('missions')}}" title="vers la page missions" class="{{ Route::is('missions') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Missions</a>
-                <a wire:navigate href="{{route('settings')}}" title="vers la page de settings" class="{{ Route::is('settings') ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50' }} block rounded-md py-2 px-3 text-base font-medium">Paramètres</a>
-
-{{--                <a wire:navigate href="{{route('dashboard')}}" aria-current="page" class=" bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Dashboard</a>--}}
-{{--                <a wire:navigate href="#" class="block rounded-md py-2 px-3 text-base font-medium">Calendar</a>--}}
-{{--                <a wire:navigate href="#" class="block rounded-md py-2 px-3 text-base font-medium">Teams</a>--}}
-{{--                <a wire:navigate href="#" class="block rounded-md py-2 px-3 text-base font-medium">Directory</a>--}}
+                <a wire:navigate href="{{route('find-teammate')}}" title="vers la page recherche de partenaires" class="{{ Route::is('find-teammate') ? 'bg-gray-100
+text-indigo-600' : 'hover:bg-gray-50' }} text-black cursor-pointer block rounded-md py-2 px-3 text-base font-medium">Recherche
+                    de partenaires</a>
+                <a wire:navigate href="{{route('messages')}}" title="vers la page messages" class="{{ Route::is('messages') ? 'bg-gray-100
+text-indigo-600' : 'hover:bg-gray-50' }} text-black cursor-pointer block rounded-md py-2 px-3 text-base font-medium">Messages</a>
+                <a wire:navigate href="{{route('notifications')}}" title="vers la page notifcation" class="{{ Route::is('notifications') ? 'bg-gray-100
+text-indigo-600' : 'hover:bg-gray-50' }} text-black cursor-pointer block rounded-md py-2 px-3 text-base font-medium">Notifications</a>
+                <a wire:navigate href="{{route('missions')}}" title="vers la page missions" class="{{ Route::is('missions') ? 'bg-gray-100
+text-indigo-600' : 'hover:bg-gray-50' }} text-black cursor-pointer block rounded-md py-2 px-3 text-base font-medium">Missions</a>
+                <a wire:navigate href="{{route('settings')}}" title="vers la page de settings" class="{{ Route::is('settings') ? 'bg-gray-100
+text-indigo-600' : 'hover:bg-gray-50' }} text-black cursor-pointer block rounded-md py-2 px-3 text-base font-medium">Paramètres</a>
             </div>
             <div class="border-t border-gray-200 pb-3 pt-4">
                 <div class="mx-auto flex max-w-3xl items-center px-4 sm:px-6">
                     <div class="flex-shrink-0">
-                        <img class="h-10 w-10 rounded-full" src="{{$profilePictureSource}}" alt="">
+                        @if($this->user->profil_picture)
+                            <img class="h-8 w-8 rounded-full"
+                                 src="/storage/images/150/{{$this->user->profil_picture}}"
+                                 alt="Photo de profi de {{$this->user->game_name}}"
+                                 sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                        @else
+                            <div class="h-8 w-8 flex-none rounded-full bg-gray-400 flex justify-center items-center">
+                                <p class="text-xl text-center text-gray-950">{{ ucfirst(substr($this->user->game_name, 0, 1)) }}</p>
+                            </div>
+                        @endif
                     </div>
                     <div class="ml-3">
                         <div class="text-base font-medium text-gray-800">{{ $user->game_name }}</div>
@@ -216,8 +227,10 @@ $logout = function (Logout $logout) {
                 </div>
                 <div class="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">
                     <a wire:navigate href="{{route('dashboard')}}" title="vers la page dashboard" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Profil</a>
-                    <a wire:navigate href="{{route('settings')}}"  title="vers la page settings" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Paramètres</a>
-                    <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">Se déconnecter</button>
+                    <a wire:navigate href="{{route('settings')}}" title="vers la page settings" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">Paramètres</a>
+                    <button wire:click="logout" class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 cursor-pointer">
+                        Se déconnecter
+                    </button>
                 </div>
             </div>
         </nav>

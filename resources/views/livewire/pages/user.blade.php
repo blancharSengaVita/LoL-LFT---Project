@@ -13,12 +13,14 @@ layout('layouts.dashboard');
 
 state([
     'user',
-    'displayed_informations'
+    'auth',
+    'displayed_informations',
 ]);
 
 
 mount(function (User $user) {
     $this->user = $user;
+    $this->auth = Auth::user();
 });
 ?>
 
@@ -31,6 +33,12 @@ mount(function (User $user) {
             {{ 'Profil' }}
         </h2>
         <div class="xl:pr-96">
+            @if($user->username === $auth->username)
+            <div class="text-white text-sm fixed left-6 bottom-10 bg-indigo-600 z-50 rounded p-4">
+                <p>Vous êtes sur votre page de visite !</p>
+                <a href="{{route('dashboard')}}" wire:navigate class="underline bg-">Revenez sur votre dashboard ici</a>
+            </div>
+            @endif
             <livewire:partials.dashboard-header/>
             <!-- Hero -->
             <livewire:partials.user-hero :user="$user"/>

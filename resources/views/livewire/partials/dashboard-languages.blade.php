@@ -380,7 +380,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
                                     Langues</h3>
                                 <div class="mt-4">
-                                    <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Langue</label>
+                                    <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Langue<span class="text-red-600">*</span></label>
                                     <select wire:model="name" id="name" name="name" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez une langue --</option>
                                         @foreach($availableLanguages as $language)
@@ -393,7 +393,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                 </div>
                                 <div class="mt-4">
                                     <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
-                                        Niveau
+                                        Niveau<span class="text-red-600">*</span>
                                     </label>
                                     <select wire:model="level" id="level" name="level" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez un niveau --</option>
@@ -401,9 +401,6 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                             <option value="{{ $level }}">{{ __('languageLevels.'.$level) }}</option>
                                         @endforeach
                                     </select>
-{{--                                    <div class="mt-2">--}}
-{{--                                        <input wire:model.live="level" type="text" name="level" id="level" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Meilleur joueur d'Europe">--}}
-{{--                                    </div>--}}
                                     @if ($messages = $errors->get('level'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
                                             <p>{{$messages[0]}}</p>
@@ -415,7 +412,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                         </div>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                sauvegarder
+                                Sauvegarder
                             </button>
                             <button @click="openSingleModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                 Annuler

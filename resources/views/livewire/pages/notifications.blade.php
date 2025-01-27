@@ -170,7 +170,6 @@ $acceptNotificationTeam = function (Notification $notification){
               Open: "fixed inset-0 z-40 overflow-y-auto", Closed: ""
             -->
             <livewire:partials.app-header :title="'Notifications'"/>
-{{--            <livewire:partials.dashboard-header/>--}}
             <div class="">
                 @if(!count($notifications))
                     <p class="bg-white text-black border-t border-b p-4 border-gray-200">Aucune notification</p>
@@ -181,7 +180,17 @@ $acceptNotificationTeam = function (Notification $notification){
                             <div class="p-4">
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0 pt-0.5">
-                                        <a  href="{{route('user', ['user' => $notification->receiver->username])}}" title="vers la page de {{$notification->receiver->game_name}}" class="text-sm font-medium text-gray-900 hover:underline"><img class="h-10 w-10 rounded-full" src="{{$notification->receiver->src}}" alt="photo de profile de {{$notification->receiver->game_name}}"></a>
+                                        <a  href="{{route('user', ['user' => $notification->receiver->username])}}" title="vers la page de {{$notification->receiver->game_name}}" class="text-sm font-medium text-gray-900 hover:underline">
+                                            @if($this->user->profil_picture)
+                                                <img class="h-10 w-10 rounded-full"
+                                                     src="/storage/images/150/{{$notification->receiver->profil_picture}}"
+                                                     alt="Photo de profi de {{$notification->receiver->game_name}}"
+                                                     sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                                            @else
+                                                <div class="h-10 w-10 flex-none rounded-full bg-gray-400 flex justify-center items-center">
+                                                    <p class="text-xl text-center text-gray-950">{{ ucfirst(substr($notification->receiver->game_name, 0, 1)) }}</p>
+                                                </div>
+                                            @endif
                                     </div>
                                     <div class="ml-3 w-0 flex-1">
                                         <a  href="{{route('user', ['user' => $notification->receiver->username])}}" title="vers la page de {{$notification->receiver->game_name}}" class="text-sm font-medium text-gray-900 hover:underline">{{$notification->receiver->game_name}}</a>

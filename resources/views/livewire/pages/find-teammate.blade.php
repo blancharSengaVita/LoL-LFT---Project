@@ -12,207 +12,204 @@ use \App\Events\NotificationEvent;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-    state,
-    mount,
-    computed,
-    rules,
+	state,
+	mount,
+	computed,
+	rules,
 };
 
 layout('layouts.dashboard');
 
 
 state([
-    'mobileMenu',
-    'lftModal',
-    'user',
-    'displayed_informations',
-    'conversation',
-    'jobs',
-    'job' => '',
-    'myJob',
-    'goals',
-    'goal' => '',
-    'myGoal',
-    'ambiances',
-    'ambiance' => '',
-    'myAmbiance',
-    'levels',
-    'level' => '',
-    'myLevel',
-    'description',
-    'published',
-    'publishedTemp',
-    'myLftPost',
-    'id',
+	'mobileMenu',
+	'lftModal',
+	'user',
+	'displayed_informations',
+	'conversation',
+	'jobs',
+	'job' => '',
+	'myJob',
+	'goals',
+	'goal' => '',
+	'myGoal',
+	'ambiances',
+	'ambiance' => '',
+	'myAmbiance',
+	'levels',
+	'level' => '',
+	'myLevel',
+	'description',
+	'published',
+	'publishedTemp',
+	'myLftPost',
+	'id',
+	'postsNumber',
+	'recordsNumber' => 4,
 ]);
 
-//rules([
-//	'myJob' => 'required',
-//	'myAmbiance' => 'required',
-//	'myLevel' => 'required',
-//	'description' => 'required',
-//	'published' => 'required',
-//])->messages([
-//	'myJob.required' => 'Le champ est obligatoire.',
-//	'myAmbiance.required' => 'Le champ est obligatoire.',
-//	'myLevel.required' => 'Le champ est obligatoire.',
-//	'description.required' => 'Le champ est obligatoire.',
-//	'published' => 'required',
-//])->attributes([
-//
-//]);
-
-
 mount(function () {
-    $this->mobileMenu = false;
-    $this->lftModal = false;
-    $this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
-    $this->goals = require __DIR__ . '/../../../../app/enum/lookingFors.php';
-    $this->ambiances = require __DIR__ . '/../../../../app/enum/ambiances.php';
-    $this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
-    $this->user = Auth::user();
+	$this->mobileMenu = false;
+	$this->lftModal = false;
+	$this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
+	$this->goals = require __DIR__ . '/../../../../app/enum/lookingFors.php';
+	$this->ambiances = require __DIR__ . '/../../../../app/enum/ambiances.php';
+	$this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
+	$this->user = Auth::user();
 
-    $this->myLftPost = $this->user->lftPost()->first();
-//    dd($this->myLftPost);
+	$this->myLftPost = $this->user->lftPost()->first();
+	$this->id = $this->myLftPost->id ?? 0;
+	$this->myJob = $this->myLftPost->job ?? '';
+	$this->myAmbiance = $this->myLftPost->ambiance ?? '';
+	$this->myGoal = $this->myLftPost->goal ?? '';
+	$this->description = $this->myLftPost->description ?? '';
+	$this->published = $this->myLftPost->published ?? 0;
 
-    $this->id = $this->myLftPost->id ?? 0;
-    $this->myJob = $this->myLftPost->job ?? '';
-    $this->myAmbiance = $this->myLftPost->ambiance ?? '';
-    $this->myGoal = $this->myLftPost->goal ?? '';
-    $this->description = $this->myLftPost->description ?? '';
-    $this->published = $this->myLftPost->published ?? 0;
-//    $this->publishedTemp = ;
-
-    if ($this->published === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
+	if ($this->published === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
 
 });
 
 
 $lftPosts = computed(function () {
-//	$posts = \App\Models\LftPost::where('job', 'like', '%' . $this->job . '%');
-    $posts = \App\Models\LftPost::whereHas('user', function ($query) {
-        if ($this->job === 'Undefined') {
-            $query->where('account_type', 'player');
-        } else {
-            $query->where('job', 'like', '%' . $this->job . '%');
-        }
-        $query->where('level', 'like', '%' . $this->level . '%');
-    })->where('goal', 'like', '%' . $this->goal . '%')
-        ->where('ambiance', 'like', '%' . $this->ambiance . '%')
-        ->where('published', true)
-        ->get();
+	$posts = \App\Models\LftPost::whereHas('user', function ($query) {
+		if ($this->job === 'Undefined') {
+			$query->where('account_type', 'player');
+		} else {
+			$query->where('job', 'like', '%' . $this->job . '%');
+		}
+		$query->where('level', 'like', '%' . $this->level . '%');
+	})->where('goal', 'like', '%' . $this->goal . '%')
+		->where('ambiance', 'like', '%' . $this->ambiance . '%')
+		->where('published', true)
+		->orderBy('updated_at', 'desc')
+		->limit($this->recordsNumber)
+		->get();
 
-    foreach ($posts as $post) {
-        $post['user'] = User::find($post->user_id);
-        if ($post->user->profil_picture) {
-            $post->user['src'] = '/storage/images/1024/' . $post->user->profil_picture;
-        } else {
-            $post->user['src'] = 'https://ui-avatars.com/api/?length=1&name=' . $post->user->game_name;
-        }
+    $this->postsNumber = $posts;
 
-        $post->job = $post->job ?: 'Peu importe' ;
-        $post->goal = $post->goal ?: 'Peu importe' ;
-        $post->ambiance = $post->ambiance ?: 'Peu importe' ;
-//        $post->job = $post->job ?: 'Peu importe' ;
-//        dd($post->level);
-    }
+	foreach ($posts as $post) {
+		$post['user'] = User::find($post->user_id);
+		if ($post->user->profil_picture) {
+			$post->user['src'] = '/storage/images/1024/' . $post->user->profil_picture;
+		} else {
+			$post->user['src'] = 'https://ui-avatars.com/api/?length=1&name=' . $post->user->game_name;
+		}
 
-    return $posts;
+		$post->job = $post->job ?: 'Peu importe';
+		$post->goal = $post->goal ?: 'Peu importe';
+		$post->ambiance = $post->ambiance ?: 'Peu importe';
+	}
+
+	return $posts;
+});
+
+$moreRecords = function () {
+	$this->recordsNumber += 4;
+};
+
+$maxRecordsAttempt = computed(function () {
+	return count($this->lftPosts) < $this->recordsNumber;
 });
 
 $openMobileMenu = function () {
-    $this->mobileMenu = !$this->mobileMenu;
+	$this->mobileMenu = !$this->mobileMenu;
 };
 
 $openLFTModal = function () {
-    $this->publishedTemp = $this->myLftPost->published ?? 0;
+	$this->myLftPost = $this->user->lftPost()->first();
+	$this->id = $this->myLftPost->id ?? 0;
+	$this->myJob = $this->myLftPost->job ?? '';
+	$this->myAmbiance = $this->myLftPost->ambiance ?? '';
+	$this->myGoal = $this->myLftPost->goal ?? '';
+	$this->description = $this->myLftPost->description ?? '';
+	$this->published = $this->myLftPost->published ?? 0;
 
-    if ($this->publishedTemp === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
-    $this->lftModal = true;
+	$this->publishedTemp = $this->published;
+
+	if ($this->publishedTemp === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
+	$this->lftModal = true;
 };
 
 $closeLFTModal = function () {
-    $this->published = $this->myLftPost->published ?? 0;
+	$this->published = $this->myLftPost->published ?? 0;
 
-    $this->publishedTemp = $this->published;
+	$this->publishedTemp = $this->published;
 
-    if ($this->publishedTemp === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
-    $this->lftModal = false;
+	if ($this->publishedTemp === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
+	$this->lftModal = false;
 };
 
 $saveMyLftPost = function () {
-//    try {
-//        $this->validate();
-//    } catch (\Illuminate\Validation\ValidationException $e) {
-//        throw $e;
-//    }
+	$this->published = $this->publishedTemp;
 
-    $this->published = $this->publishedTemp;
+	LftPost::updateOrCreate([
+		'user_id' => Auth::id(),
+		'id' => $this->id
+	],
+		[
+			'job' => $this->myJob,
+			'ambiance' => $this->myAmbiance,
+			'goal' => $this->myGoal,
+			'description' => $this->description,
+			'published' => $this->published,
+		]);
 
-    LftPost::updateOrCreate([
-        'user_id' => Auth::id(),
-        'id' => $this->id
-    ],
-        [
-            'job' => $this->myJob,
-            'ambiance' => $this->myAmbiance,
-            'goal' => $this->myGoal,
-            'description' => $this->description,
-            'published' => $this->published,
-        ]);
+	$this->lftModal = false;
 
-    $this->lftModal = false;
+	if ($this->id === 0) {
+		Toaster::success('Post LFT crée avec succès');
+	}
 
-    if ($this->id === 0) {
-        Toaster::success('Post LFT crée avec succès');
-    }
-
-    if ($this->id !== 0) {
-        Toaster::success('Post LFT modifiée avec succès');
-    }
+	if ($this->id !== 0) {
+		Toaster::success('Post LFT modifiée avec succès');
+	}
 
 };
 
 $sendLftInvitation = function ($userId) {
-    Notification::firstOrCreate([
-        'to' => $userId,
-        'from' => Auth::id(),
-        'description' => 'veut jouer avec toi.',
-    ]);
-    NotificationEvent::dispatch($userId, Auth::id(), 'veut jouer avec toi.');
-    Toaster::success('Demande envoyé');
+	Notification::firstOrCreate([
+		'to' => $userId,
+		'from' => Auth::id(),
+		'description' => 'veut jouer avec toi.',
+	]);
+	NotificationEvent::dispatch($userId, Auth::id(), 'veut jouer avec toi.');
+	Toaster::success('Demande envoyé');
 };
 
 $newConversation = function ($userId) {
-    $this->conversation = Conversation::where(function ($query) use ($userId) {
-        $query->where('user_one_id', Auth::id())
-            ->where('user_two_id', $userId);
-    })->orWhere(function ($query) use ($userId) {
-        $query->where('user_one_id', $userId)
-            ->where('user_two_id', Auth::id());
-    })->first();
+	$this->conversation = Conversation::where(function ($query) use ($userId) {
+		$query->where('user_one_id', Auth::id())
+			->where('user_two_id', $userId);
+	})->orWhere(function ($query) use ($userId) {
+		$query->where('user_one_id', $userId)
+			->where('user_two_id', Auth::id());
+	})->first();
 
-    if (!$this->conversation) {
-        $this->conversation = Conversation::create([
-            'user_one_id' => Auth::id(),
-            'user_two_id' => $userId,
-        ]);
-    }
+	if (!$this->conversation) {
+		$this->conversation = Conversation::create([
+			'user_one_id' => Auth::id(),
+			'user_two_id' => $userId,
+		]);
+	}
 
-    $this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
+	$this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
 };
+
+$isRealRole = computed(function ($role) {
+	return in_array($role, ['Top', 'Jungle', 'Mid', 'ADC', 'Support']);
+});
 ?>
 
 <main class="lg:pl-72 h-full"
@@ -313,21 +310,27 @@ $newConversation = function ($userId) {
                                             <label for="job" class="block text-sm font-medium leading-6 text-gray-900">
                                                 Recherche un/une
                                             </label>
-                                            <select wire:model.live="job" id="job" name="job" class="bg-white text-base w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                            <select wire:model.live="job" id="job" name="job" class="bg-white text-base w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+                                                    @if($this->isRealRole($job)) style="background-image:url({{
+	Vite::asset('resources/images/'. $job .'.svg') }});"
+                                                    @else
+                                                        style="background-image:url({{
+	Vite::asset('resources/images/chevron-down.svg') }});"
+                                                    @endif>
                                                 <option value="">Peu importe</option>
                                                 <optgroup label="JOUEUR">
-                                                    @foreach($jobs['player'] as $job)
-                                                        <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                                    @foreach($jobs['player'] as $jobSelect)
+                                                        <option value="{{ $jobSelect }}">{{ __('jobs.'.$jobSelect) }}</option>
                                                     @endforeach
                                                 </optgroup>
                                                 <optgroup label="STAFF">
-                                                    @foreach($jobs['staff'] as $job)
-                                                        <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                                    @foreach($jobs['staff'] as $jobSelect)
+                                                        <option value="{{ $jobSelect }}">{{ __('jobs.'.$jobSelect) }}</option>
                                                     @endforeach
                                                 </optgroup>
                                                 <optgroup label="ÉQUIPE">
-                                                    @foreach($jobs['team'] as $job)
-                                                        <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                                    @foreach($jobs['team'] as $jobSelect)
+                                                        <option value="{{ $jobSelect }}">{{ __('jobs.'.$jobSelect) }}</option>
                                                     @endforeach
                                                 </optgroup>
                                             </select>
@@ -341,10 +344,10 @@ $newConversation = function ($userId) {
                                             <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                                 Niveau
                                             </label>
-                                            <select wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                            <select wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6" @if($level) style="background-image:url({{ Vite::asset('resources/images/'. $level .'.svg') }});" @endif>
                                                 <option value="">Peu importe</option>
-                                                @foreach($levels as $level)
-                                                    <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
+                                                @foreach($levels as $levelSelect)
+                                                    <option value="{{ $levelSelect }}">{{ __('levels.'.$levelSelect) }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -406,7 +409,7 @@ $newConversation = function ($userId) {
                                 </div>
                             </div>
                             <!-- Mobile filter dialog toggle, controls the 'mobileFilterDialogOpen' state. -->
-                            <button wire:click="openMobileMenu" type="button" class="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 md:hidden">
+                            <button wire:click="openMobileMenu" type="button" class="inline-block text-sm font-medium text-gray-700 hover:text-gray-600 md:hidden">
                                 Filtres
                             </button>
 
@@ -415,21 +418,29 @@ $newConversation = function ($userId) {
                                     <label for="job" class="block text-sm font-medium leading-6 text-gray-900">
                                         Recherche un/une
                                     </label>
-                                    <select wire:model.live="job" id="job" name="job" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                    <select wire:model.live="job" id="job" name="job" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+                                            {{--                                            style="background-image:url({{--}}
+                                            {{--	Vite::asset('resources/images/'. 'Mid' .'.svg') }});"--}}
+                                            @if($this->isRealRole($job)) style="background-image:url({{
+	Vite::asset('resources/images/'. $job .'.svg') }});"
+                                            @else
+                                                style="background-image:url({{
+	Vite::asset('resources/images/chevron-down.svg') }});"
+                                            @endif>
                                         <option value="">Peu importe</option>
                                         <optgroup label="JOUEUR">
-                                            @foreach($jobs['player'] as $job)
-                                                <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                            @foreach($jobs['player'] as $jobSelect)
+                                                <option value="{{ $jobSelect }}">{{ __('jobs.'.$jobSelect) }}</option>
                                             @endforeach
                                         </optgroup>
                                         <optgroup label="STAFF">
-                                            @foreach($jobs['staff'] as $job)
-                                                <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                            @foreach($jobs['staff'] as $jobSelect)
+                                                <option value="{{ $jobSelect }}">{{ __('jobs.'.$jobSelect) }}</option>
                                             @endforeach
                                         </optgroup>
                                         <optgroup label="ÉQUIPE">
-                                            @foreach($jobs['team'] as $job)
-                                                <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
+                                            @foreach($jobs['team'] as $jobSelect)
+                                                <option value="{{ $jobSelect }}">{{ __('jobs.'.$jobSelect) }}</option>
                                             @endforeach
                                         </optgroup>
                                     </select>
@@ -438,10 +449,12 @@ $newConversation = function ($userId) {
                                     <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                         Niveau
                                     </label>
-                                    <select wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                    <select wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+                                            @if($level) style="background-image:url({{ Vite::asset('resources/images/'. $level .'.svg') }});" @endif
+                                    >
                                         <option value="">Peu importe</option>
-                                        @foreach($levels as $level)
-                                            <option value="{{ $level }}">{{ __('levels.'.$level) }}</option>
+                                        @foreach($levels as $levelSelect)
+                                            <option value="{{ $levelSelect }}">{{ __('levels.'.$levelSelect) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -484,16 +497,25 @@ $newConversation = function ($userId) {
                     {{--                    </div>--}}
                     <div class=" sm:w-12/12 divide-y divide-gray-100">
                         @if(!count($this->lftPosts))
-                            <p class="px-4 py-4"> Aucun resultat
+                            <p class="px-4 py-4 text-black"> Aucun resultat
                             </p>
                         @endif
                         <ul role="list" class="divide-y divide-gray-100">
                             @foreach($this->lftPosts as $post)
-                                <div class="">
-                                    <li class="flex gap-x-4 w-full py-4 px-4" wire:key="{{ $post->id }}">
+                                <li wire:key="{{ $post->id }}">
+                                    <div class="flex gap-x-4 w-full py-4 px-4">
                                         {{--                                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
                                         <a class=" h-12 w-12 flex-none rounded-full" href="{{route('user', ['user' => $post->user->username])}}" title="aller vers la page de {{$post->user->game_name}}">
-                                            <img class="h-12 w-12 flex-none rounded-full bg-gray-50" src="{{$post->user->src}}" alt="photo de profile de {{$post->user->game_name}}">
+                                            @if($post->user->profil_picture)
+                                                <img class="h-12 w-12 flex-none rounded-full bg-gray-50"
+                                                     src="/storage/images/150/{{$post->user->profil_picture}}"
+                                                     alt="Photo de profil"
+                                                     sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                                            @else
+                                                <div class="h-12 w-12 flex-none rounded-full bg-gray-400 flex justify-center items-center">
+                                                    <p class="text-xl text-center text-gray-950">{{ ucfirst(substr($post->user->game_name, 0, 1)) }}</p>
+                                                </div>
+                                            @endif
                                         </a>
                                         {{--                                        {{$post}}--}}
                                         <div class="w-full">
@@ -501,23 +523,28 @@ $newConversation = function ($userId) {
                                                 <span class="text-base font-medium leading-6 text-gray-900  ">{{$post->user->game_name}} </span>
                                             </a>
 
-                                            <p class="truncate font-sans text-sm leading-5 text-gray-900 lg:mb-4 mb-4">{{$post->user->job}}
-                                                · {{$post->user->level}}</p>
+                                            <p class="truncate font-sans text-sm leading-5 text-gray-900 lg:mb-4 mb-4 flex items-center gap-x-1">
+                                                {{(__('jobs.' . $post->user->job))}} @if($this->isRealRole($post->user->job))
+                                                    <img class="flex items-center h-4" src="{{Vite::asset('resources/images/'. $user->job .'.svg') }}" alt="">
+                                                @endif · {{ __('levels.' . $post->user->level ) }}@if($user->level)
+                                                    <img class="flex items-center h-4" src="{{ Vite::asset('resources/images/'. $post->user->level.'.svg') }}" alt="">
+                                                @endif
+                                            </p>
                                             <dl class="divide-y divide-gray-100">
                                                 <div class="  pb-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                     <dt class="text-sm font-medium leading-6 text-gray-900">Recherche
                                                         un/une
                                                     </dt>
-                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $post->job}}</dd>
+                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ __('jobs.' . $post->job)}}</dd>
                                                 </div>
                                                 <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                     <dt class="text-sm font-medium leading-6 text-gray-900">Pour</dt>
-                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->goal}}</dd>
+                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{  __('lookingFors.'. $post->goal) }}</dd>
                                                 </div>
                                                 <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                     <dt class="text-sm font-medium leading-6 text-gray-900">Ambiance
                                                     </dt>
-                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{$post->ambiance}}</dd>
+                                                    <dd class="lg:mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ __('ambiances.'.$post->ambiance)}}</dd>
                                                 </div>
                                                 <div class=" py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                     <dt class="text-sm font-medium leading-6 text-gray-900">
@@ -535,10 +562,23 @@ $newConversation = function ($userId) {
                                                 </button>
                                             </div>
                                         </div>
-                                    </li>
-                                </div>
+                                    </div>
+                                </li>
                             @endforeach
                         </ul>
+                        @if(!$this->maxRecordsAttempt)
+                            <div class="flex justify-center py-4">
+                                <button wire:click="moreRecords">
+                                    <p class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
+                                        Afficher
+                                        plus
+                                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                                        </svg>
+                                    </p>
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </article>
@@ -578,7 +618,15 @@ $newConversation = function ($userId) {
                                             <div class="mt-4">
                                                 <label for="myJob" class="block text-sm font-medium leading-6 text-gray-900">Recherche
                                                     un/une</label>
-                                                <select wire:model.live="myJob" id="myJob" name="myJob" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                                <select wire:model.live="myJob" id="myJob" name="myJob" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+
+                                                        @if($this->isRealRole($myJob)) style="background-image:url({{
+	Vite::asset('resources/images/'. $myJob .'.svg') }});"
+                                                        @else
+                                                            style="background-image:url({{
+	Vite::asset('resources/images/chevron-down.svg') }});"
+                                                        @endif>
+                                                    >
                                                     <option value="">Peu importe</option>
                                                     <optgroup label="JOUEUR">
                                                         @foreach($jobs['player'] as $job)
@@ -656,7 +704,7 @@ $newConversation = function ($userId) {
                                         </div>
                                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                                             <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                                sauvegarder
+                                                Sauvegarder
                                             </button>
                                             <button @click="lftModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                                 Annuler

@@ -22,6 +22,6 @@ return [
         'Other'
     ],
     'team' => [
-        'team'
+        'Team'
     ]
 ];

@@ -7,225 +7,288 @@ use App\Models\User;
 use \App\Models\Conversation;
 use \App\Models\LftPost;
 use Masmerise\Toaster\Toaster;
+use \App\Models\DisplayedInformation;
+use \App\Models\DisplayedInformationsOnce;
+use \Illuminate\Validation\ValidationException;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\{
-    state,
-    on,
-    mount,
-    rules,
+	state,
+	on,
+	mount,
+	computed
 };
 
 state([
-    'openMobileMenu',
-    'user',
-    'birthday',
-    'openModal' => false,
-    'profilePictureSource',
-    'lftModal',
-    'jobs',
-    'job' => '',
-    'myJob',
-    'goals',
-    'goal' => '',
-    'myGoal',
-    'ambiances',
-    'ambiance' => '',
-    'myAmbiance',
-    'levels',
-    'level' => '',
-    'myLevel',
-    'description',
-    'published',
-    'publishedTemp',
-    'myLftPost',
-    'id',
+	'openMobileMenu',
+	'user',
+	'birthday',
+	'openModal' => false,
+	'profilePictureSource',
+	'lftModal',
+	'jobs',
+	'job' => '',
+	'myJob',
+	'goals',
+	'goal' => '',
+	'myGoal',
+	'ambiances',
+	'ambiance' => '',
+	'myAmbiance',
+	'levels',
+	'level' => '',
+	'myLevel',
+	'description',
+	'published',
+	'publishedTemp',
+	'myLftPost',
+	'id',
+	'playerExperiencesDisplay',
+	'awardsDisplay',
+	'skillsDisplay',
+	'languagesDisplay',
+	'onboardingDisplay',
+	'skillsDisplay',
+	'languagesDisplay',
+	'educationDisplay',
+    'sectionDisplayedStatus'
 ]);
 
 
 mount(function () {
-    $this->user = Auth::user();
-    $this->openMobileMenu = false;
-    $this->birthday = Carbon::parse($this->user->birthday)->locale('fr_FR')->isoFormat('D MMMM YYYY');
+	$this->user = Auth::user();
+	$this->openMobileMenu = false;
+	$this->birthday = Carbon::parse($this->user->birthday)->locale('fr_FR')->isoFormat('D MMMM YYYY');
 
-    if($this->user->profil_picture){
-        $this->profilePictureSource = '/storage/images/1024/'.$this->user->profil_picture;
-    }else {
-        $this->profilePictureSource =  'https://ui-avatars.com/api/?length=1&name='. $this->user->game_name;
-		//&background=C8AA6E
-    }
+	if ($this->user->profil_picture) {
+		$this->profilePictureSource = '/storage/images/1024/' . $this->user->profil_picture;
+	} else {
+		$this->profilePictureSource = 'https://ui-avatars.com/api/?length=1&name=' . $this->user->game_name;
+	}
 
-    $this->mobileMenu = false;
-    $this->lftModal = false;
-    $this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
-    $this->goals = require __DIR__ . '/../../../../app/enum/lookingFors.php';
-    $this->ambiances = require __DIR__ . '/../../../../app/enum/ambiances.php';
-    $this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
-    $this->user = Auth::user();
+	$this->mobileMenu = false;
+	$this->lftModal = false;
+	$this->jobs = require __DIR__ . '/../../../../app/enum/jobs.php';
+	$this->goals = require __DIR__ . '/../../../../app/enum/lookingFors.php';
+	$this->ambiances = require __DIR__ . '/../../../../app/enum/ambiances.php';
+	$this->levels = require __DIR__ . '/../../../../app/enum/levels.php';
+	$this->user = Auth::user();
 
-    $this->myLftPost = $this->user->lftPost()->first();
-//    dd($this->myLftPost);
+	$this->myLftPost = $this->user->lftPost()->first();
 
-    $this->id = $this->myLftPost->id ?? 0;
-    $this->myJob = $this->myLftPost->job ?? '';
-    $this->myAmbiance = $this->myLftPost->ambiance ?? '';
-    $this->myGoal = $this->myLftPost->goal ?? '';
-    $this->description = $this->myLftPost->description ?? '';
-    $this->published = $this->myLftPost->published ?? '';
-//    $this->publishedTemp = ;
+	$this->id = $this->myLftPost->id ?? 0;
+	$this->myJob = $this->myLftPost->job ?? '';
+	$this->myAmbiance = $this->myLftPost->ambiance ?? '';
+	$this->myGoal = $this->myLftPost->goal ?? '';
+	$this->description = $this->myLftPost->description ?? '';
+	$this->published = $this->myLftPost->published ?? '';
 
-    if ($this->published === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
+	if ($this->published === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
+
+    $this->sectionDisplayedStatus = DisplayedInformationsOnce::where('user_id', $this->user->id)->first();
+    $this->setSectionDisplayStatus();
 });
 
-$openAddSectionModal = function (){
-    $this->openModal = true;
+$openAddSectionModall = function (){
+	$this->dispatch('openAddSectionModal');
+};
+
+$setSectionDisplayStatus = function () {
+    $this->sectionDisplayedStatus->player_experiences = $this->sectionDisplayedStatus->player_experiences ? true : false;
+    $this->playerExperiencesDisplay = $this->sectionDisplayedStatus->player_experiences ? true : false;
+    $this->awardsDisplay = $this->sectionDisplayedStatus->awards ? true : false;
+    $this->skillsDisplay = $this->sectionDisplayedStatus->skills ? true : false;
+    $this->languagesDisplay = $this->sectionDisplayedStatus->languages ? true : false;
+    $this->onboardingDisplay = $this->sectionDisplayedStatus->onboarding ? true : false;
+    $this->educationDisplay = $this->sectionDisplayedStatus->education ? true : false;
+};
+
+$openAddSectionModal = function () {
+    $this->setSectionDisplayStatus();
+	$this->openModal = true;
 };
 
 $addMember = function () {
-    $this->openModalMember = true;
+	$this->openModalMember = true;
 };
 
 $addSection = function () {
-    $this->openModal = true;
+	$this->openModal = true;
 };
 
 $newExperience = function () {
-    $this->openModal = false;
-    try {
-        \App\Models\DisplayedInformation::where('user_id', $this->user->id)
-            ->update(['player_experiences' => true]);
+	$this->openModal = false;
+	try {
+		\App\Models\DisplayedInformation::where('user_id', $this->user->id)
+			->update(['player_experiences' => true]);
 		\App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
-            ->update(['player_experiences' => true]);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        throw $e;
-    }
+			->update(['player_experiences' => true]);
+	} catch (\Illuminate\Validation\ValidationException $e) {
+		throw $e;
+	}
 
-    $this->dispatch('render')->to('partials.dashboard-playerexperience');
-    Toaster::success('Section affiché');
+	$this->dispatch('render')->to('partials.dashboard-playerexperience');
+	Toaster::success('Section affiché');
 };
 
 $newEducation = function () {
-    $this->openModal = false;
-    try {
-        \App\Models\DisplayedInformation::where('user_id', $this->user->id)
-            ->update(['education' => true]);
-        \App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
-            ->update(['education' => true]);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        throw $e;
-    }
+	$this->openModal = false;
+	try {
+		\App\Models\DisplayedInformation::where('user_id', $this->user->id)
+			->update(['education' => true]);
+		\App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
+			->update(['education' => true]);
+	} catch (\Illuminate\Validation\ValidationException $e) {
+		throw $e;
+	}
 
-    $this->dispatch('render')->to('partials.dashboard-education');
-    Toaster::success('Section affiché');
+	$this->dispatch('render')->to('partials.dashboard-education');
+	Toaster::success('Section affiché');
 };
 
 $newAward = function () {
-    $this->openModal = false;
-    try {
-        \App\Models\DisplayedInformation::where('user_id', $this->user->id)
-            ->update(['awards' => true]);
-        \App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
-            ->update(['awards' => true]);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        throw $e;
-    }
+	$this->openModal = false;
+	try {
+		\App\Models\DisplayedInformation::where('user_id', $this->user->id)
+			->update(['awards' => true]);
+		\App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
+			->update(['awards' => true]);
+	} catch (\Illuminate\Validation\ValidationException $e) {
+		throw $e;
+	}
 
-    $this->dispatch('render')->to('partials.dashboard-awards');
-    Toaster::success('Section affiché');
+	$this->dispatch('render')->to('partials.dashboard-awards');
+	Toaster::success('Section affiché');
 };
 
 $newSkill = function () {
-    $this->openModal = false;
-    try {
-        \App\Models\DisplayedInformation::where('user_id', $this->user->id)
-            ->update(['skills' => true]);
-        \App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
-            ->update(['skills' => true]);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        throw $e;
-    }
+	$this->openModal = false;
+	try {
+		DisplayedInformation::where('user_id', $this->user->id)
+			->update(['skills' => true]);
+		DisplayedInformationsOnce::where('user_id', $this->user->id)
+			->update(['skills' => true]);
+	} catch (ValidationException $e) {
+		throw $e;
+	}
 
-    $this->dispatch('render')->to('partials.dashboard-skills');
-    Toaster::success('Section affiché');
+	$this->dispatch('render')->to('partials.dashboard-skills');
+	Toaster::success('Section affiché');
 };
 
 $newLanguage = function () {
-    $this->openModal = false;
-    try {
-        \App\Models\DisplayedInformation::where('user_id', $this->user->id)
-            ->update(['languages' => true]);
-        \App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
-            ->update(['languages' => true]);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        throw $e;
-    }
+	$this->openModal = false;
+	try {
+		\App\Models\DisplayedInformation::where('user_id', $this->user->id)
+			->update(['languages' => true]);
+		\App\Models\DisplayedInformationsOnce::where('user_id', $this->user->id)
+			->update(['languages' => true]);
+	} catch (\Illuminate\Validation\ValidationException $e) {
+		throw $e;
+	}
 
-    $this->dispatch('render')->to('partials.dashboard-languages');
-    Toaster::success('Section affiché');
+	$this->dispatch('render')->to('partials.dashboard-languages');
+	Toaster::success('Section affiché');
 };
 
 $openLFTModal = function () {
-    $this->publishedTemp = $this->published;
+	$this->publishedTemp = $this->published;
 
-    if ($this->publishedTemp === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
-    $this->lftModal = true;
+	if ($this->publishedTemp === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
+	$this->lftModal = true;
 };
 
 $closeLFTModal = function () {
-    $this->published = $this->myLftPost->published ?? '';
+	$this->published = $this->myLftPost->published ?? '';
 
-    $this->publishedTemp = $this->published;
+	$this->publishedTemp = $this->published;
 
-    if ($this->publishedTemp === 1) {
-        $this->publishedTemp = true;
-    } else {
-        $this->publishedTemp = false;
-    }
-    $this->lftModal = false;
+	if ($this->publishedTemp === 1) {
+		$this->publishedTemp = true;
+	} else {
+		$this->publishedTemp = false;
+	}
+	$this->lftModal = false;
+};
+
+
+$save = function () {
+
+	try {
+		DisplayedInformation::where('user_id', $this->user->id)
+			->update(['player_experiences' => $this->playerExperiencesDisplay]);
+		DisplayedInformationsOnce::where('user_id', $this->user->id)
+			->update(['player_experiences' => $this->playerExperiencesDisplay]);
+        DisplayedInformation::where('user_id', $this->user->id)
+            ->update(['skills' => $this->skillsDisplay]);
+        DisplayedInformationsOnce::where('user_id', $this->user->id)
+            ->update(['skills' => $this->skillsDisplay]);
+        DisplayedInformation::where('user_id', $this->user->id)
+            ->update(['awards' => $this->awardsDisplay]);
+        DisplayedInformationsOnce::where('user_id', $this->user->id)
+            ->update(['awards' => $this->awardsDisplay]);
+        DisplayedInformation::where('user_id', $this->user->id)
+            ->update(['education' => $this->educationDisplay]);
+        DisplayedInformationsOnce::where('user_id', $this->user->id)
+            ->update(['education' => $this->educationDisplay]);
+        DisplayedInformation::where('user_id', $this->user->id)
+            ->update(['languages' => $this->languagesDisplay]);
+        DisplayedInformationsOnce::where('user_id', $this->user->id)
+            ->update(['languages' => $this->languagesDisplay]);
+	} catch (ValidationException $e) {
+		throw $e;
+	}
+
+    $this->dispatch('render');
+    $this->dispatch('renderOnboarding');
+    $this->openModal = false;
+	Toaster::success('Changement enregistré');
 };
 
 $saveMyLftPost = function () {
-    $this->published = $this->publishedTemp ;
+	$this->published = $this->publishedTemp;
 
-    LftPost::updateOrCreate([
-        'user_id' => Auth::id(),
-        'id' => $this->id
-    ],
-        [
-            'job' => $this->myJob,
-            'ambiance' => $this->myAmbiance,
-            'goal' => $this->myGoal,
-            'description' => $this->description,
-            'published' => $this->published,
-        ]);
+	LftPost::updateOrCreate([
+		'user_id' => Auth::id(),
+		'id' => $this->id
+	],
+		[
+			'job' => $this->myJob,
+			'ambiance' => $this->myAmbiance,
+			'goal' => $this->myGoal,
+			'description' => $this->description,
+			'published' => $this->published,
+		]);
 
-    $this->lftModal = false;
+	$this->lftModal = false;
 
-    if($this->id === 0){
-        Toaster::success('Post LFT crée avec succès');
-    }
+	if ($this->id === 0) {
+		Toaster::success('Post LFT crée avec succès');
+	}
 
-    if($this->id !== 0){
-        Toaster::success('Post LFT modifiée avec succès');
-    }
-
+	if ($this->id !== 0) {
+		Toaster::success('Post LFT modifiée avec succès');
+	}
 };
 
+$isRealRole = computed(function () {
+	return in_array($this->user->job, ['Top', 'Jungle', 'Mid', 'ADC', 'Support']);
+});
 ?>
 
 <div class="divide-y divide-gray-200 border-b border-gray-200"
      x-data="{
         openDropdownMenu: false,
         openModal: $wire.entangle('openModal'),
-        lftModal: $wire.entangle('lftModal'),
+        lftModal: $wire.entangle('lftModal')
          }"
 >
     <div class="pb-6 bg-white">
@@ -234,7 +297,22 @@ $saveMyLftPost = function () {
             <div>
                 <div class="-m-1 flex">
                     <div class="inline-flex overflow-hidden rounded-lg border-4 border-white">
-                        <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48" src="{{ $profilePictureSource }}" alt="">
+                        @if($this->user->profil_picture)
+                            <img class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48"
+                                 src="/storage/images/1024/{{$this->user->profil_picture}}"
+                                 alt="Photo de profil"
+                                 srcset="
+       /storage/images/1024/{{$this->user->profil_picture}} 1024w,
+       /storage/images/512/{{$this->user->profil_picture}} 512w,
+       /storage/images/400/{{$this->user->profil_picture}} 400w,
+       /storage/images/200/{{$this->user->profil_picture}} 200w,
+       /storage/images/150/{{$this->user->profil_picture}} 150w"
+                                 sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                        @else
+                            <div class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48 bg-gray-400 flex justify-center items-center">
+                                <p class="text-3xl sm:text-6xl lg:text-8xl text-center text-gray-950">{{ ucfirst(substr($user->game_name, 0, 1)) }}</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -246,7 +324,12 @@ $saveMyLftPost = function () {
                     <span class="text-sm text-gray-500">{{ $user->username }}</span>
                 </div>
                 <div>
-                    <p class="text-gray-900">{{ $user->job }}  · {{ __('levels.'.$user->level) }}</p>
+                    <p class="text-gray-900 flex items-center gap-x-1">
+                        {{ $user->job }} @if($this->isRealRole)
+                            <img class="flex items-center h-4" src="{{Vite::asset('resources/images/'. $user->job .'.svg') }}" alt="">
+                        @endif · {{ __('levels.'.$user->level) }} @if($user->level)
+                            <img class="flex items-center h-4" src="{{ Vite::asset('resources/images/'. $user->level .'.svg') }}" alt="">
+                        @endif</p>
                 </div>
 
                 <div class="mt-5 flex flex-wrap space-y-3 sm:space-x-3 sm:space-y-0">
@@ -258,41 +341,41 @@ $saveMyLftPost = function () {
                     {{--                    </button>--}}
                     {{--                    Envoyer une demande d'ami--}}
                     <button wire:click="openAddSectionModal" type="button" class="inline-flex w-full flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
-                        Ajouter une section
+                        Gérer les sections
                     </button>
-                    <button wire:click="openLFTModal" type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                        Mon post LFT
+                    <button wire:click="openAddSectionModall" type="button" class="inline-flex w-full flex-1 items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                        Enrichir mon profil
                     </button>
                     <div class="ml-3 inline-flex sm:ml-0">
-                        <div class="relative inline-block text-left">
-                            <button x-cloak @click="openDropdownMenu = !openDropdownMenu" type="button" class="relative inline-flex items-center rounded-md bg-white p-2 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="options-menu-button" aria-expanded="false" aria-haspopup="true">
-                                <span class="absolute -inset-1"></span>
-                                <span class="sr-only">Open options menu</span>
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z"/>
-                                </svg>
-                            </button>
-                            <!--
-                              Dropdown panel, show/hide based on dropdown state.
+                        {{--                        <div class="relative inline-block text-left">--}}
+                        {{--                            <button x-cloak @click="openDropdownMenu = !openDropdownMenu" type="button" class="relative inline-flex items-center rounded-md bg-white p-2 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="options-menu-button" aria-expanded="false" aria-haspopup="true">--}}
+                        {{--                                <span class="absolute -inset-1"></span>--}}
+                        {{--                                <span class="sr-only">Open options menu</span>--}}
+                        {{--                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">--}}
+                        {{--                                    <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z"/>--}}
+                        {{--                                </svg>--}}
+                        {{--                            </button>--}}
+                        {{--                            <!----}}
+                        {{--                              Dropdown panel, show/hide based on dropdown state.--}}
 
-                              Entering: "transition ease-out duration-100"
-                                From: "transform opacity-0 scale-95"
-                                To: "transform opacity-100 scale-100"
-                              Leaving: "transition ease-in duration-75"
-                                From: "transform opacity-100 scale-100"
-                                To: "transform opacity-0 scale-95"
-                            -->
-                            <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">
-{{--                                <div class="py-1" role="none">--}}
-{{--                                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->--}}
-{{--                                    <button type="button" href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Ajouter un CV sur le profil</button>--}}
-{{--                                    --}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
-{{--                                    --}}{{--                                        CV</a>--}}
-{{--                                    --}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande--}}
-{{--                                    --}}{{--                                        d'ami</a>--}}
-{{--                                </div>--}}
-                            </div>
-                        </div>
+                        {{--                              Entering: "transition ease-out duration-100"--}}
+                        {{--                                From: "transform opacity-0 scale-95"--}}
+                        {{--                                To: "transform opacity-100 scale-100"--}}
+                        {{--                              Leaving: "transition ease-in duration-75"--}}
+                        {{--                                From: "transform opacity-100 scale-100"--}}
+                        {{--                                To: "transform opacity-0 scale-95"--}}
+                        {{--                            -->--}}
+                        {{--                            <div x-cloak x-show="openDropdownMenu" @click.away="openDropdownMenu = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu-button" tabindex="-1">--}}
+                        {{--                                --}}{{--                                <div class="py-1" role="none">--}}
+                        {{--                                --}}{{--                                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->--}}
+                        {{--                                --}}{{--                                    <button type="button" href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Ajouter un CV sur le profil</button>--}}
+                        {{--                                --}}{{--                                    --}}{{----}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Voir--}}
+                        {{--                                --}}{{--                                    --}}{{----}}{{--                                        CV</a>--}}
+                        {{--                                --}}{{--                                    --}}{{----}}{{--                                    <a href="#" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="options-menu-item-0">Demande--}}
+                        {{--                                --}}{{--                                    --}}{{----}}{{--                                        d'ami</a>--}}
+                        {{--                                --}}{{--                                </div>--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -340,89 +423,75 @@ $saveMyLftPost = function () {
                     To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 -->
                 <div @click.away="openModal = false" class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl sm:p-6">
-                    <ul>
+                    <form wire:submit.prevent="save" >
                         <div class="sm:flex sm:items-start">
                             <div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
                                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                                    Ajouter une section</h3>
+                                    Gérer l'affichage des sections</h3>
+                                <p class="mt-1 text-sm leading-5 text-gray-500">Decider si vous voulez afficher ces
+                                    sections sur votre profil</p>
                             </div>
                         </div>
 
                         <ul role="list" class="divide-y divide-gray-100">
-                            {{--                            <li class="flex gap-x-4 py-5">--}}
-                            {{--                                <div class="min-w-0">--}}
-                            {{--                                    <button type="button" wire:click="newBio">--}}
-                            {{--                                      <p class="text-left text-sm font-semibold leading-6 text-gray-900">Modifie ta bio</p>--}}
-                            {{--                                        <p class="mt-1 text-sm leading-5 text-gray-500">Donne une description de toi-même, tes intérêts, tes expériences et ce que tu recherches</p>--}}
-                            {{--                                    </button>--}}
-                            {{--                                </div>--}}
-                            {{--                            </li>--}}
-                            <li class="flex gap-x-4 py-5">
+                            <li class="flex gap-x-4">
                                 <div class="min-w-0">
-                                    <button type="button" wire:click="newExperience">
-                                        <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
-                                            expérience</p>
-                                        <p class="mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une
-                                            saison en LEC qu'une demi-finale de clash</p>
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="flex gap-x-4 py-5">
-                                <div class="min-w-0">
-                                    <button type="button" wire:click="newAward">
-                                        <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
-                                            récompense</p>
-                                        <p class="mt-1 truncate text-sm leading-5 text-gray-500">Vous avez gagnez les
-                                            worlds ou la lan de la région ? Dites-le nous !</p>
-                                    </button>
-                                </div>
-                            </li>
-                            @if($user->account_type !== 'team')
-                                <li class="flex gap-x-4 py-5">
-                                    <div class="min-w-0">
-                                        <button type="button" wire:click="newSkill">
-                                            <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter
-                                                une compétence</p>
-                                            <p class="text-left mt-1 text-sm leading-5 text-gray-500"> Faites nous
-                                                savoir si vous êtes un bon shotcalleur ou que vous avez un excellent
-                                                control de la vision, ou encore si vous êtes capable de jouer un grand
-                                                nombre de champions </p>
-                                        </button>
+                                    <div class="mt-5 relative flex items-start">
+                                        <div class="flex h-6 items-center">
+                                            <input wire:model.live="playerExperiencesDisplay" id="displayed" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
+                                        </div>
+                                        <div class="ml-3 text-sm leading-6">
+                                            <label for="displayed" class="font-medium text-gray-900">Expériences</label>
+                                        </div>
                                     </div>
-                                </li>
-                            @endif
-                            @if($user->account_type === 'staff')
-                                <li class="flex gap-x-4 py-5">
-                                    <div class="min-w-0">
-                                        <button type="button" wire:click="newEducation">
-                                            <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter
-                                                une formation</p>
-                                            <p class="text-left mt-1 text-sm leading-5 text-gray-500">
-                                                Faites savoir à tous quelles formations vous avez suivies et comment
-                                                elles ont enrichi votre parcours. Partagez vos atouts et démontrez ce
-                                                qui vous rend exceptionnel !
-                                            </p>
-                                        </button>
+                                    <div class="mt-5 relative flex items-start">
+                                        <div class="flex h-6 items-center">
+                                            <input wire:model.live="awardsDisplay" id="displayed" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
+                                        </div>
+                                        <div class="ml-3 text-sm leading-6">
+                                            <label for="displayed" class="font-medium text-gray-900">Recompenses</label>
+                                        </div>
                                     </div>
-                                </li>
-                            @endif
-                            <li class="flex gap-x-4 py-5">
-                                <div class="min-w-0">
-                                    <button type="button" wire:click="newLanguage">
-                                        <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
-                                            langue</p>
-                                        <p class="mt-1 text-sm leading-5 text-gray-500"> Agrandissez votre champ de
-                                            possibilité en montrant quelle langue vous savez parler</p>
-                                    </button>
+                                    @if($user->account_type !== 'team')
+                                        <div class="mt-5 relative flex items-start">
+                                            <div class="flex h-6 items-center">
+                                                <input wire:model.live="skillsDisplay" id="displayed" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
+                                            </div>
+                                            <div class="ml-3 text-sm leading-6">
+                                                <label for="displayed" class="font-medium text-gray-900">Compétences</label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if($user->account_type === 'staff')
+                                        <div class="mt-5 relative flex items-start">
+                                            <div class="flex h-6 items-center">
+                                                <input wire:model.live="educationDisplay" id="displayed" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
+                                            </div>
+                                            <div class="ml-3 text-sm leading-6">
+                                                <label for="displayed" class="font-medium text-gray-900">Formation</label>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="mt-5 relative flex items-start">
+                                        <div class="flex h-6 items-center">
+                                            <input wire:model.live="languagesDisplay" id="displayed" name="displayed" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
+                                        </div>
+                                        <div class="ml-3 text-sm leading-6">
+                                            <label for="displayed" class="font-medium text-gray-900">Language</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                            <button @click="openModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
+                            <button @click="openModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 ml-3 sm:w-auto">
                                 Retour
                             </button>
+                            <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
+                                Sauvegarder
+                            </button>
                         </div>
-                    </ul>
+                    </form>
                 </div>
             </div>
         </div>
@@ -534,12 +603,13 @@ $saveMyLftPost = function () {
                                         <input wire:model="publishedTemp" id="displayed" aria-describedby="" name="offers" type="checkbox" class="bg-black h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                                     </div>
                                     <div class="ml-3 text-sm leading-6">
-                                        <label for="displayed" class="font-medium text-gray-900">Publier mon post</label>
+                                        <label for="displayed" class="font-medium text-gray-900">Publier mon
+                                            post</label>
                                     </div>
                                 </div>
                                 <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                                     <button type="submit" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto sm:ml-3">
-                                        sauvegarder
+                                        Sauvegarder
                                     </button>
                                     <button @click="lftModal = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">
                                         Annuler

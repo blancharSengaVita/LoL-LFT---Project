@@ -8,8 +8,9 @@ use Illuminate\Validation\Rules;
 use App\Rules\StartsWithAt;
 use \App\Models\UserMission;
 use \App\Models\OnboardingMission;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\Laravel\Facades\Image;
 use Masmerise\Toaster\Toaster;
+use \Illuminate\Support\Facades\Storage;
 use function Livewire\Volt\{
     state,
     mount,
@@ -138,13 +139,6 @@ rules([
     'profilPicture.mimes' => 'Seuls les fichiers de type jpeg, png, jpg sont autorisés.',
     'profilPicture.max' => 'La taille maximale de l’image doit être de 5MB.',
     'profilPicture.uploaded' => 'Le chargement de l\'image a échoué',
-    'bio.required' => 'Votre bio est requis',
-    'job.required' => 'Votre job est requis',
-    'region.required' => 'Votre region est requis',
-    'profilPicture.image' => 'Le fichier n\'est pas une image',
-    'profilPicture.mimes' => 'Seuls les fichiers de type jpeg, png, jpg sont autorisés.',
-    'profilPicture.max' => 'La taille maximale de l’image doit être de 5MB.',
-    'profilPicture.uploaded' => 'Le chargement de l\'image a échoué',
 ]);
 
 $saveGeneralInfo = function () {
@@ -172,7 +166,7 @@ $saveProfilePicture = function () {
         $filenameParts = explode('.', $originalFilename);
         $extension = $filenameParts[array_key_last($filenameParts)];
         $newFilename = sha1_file($tmpPath) . '.' . $extension;
-        $image = Image::make($this->profilPicture);
+        $image = Image::read($this->profilPicture);
         $width = $image->width();
         $height = $image->height();
         $ratio = $width / $height;
@@ -182,16 +176,11 @@ $saveProfilePicture = function () {
 
         foreach ($sizes as $size) {
             if (!file_exists(storage_path('app/public/images/' . $size))) {
-                mkdir(storage_path('app/public/images/' . $size));
+                Storage::makeDirectory(('public/images/' . $size));
             }
-
-            $image->resize($size, null, function ($constraint) {
-                $constraint->aspectRatio(); // Maintient le ratio original
-                $constraint->upsize(); // Empêche l'agrandissement
-            });
-
+            $image->cover($size, $size);
+            $image->orient();
             $image->save(storage_path('app/public/images/' . $size . '/') . $newFilename, 100);
-            $image->destroy();
         }
 
         Auth::user()->profil_picture = $newFilename;
@@ -333,6 +322,21 @@ $cancelProfilePicture = function () {
                     <div class="col-span-3 mb-4">
                         <label for="profil-picture" class="block text-sm font-medium leading-6 text-gray-900">
                             Photo de profil</label>
+                        <div class="inline-flex overflow-hidden rounded-lg border-4 border-white">
+                            @if($this->user->profil_picture)
+                                <img class="h-12 w-12 flex-shrink-0 sm:h-20 sm:w-20 lg:h-24 lg:w-24"
+                                     src="/storage/images/200/{{$this->user->profil_picture}}"
+                                     alt="Photo de profil"
+                                     srcset="
+       /storage/images/200/{{$this->user->profil_picture}} 200w,
+       /storage/images/150/{{$this->user->profil_picture}} 150w"
+                                     sizes="(max-width: 640px) 150px, (max-width: 1024px) 200px, (max-width: 1280px) 400px, 1024px">
+                            @else
+                                <div class="h-24 w-24 flex-shrink-0 sm:h-40 sm:w-40 lg:h-48 lg:w-48 bg-gray-400 flex justify-center items-center">
+                                    <p class="text-8xl text-center text-gray-950">{{ ucfirst(substr($user->game_name, 0, 1)) }}</p>
+                                </div>
+                            @endif
+                        </div>
                         <div class="mt-2 flex flex-col items-center  rounded-lg border border-dashed border-gray-900/25 px-6 py-4">
                             <div class="text-center">
                                 <div class="profil-picture flex items-center justify-center"></div>

@@ -112,7 +112,7 @@ showSection:$wire.entangle('showSection'),
             @if(count($this->playerExperiencesHidden))
                 <div class="flex justify-center">
                     <Bouton @click="openAccordion = !openAccordion">
-                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? 'hidden' : ''" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             plus
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -120,7 +120,7 @@ showSection:$wire.entangle('showSection'),
                             </svg>
                         </p>
 
-                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-800">
+                        <p :class="openAccordion ? '' : 'hidden'" class="flex items-center text-sm text-gray-500 hover:text-gray-600 cursor-pointer">
                             Afficher
                             moins
                             <svg class=" h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">

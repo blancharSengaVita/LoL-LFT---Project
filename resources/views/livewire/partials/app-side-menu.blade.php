@@ -49,7 +49,7 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
     <h2 class="sr-only">Menu latéral</h2>
     <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
         <div class="flex h-16 shrink-0 items-center text-indigo-500">
-            <div class="flex h-16 shrink-0 items-center text-indigo-600">
+            <a href="{{route('dashboard')}}" wire:navigate class="flex h-16 shrink-0 items-center text-indigo-600 gap-x-3">
                 <svg class="fill-current" width="37" height="37" viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg">
                     <rect x="35.1433" y="17.14" width="6" height="24" transform="rotate(130.61 35.1433 17.14)" />
                     <path d="M16.9235 1.51831L21.4784 5.42372L11.064 17.5703L8.46173 11.3874L16.9235 1.51831Z" />
@@ -61,7 +61,8 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
                     <path d="M3.57929 21.6909L1.3018 19.7382L-3.51667e-06 21.2565L3.57929 21.6909Z" />
                     <rect x="22.4451" y="18.3232" width="6" height="6" transform="rotate(130.61 22.4451 18.3232)" />
                 </svg>
-            </div>
+                <p class="text-xl font-semibold">LoL LFT</p>
+            </a>
         </div>
         <nav class="flex flex-1 flex-col">
             <h3 class="sr-only"> Menu de navigation principal </h3>

@@ -359,7 +359,7 @@ on(['renderOnboarding' => function () {
                                     <button type="button" wire:click="newExperience">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             expérience</p>
-                                        <p class="mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une
+                                        <p class="text-left mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une
                                             saison en LEC qu'une demi-finale de clash</p>
                                     </button>
                                 </div>
@@ -369,7 +369,7 @@ on(['renderOnboarding' => function () {
                                     <button type="button" wire:click="newAward">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             récompense</p>
-                                        <p class="mt-1 truncate text-sm leading-5 text-gray-500">Vous avez gagnez le prix du meilleur joueur de la compétion ou celui du plus meurtrier
+                                        <p class="text-left mt-1 text-sm leading-5 text-gray-500">Vous avez gagnez le prix du meilleur joueur de la compétion ou celui du plus meurtrier
                                             ? Dites-le nous !</p>
                                     </button>
                                 </div>
@@ -408,7 +408,7 @@ on(['renderOnboarding' => function () {
                                     <button type="button" wire:click="newLanguage">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             langue</p>
-                                        <p class="mt-1 text-sm leading-5 text-gray-500"> Agrandissez votre champ de
+                                        <p class="text-left mt-1 text-sm leading-5 text-gray-500"> Agrandissez votre champ de
                                             possibilité en montrant quelle langue vous savez parler</p>
                                     </button>
                                 </div>

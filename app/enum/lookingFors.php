@@ -2,8 +2,8 @@
 //looking for
 return [
     'team' => [
-        'Major Ligue',
-        'Minor Ligue',
+        'Major league',
+        'Minor league',
         'ERL 1',
         'ERL 2',
         'ERL 3',
