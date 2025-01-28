@@ -158,11 +158,11 @@ $saveSingleAward = function () {
     $this->dispatch('renderOnboarding');
     $this->openSingleAwardModal = false;
     if ($this->id === 0) {
-        Toaster::success('Prix ajouté avec succès');
+        Toaster::success('Récompense ajouté avec succès');
     }
 
     if ($this->id !== 0) {
-        Toaster::success('Prix modifiée avec succès');
+        Toaster::success('Récompense modifiée avec succès');
     }
 };
 
@@ -408,7 +408,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         Évènement<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="event" type="text" name="event" id="event" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Clash : coupe d'Europe">
+                                        <input wire:model="event" dusk="awardEvent" type="text" name="event" id="event" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Clash : coupe d'Europe">
                                     </div>
                                     @if ($messages = $errors->get('event'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -417,11 +417,11 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     @endif
                                 </div>
                                 <div class="mt-4">
-                                    <label for="event" class="block text-sm font-medium leading-6 text-gray-900">
+                                    <label for="team" class="block text-sm font-medium leading-6 text-gray-900">
                                         Équipe<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="team" type="text" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="T1">
+                                        <input wire:model="team" type="text" dusk="awardTeam" name="team" id="team" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="T1">
                                     </div>
                                     @if ($messages = $errors->get('team'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -434,7 +434,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                         Date<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="date" type="date" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
+                                        <input wire:model="date" dusk="awardDate" type="date" name="date" id="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
                                     </div>
                                     @if ($messages = $errors->get('date'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">

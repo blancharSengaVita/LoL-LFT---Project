@@ -418,7 +418,7 @@ $isRealRole = computed(function ($role) {
                                     <label for="job" class="block text-sm font-medium leading-6 text-gray-900">
                                         Recherche un/une
                                     </label>
-                                    <select wire:model.live="job" id="job" name="job" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+                                    <select dusk="FindTeammateJob" wire:model.live="job" id="job" name="job" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
                                             {{--                                            style="background-image:url({{--}}
                                             {{--	Vite::asset('resources/images/'. 'Mid' .'.svg') }});"--}}
                                             @if($this->isRealRole($job)) style="background-image:url({{
@@ -449,7 +449,7 @@ $isRealRole = computed(function ($role) {
                                     <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                         Niveau
                                     </label>
-                                    <select wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+                                    <select dusk="FindTeammateLevel" wire:model.live="level" id="level" name="level" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
                                             @if($level) style="background-image:url({{ Vite::asset('resources/images/'. $level .'.svg') }});" @endif
                                     >
                                         <option value="">Peu importe</option>
@@ -462,7 +462,7 @@ $isRealRole = computed(function ($role) {
                                     <label for="goal" class="block text-sm font-medium leading-6 text-gray-900">
                                         Pour
                                     </label>
-                                    <select wire:model.live="goal" id="goal" name="goal" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                    <select dusk="FindTeammateGoal" wire:model.live="goal" id="goal" name="goal" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">Peu importe</option>
                                         @foreach($goals['team'] as $goal)
                                             <option value="{{ $goal }}">{{ __('lookingFors.'.$goal) }}</option>
@@ -476,7 +476,7 @@ $isRealRole = computed(function ($role) {
                                     <label for="ambiance" class="block text-sm font-medium leading-6 text-gray-900">
                                         Ambiance
                                     </label>
-                                    <select wire:model.live="ambiance" id="ambiance" name="ambiance" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                    <select dusk="FindTeammateAmbiance" wire:model.live="ambiance" id="ambiance" name="ambiance" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">Peu importe</option>
                                         @foreach($ambiances as $ambiance)
                                             <option value="{{ $ambiance }}">{{ __('ambiances.'.$ambiance) }}</option>
@@ -502,7 +502,7 @@ $isRealRole = computed(function ($role) {
                         @endif
                         <ul role="list" class="divide-y divide-gray-100">
                             @foreach($this->lftPosts as $post)
-                                <li wire:key="{{ $post->id }}">
+                                <li dusk="MyPost-{{$post->user->username}}" wire:key="{{ $post->id }}">
                                     <div class="flex gap-x-4 w-full py-4 px-4">
                                         {{--                                    <div class="h-14 w-14 flex justify-center items-center bg-indigo-600">--}}
                                         <a class=" h-12 w-12 flex-none rounded-full" href="{{route('user', ['user' => $post->user->username])}}" title="aller vers la page de {{$post->user->game_name}}">
@@ -618,7 +618,7 @@ $isRealRole = computed(function ($role) {
                                             <div class="mt-4">
                                                 <label for="myJob" class="block text-sm font-medium leading-6 text-gray-900">Recherche
                                                     un/une</label>
-                                                <select wire:model.live="myJob" id="myJob" name="myJob" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
+                                                <select dusk="MyPostJob"  wire:model.live="myJob" id="myJob" name="myJob" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6"
 
                                                         @if($this->isRealRole($myJob)) style="background-image:url({{
 	Vite::asset('resources/images/'. $myJob .'.svg') }});"
@@ -651,8 +651,8 @@ $isRealRole = computed(function ($role) {
                                                 @endif
                                             </div>
                                             <div class="mt-4">
-                                                <label for="myGoal" class="block text-sm font-medium leading-6 text-gray-900">Pour</label>
-                                                <select wire:model.live="myGoal" id="myGoal" name="myGoal" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                                <label  for="myGoal" class="block text-sm font-medium leading-6 text-gray-900">Pour</label>
+                                                <select dusk="MyPostGoal" wire:model.live="myGoal" id="myGoal" name="myGoal" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                     <option value="">Peu importe</option>
                                                     @foreach($goals['team'] as $goal)
                                                         <option value="{{ $goal }}">{{ __('lookingFors.'.$goal) }}</option>
@@ -669,7 +669,7 @@ $isRealRole = computed(function ($role) {
                                             </div>
                                             <div class="mt-4">
                                                 <label for="myAmbiance" class="block text-sm font-medium leading-6 text-gray-900">Ambiance</label>
-                                                <select wire:model.live="myAmbiance" id="myAmbiance" name="myAmbiance" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                                <select dusk="MyPostAmbiance" wire:model.live="myAmbiance" id="myAmbiance" name="myAmbiance" class="bg-white w-10 mt-2 block w-32 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                                     <option value="">Peu importe</option>
                                                     @foreach($ambiances as $ambiance)
                                                         <option value="{{ $ambiance }}">{{ __('ambiances.'.$ambiance) }}</option>
@@ -685,17 +685,16 @@ $isRealRole = computed(function ($role) {
                                         <div class="mt-4">
                                             <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
                                             <div class="mt-2">
-                                                <textarea wire:model="description" id="description" name="description" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6"></textarea>
+                                                <textarea dusk="MyPostDescription" wire:model="description" id="description" name="description" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6"></textarea>
                                             </div>
                                             @error('description')
                                             <p class="text-sm text-red-600 space-y-1 mt-2"> {{ $message }}</p>
                                             @enderror
-                                            <p class="mt-1 text-sm leading-6 text-gray-600">Écris quelques phrases à
-                                                propos de ton post</p>
+                                            <p class="mt-1 text-sm leading-6 text-gray-600">Écris quelques phrases à propos de ton post</p>
                                         </div>
                                         <div class="mt-5 relative flex items-start">
                                             <div class="flex h-6 items-center">
-                                                <input wire:model="publishedTemp" id="displayed" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
+                                                <input dusk="MyPostPublication" wire:model="publishedTemp" id="displayed" aria-describedby="offers-description" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700 checked:">
                                             </div>
                                             <div class="ml-3 text-sm leading-6">
                                                 <label for="displayed" class="font-medium text-gray-900">Publier mon

@@ -237,7 +237,9 @@ on(['renderOnboarding' => function () {
                                     {{'Valider la mission'}}
                                 </button>
                             @else
-                                <button wire:click="openMissionModal('{{$mission->name}}')" type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
+                                <button
+                                    dusk="{{$mission->name}}"
+                                    wire:click="openMissionModal('{{$mission->name}}')" type="button" class="mt-2 text-sm inline-flex flex-shrink-0 items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text -sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:flex-1">
                                     {{$mission->button_title}}
                                 </button>
                             @endif
@@ -356,17 +358,16 @@ on(['renderOnboarding' => function () {
                             {{--                            </li>--}}
                             <li class="flex gap-x-4 py-5">
                                 <div class="min-w-0">
-                                    <button type="button" wire:click="newExperience">
+                                    <button type="button" dusk="onBoardingExperience" wire:click="newExperience">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             expérience</p>
-                                        <p class="text-left mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une
-                                            saison en LEC qu'une demi-finale de clash</p>
+                                        <p class="text-left mt-1 text-sm leading-5 text-gray-500">Ça peut aussi bien être une saison en LEC qu'une demi-finale de clash</p>
                                     </button>
                                 </div>
                             </li>
                             <li class="flex gap-x-4 py-5">
                                 <div class="min-w-0">
-                                    <button type="button" wire:click="newAward">
+                                    <button type="button" dusk="onBoardingAward" wire:click="newAward">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             récompense</p>
                                         <p class="text-left mt-1 text-sm leading-5 text-gray-500">Vous avez gagnez le prix du meilleur joueur de la compétion ou celui du plus meurtrier
@@ -377,7 +378,7 @@ on(['renderOnboarding' => function () {
                             @if($user->account_type !== 'team')
                                 <li class="flex gap-x-4 py-5">
                                     <div class="min-w-0">
-                                        <button type="button" wire:click="newSkill">
+                                        <button type="button" wire:click="newSkill" dusk="onBoardingSkill">
                                             <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter
                                                 une compétence</p>
                                             <p class="text-left mt-1 text-sm leading-5 text-gray-500"> Faites nous
@@ -391,7 +392,7 @@ on(['renderOnboarding' => function () {
                             @if($user->account_type === 'staff')
                                 <li class="flex gap-x-4 py-5">
                                     <div class="min-w-0">
-                                        <button type="button" wire:click="newEducation">
+                                        <button type="button" wire:click="newEducation" dusk="onBoardingEducation">
                                             <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter
                                                 une formation</p>
                                             <p class="text-left mt-1 text-sm leading-5 text-gray-500">
@@ -405,7 +406,7 @@ on(['renderOnboarding' => function () {
                             @endif
                             <li class="flex gap-x-4 py-5">
                                 <div class="min-w-0">
-                                    <button type="button" wire:click="newLanguage">
+                                    <button type="button" wire:click="newLanguage" dusk="onBoardingLanguage">
                                         <p class="text-left text-sm font-semibold leading-6 text-gray-900">Ajouter une
                                             langue</p>
                                         <p class="text-left mt-1 text-sm leading-5 text-gray-500"> Agrandissez votre champ de
@@ -478,7 +479,7 @@ on(['renderOnboarding' => function () {
                         </dl>
                     </div>
                     <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-x-2">
-                        <a href="{{ route('members') }}" title="vers la page des membres" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  sm:w-auto">
+                        <a dusk="GoToMembers" href="{{ route('members') }}" title="vers la page des membres" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500  sm:w-auto">
                             Aller sur l'onglet membre
                         </a>
                         <button @click="openModalMember = false" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500  sm:w-auto">

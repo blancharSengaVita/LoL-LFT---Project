@@ -8,6 +8,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Support\Collection;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\BeforeClass;
+use Illuminate\Support\Facades\Artisan;
 
 abstract class DuskTestCase extends BaseTestCase
 {
@@ -22,6 +23,7 @@ abstract class DuskTestCase extends BaseTestCase
         }
     }
 
+
     /**
      * Create the RemoteWebDriver instance.
      */
@@ -32,8 +34,10 @@ abstract class DuskTestCase extends BaseTestCase
             '--disable-search-engine-choice-screen',
         ])->unless($this->hasHeadlessDisabled(), function (Collection $items) {
             return $items->merge([
-                '--disable-gpu',
-                '--headless=new',
+//                '--disable-gpu',
+//                '--headless=new',
+                '--start-maximized',
+                '--window-size=1920,1080'
             ]);
         })->all());
 

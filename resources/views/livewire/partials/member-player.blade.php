@@ -224,7 +224,7 @@ deleteModal: $wire.entangle('deleteModal'),
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Joueurs'}}</h3>
             <div class="flex">
-                <button wire:click="createSingleModel"
+                <button dusk="addPlayers" wire:click="createSingleModel"
                         type="button" class="text-gray-700 group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -407,7 +407,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                         Nom<span class="text-red-600">*</span>
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="username" type="text" name="username" id="username" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Faker">
+                                        <input dusk="memberPlayerUserame" wire:model="username" type="text" name="username" id="username" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="Faker">
                                     </div>
                                     @if ($messages = $errors->get('username'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
@@ -417,7 +417,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                 </div>
                                 <div class="col-span-3 mt-4">
                                     <label for="job" class="block text-sm font-medium leading-6 text-gray-900">Poste<span class="text-red-600">*</span></label>
-                                    <select wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                    <select  dusk="memberPlayerJob" wire:model="job" id="job" name="job" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez un poste --</option>
                                         @foreach($jobs as $job)
                                             <option value="{{ $job }}">{{ __('jobs.'.$job) }}</option>
@@ -431,7 +431,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                 @if(!$this->usernameExist)
                                     <div class="mt-4">
                                         <label for="nationality" class="block text-sm font-medium leading-6 text-gray-900">Nationalité<span class="text-red-600">*</span></label>
-                                        <select wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                        <select dusk="memberPlayerNationality" wire:model="nationality" id="nationality" name="nationality" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                             <option value="">-- choisissez une nationalité --</option>
                                             @foreach($nationalities as $nationality)
                                                 <option value="{{ $nationality }}">{{ __('nationalities.'.$nationality) }}</option>
@@ -448,7 +448,7 @@ deleteModal: $wire.entangle('deleteModal'),
                                         Date d'entrée
                                     </label>
                                     <div class="mt-2">
-                                        <input wire:model="entry_date" type="date" name="entry_date" id="entry_date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
+                                        <input dusk="memberPlayerEntry_date" wire:model="entry_date" type="date" name="entry_date" id="entry_date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6" placeholder="1">
                                     </div>
                                     @if ($messages = $errors->get('entry_date'))
                                         <div class="text-sm text-red-600 space-y-1 mt-2">
