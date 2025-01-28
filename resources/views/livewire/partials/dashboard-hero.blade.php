@@ -318,7 +318,7 @@ $isRealRole = computed(function () {
             </div>
             <div class="mt-4 sm:mt-6 sm:ml-6 sm:flex-1">
                 <div>
-                    <p class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $user->game_name }}</p>
+                    <p dusk="DashboardUserGameName" class="text-xl font-bold text-gray-900 sm:text-2xl">{{ $user->game_name }}</p>
                 </div>
                 <div class="mb-2">
                     <span class="text-sm text-gray-500">{{ $user->username }}</span>

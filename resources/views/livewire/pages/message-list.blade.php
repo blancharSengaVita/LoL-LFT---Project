@@ -86,7 +86,7 @@ on(['echo:our-channel,MessageEvent' => function ($data) {
     @if(count($conversations))
         @foreach($conversations as $conversation)
             <li>
-                <a type="button" title="Envoyer des messages à {{$conversation->game_name}}" wire:navigate class="flex flex-row py-3 px-2 items-center h-full
+                <a dusk="conversation-{{ $conversation->game_name }}" type="button" title="Envoyer des messages à {{$conversation->game_name}}" wire:navigate class="flex flex-row py-3 px-2 items-center h-full
             {{ $currentConversation->id === $conversation->id ? 'border-l-4 bg border-l-indigo-600 border-b border-gray-200 bg-gray-50' : 'border-gray-200 border-b hover:bg-white' }}"
 
                    href="{{ route('conversation', ['conversation' => $conversation->id]) }}">

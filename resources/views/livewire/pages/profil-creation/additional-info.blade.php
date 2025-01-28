@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
+//use Intervention\Image\Laravel\Facades\Image;
 use \Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 use function Livewire\Volt\{
@@ -203,6 +204,13 @@ $save = function () {
                         <p class="text-sm text-red-600 space-y-1 mt-2 mb-4"> {{ $message }}</p>
                         @enderror
                     </div>
+                    {{--                    @if ($profilPicture->getClientOriginalExtension())--}}
+                    {{--                        @if (('profilPicture'))--}}
+                    {{--                            <img alt="aezr" src="{{ $profilPicture->temporaryUrl() }}">--}}
+                    {{--                        @endif--}}
+                    {{--                    @endif--}}
+
+
                     <div class="col-span-3">
                         @if($type !== 'team')
                             <div class="col-span-3 mb-4">

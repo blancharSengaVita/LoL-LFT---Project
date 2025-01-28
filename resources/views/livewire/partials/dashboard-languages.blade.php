@@ -381,7 +381,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     Langues</h3>
                                 <div class="mt-4">
                                     <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Langue<span class="text-red-600">*</span></label>
-                                    <select wire:model="name" id="name" name="name" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                    <select dusk="languageName" wire:model="name" id="name" name="name" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez une langue --</option>
                                         @foreach($availableLanguages as $language)
                                             <option value="{{ $language }}">{{ __('languages.'.$language) }}</option>
@@ -395,7 +395,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                                     <label for="level" class="block text-sm font-medium leading-6 text-gray-900">
                                         Niveau<span class="text-red-600">*</span>
                                     </label>
-                                    <select wire:model="level" id="level" name="level" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
+                                    <select dusk="languageLevel" wire:model="level" id="level" name="level" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-700 sm:text-sm sm:leading-6">
                                         <option value="">-- choisissez un niveau --</option>
                                         @foreach($languageLevels as $level)
                                             <option value="{{ $level }}">{{ __('languageLevels.'.$level) }}</option>

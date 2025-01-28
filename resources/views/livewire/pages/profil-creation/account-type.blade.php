@@ -121,7 +121,7 @@ $save = function () {
                         </div>
                         <div class="relative flex items-start">
                             <div class="flex h-6 items-center">
-                                <input wire:model.live="account_type" value="team" id="Team" aria-describedby="Team-description" name="account_type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-700">
+                                <input wire:model.live="account_type" value="team" dusk="team" id="Team" aria-describedby="Team-description" name="account_type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-700">
                             </div>
                             <div class="ml-3 text-sm leading-6">
                                 <label for="Team" class="font-medium text-gray-900">Équipe</label>
