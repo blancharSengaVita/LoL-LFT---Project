@@ -70,7 +70,7 @@ mount(function (User $user) {
 //}]);
 ?>
 
-<article
+<section
 {{--    x-data="{--}}
 {{--open: $wire.entangle('open'),--}}
 {{--bioDisplayed : $wire.entangle('bioDisplayed'),--}}
@@ -152,4 +152,4 @@ mount(function (User $user) {
 {{--            </div>--}}
 {{--        </div>--}}
 {{--    </div>--}}
-</article>
+</section>

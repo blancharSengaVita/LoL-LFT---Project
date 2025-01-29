@@ -74,7 +74,6 @@ $login = function () {
                         <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-700">
                         <label for="remember-me" class="ml-3 block text-sm leading-6 text-gray-900">Se souvenir de moi</label>
                     </div>
-
                     <div class="text-sm leading-6">
                         <a href="{{ route('password.request') }}" title="vers la page de " wire:navigate class="font-semibold text-indigo-600 hover:text-indigo-500">Mot de passe oublié ?</a>
                     </div>

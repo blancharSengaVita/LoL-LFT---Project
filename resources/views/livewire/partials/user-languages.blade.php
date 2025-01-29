@@ -66,7 +66,7 @@ mount(function (User $user) {
 });
 
 ?>
-<article
+<section
     x-data="{
 openAccordion: $wire.entangle('openAccordion'),
 {{--openModal: $wire.entangle('openModal'),--}}
@@ -132,4 +132,4 @@ showSection:$wire.entangle('showSection'),
         @endif
     </div>
     </div>
-</article>
+</section>

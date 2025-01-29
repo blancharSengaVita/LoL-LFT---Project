@@ -201,7 +201,7 @@ $sendNotification = function () {
 
 ?>
 
-<article x-data="{
+<section x-data="{
 openAccordion: $wire.entangle('openAccordion'),
 openModal: $wire.entangle('openModal'),
 openSingleModal: $wire.entangle('openSingleModal'),
@@ -526,4 +526,4 @@ deleteModal: $wire.entangle('deleteModal'),
             </div>
         </div>
     </div>
-</article>
+</section>

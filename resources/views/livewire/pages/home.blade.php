@@ -47,7 +47,7 @@ layout('layouts.guest');
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
                     <div class="lg:pr-8 lg:pt-4">
-                        <div class="lg:max-w-lg">
+                        <section class="lg:max-w-lg">
                             <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-600 sm:text-4xl">Trouvez des
                                 partenaires idéaux pour vos parties professionnels ou amateurs</h2>
                             <p class="mt-6 text-lg leading-8 text-gray-900 ">Que vous cherchiez à rejoindre une équipe
@@ -57,7 +57,7 @@ layout('layouts.guest');
                                 la possibilité de trouver les partenaires idéaux pour concrétiser vos objectifs dans le
                                 monde de League of Legends.
                             </p>
-                        </div>
+                        </section>
                     </div>
                     <div class="border border-gray-600 p-8 rounded-xl w-fit relative">
                         <img srcset="
@@ -126,7 +126,7 @@ layout('layouts.guest');
                 <rect x="127.01" y="10.6969" width="34.3698" height="34.3698" transform="rotate(45 127.01 10.6969)" stroke="#C8AA6E"/>
             </svg>
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                <div class="mx-auto max-w-2xl lg:text-center">
+                <section class="mx-auto max-w-2xl lg:text-center">
                     <H2 class="mt-2 text-3xl font-bold tracking-tight text-gray-600 sm:text-4xl">Connectez-vous avec des
                         passionnés partageant les mêmes intérêts</H2>
                     <p class="mt-6 mb-12 text-lg leading-8 text-gray-900 ">Grâce à notre plateforme, vous pouvez vous
@@ -135,7 +135,7 @@ layout('layouts.guest');
                         joueur professionnel ou amateur, un jeune coach ou un coach experimenté, une équipe pour clash
                         ou une équipe LEC, vous trouverez des personnes qui comprennent votre passion pour le jeu et
                         votre ambition.</p>
-                </div>
+                </section>
             </div>
         </div>
         <div class="absolute w-full
@@ -172,7 +172,7 @@ layout('layouts.guest');
                     <svg viewBox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0" aria-hidden="true">
                         <circle cx="512" cy="512" r="512" fill="url(#759c1415-0410-454c-8f7c-9a820de03641)" fill-opacity="0.7"/>
                     </svg>
-                    <div class="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
+                    <section class="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
                         <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Prêt à booster votre
                             carrière avec nous </h2>
                         <p class="mt-6 text-lg leading-8 text-gray-300">
@@ -183,7 +183,7 @@ layout('layouts.guest');
                         <div class="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
                             <a href="{{ route('register')  }}" title="Aller vers la page d'inscription" class="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">S'inscrire</a>
                         </div>
-                    </div>
+                    </section>
                     <div class="relative mt-16 h-80 lg:mt-8">
                         <img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-white/10"
                              sizes="(max-width: 1920px) 100vw, 1920px"

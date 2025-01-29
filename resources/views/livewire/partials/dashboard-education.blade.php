@@ -44,15 +44,17 @@ state([
 rules([
     'establishment' => 'required|',
     'diploma' => 'required',
-    'entry_date' => 'required|date',
-    'exit_date' => 'required|date'
+    'entry_date' => 'required|date|before_or_equal:today',
+    'exit_date' => 'required|date|before_or_equal:today'
 ])->messages([
     'establishment.required' => 'Le champ est obligatoire.',
     'diploma.required' => 'Le champ est obligatoire.',
     'entry_date.required' => 'Le champ est obligatoire.',
     'exit_date.required' => 'Le champ est obligatoire.',
     'entry_date.date' => 'Le format n\'est pas conforme.',
+    'entry_date.before_or_equal' => 'La date doit être une date antérieure ou égale à aujourd\'hui.',
     'exit_date.date' => 'Le format n\'est pas conforme.',
+    'exit_date.before_or_equal' => 'La date doit être une date antérieure ou égale à aujourd\'hui.',
 ])->attributes([
 
 ]);
@@ -203,7 +205,7 @@ deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }">
-    <article x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+    <section x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Formations'}}</h3>
             <div class="flex">
@@ -292,7 +294,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                 </div>
             @endif
         </div>
-    </article>
+    </section>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openEducationModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--

@@ -144,7 +144,7 @@ $listenForMessage = function ($data) {
 
 <main class="lg:pl-72 h-full">
     <x-slot name="h1">
-        {{ 'salut' }}
+        {{ 'Message' }}
     </x-slot>
     <!-- This is an example component -->
     <div class="mx-auto shadow-lg rounded-lg min-h-screen flex flex-col">

@@ -405,9 +405,7 @@ $isRealRole = computed(function ($role) {
 
                 {{--                FILTERS --}}
                 <div class="bg-white border-t mx-auto px-4 text-center sm:px-6 lg:max-w-7xl lg:px-8 border-gray-200">
-                    <section aria-labelledby="filter-heading" class="border-gray-200 py-3">
-                        <h2 id="filter-heading" class="sr-only">Product filters</h2>
-
+                    <div aria-labelledby="filter-heading" class="border-gray-200 py-3">
                         <div class="flex items-center justify-between">
                             <div class="relative inline-block text-left">
                                 <div>
@@ -493,11 +491,11 @@ $isRealRole = computed(function ($role) {
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </div>
             </div>
 
-            <article>
+            <div>
                 <div class="border-y border-gray-200 bg-white ">
                     {{--                    <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">--}}
                     {{--                        <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Expérience'}}</h3>--}}
@@ -589,7 +587,7 @@ $isRealRole = computed(function ($role) {
                         @endif
                     </div>
                 </div>
-            </article>
+            </div>
             {{-- MODAL SETTINGS DE LA SECTION  --}}
             <div x-cloak x-show="lftModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                 <!--

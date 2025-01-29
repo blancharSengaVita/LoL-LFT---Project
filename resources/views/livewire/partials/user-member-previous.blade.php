@@ -42,7 +42,7 @@ mount(function (User $user) {
 });
 ?>
 
-<article>
+<section>
 
     <div x-cloak class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
@@ -89,4 +89,4 @@ mount(function (User $user) {
             </ul>
         </div>
     </div>
-</article>
+</section>

@@ -56,7 +56,7 @@ $logout = function (Logout $logout) {
         <div class="relative flex justify-between mr-4">
             <div class="min-w-0 flex-1">
                 <div class="flex items-center py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
-                    <h2 class="text-lg font-medium text-black"> {{$title}} </h2>
+                    <p class="text-lg font-medium text-black"> {{$title}} </p>
                 </div>
             </div>
             <div class="flex items-center md:absolute md:inset-y-0 md:right-0 lg:hidden">

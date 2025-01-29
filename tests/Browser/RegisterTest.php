@@ -11,7 +11,6 @@ test('that assert an user can register', function () {
             ->visit('/register')
             ->type('email', 'anchar21111117@gmail.com')
             ->type('password', 'P@ssword1234')
-            ->type('password_confirmation', 'P@ssword1234')
             ->press('S\'inscrire')
             ->waitForText('Etape 1 : Quel type de compte voulez-vous créer')
             ->assertPathIs('/profil-creation/account-type');
@@ -36,7 +35,7 @@ test('that assert an user can complete step 2 of profile création', function ()
         $browser
             ->type('#game_name', 'Blanchar')
             ->type('#usurname', 'Blanchar')
-            ->select('#nationality')
+            ->select('#nationality', 'Australian')
             ->waitFor('button[type="submit"]')
             ->scrollIntoView('button[type="submit"]')
             ->keys('#birthday', '1990', '{tab}', '01', '01')

@@ -8,7 +8,6 @@ test('that assert an user can register', function () {
             ->visit('/register')
             ->type('email', 'karminecorp@gmail.com')
             ->type('password', 'P@ssword1234')
-            ->type('password_confirmation', 'P@ssword1234')
             ->press('S\'inscrire')
             ->waitForText('Etape 1 : Quel type de compte voulez-vous créer')
             ->assertPathIs('/profil-creation/account-type');
@@ -81,9 +80,9 @@ test('that we can add players', function () {
             ->press('@addPlayers')
             ->waitForText('Ajouter un joueur manuellement')
             ->type('@memberPlayerUserame', 'gingembre poilu')
-            ->select('@memberPlayerNationality')
-            ->select('@memberPlayerJob')
-            ->keys('@memberPlayerEntry_date', '10022024', )
+            ->select('@memberPlayerNationality', 'Australian')
+            ->select('@memberPlayerJob', 'ADC')
+            ->keys('@memberPlayerEntry_date', '10022024',)
             ->press('Sauvegarder')
             ->waitForText('Joueurs ajouté avec succès')
             ->waitForText('gingembre poilu');

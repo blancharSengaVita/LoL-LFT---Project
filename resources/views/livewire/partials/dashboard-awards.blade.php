@@ -45,12 +45,13 @@ rules([
     'title' => 'required|',
     'event' => 'required',
     'team' => 'required',
-    'date' => 'required|date'
+    'date' => 'required|date|before_or_equal:today'
 ])->messages([
     'title.required' => 'Le champ est obligatoire.',
     'event.required' => 'Le champ est obligatoire.',
     'team.required' => 'Le champ est obligatoire.',
     'date.required' => 'Le champ est obligatoire.',
+    'date.before_or_equal' => 'La date doit être une date antérieure ou égale à aujourd\'hui.',
 ])->attributes([
 
 ]);
@@ -77,9 +78,7 @@ $renderChange = function () {
 
 mount(function () {
     $this->user = Auth::user();
-
     $this->renderChange();
-
 
     $this->openAccordion = false;
     $this->openAwardModal = false;
@@ -173,7 +172,6 @@ $editSingleAward = function (Award $award) {
     $this->team = $award->team;
     $this->date = $award->date;
     $this->id = $award->id;
-    dd($award->date);
     $this->renderChange();
 };
 
@@ -212,7 +210,7 @@ deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }">
-    <article x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+    <section x-cloak x-show="displayed && displayedOnce" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
         <div class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Récompenses'}}</h3>
             <div class="flex">
@@ -300,7 +298,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                 </div>
             @endif
         </div>
-    </article>
+    </section>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openAwardModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--

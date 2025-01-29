@@ -94,7 +94,7 @@ $newConversation = function ($userId) {
 
 <main class="lg:pl-72 h-full">
     <x-slot name="h1">
-        {{ 'salut' }}
+        {{ 'Messages' }}
     </x-slot>
     <!-- This is an example component -->
     <div class="mx-auto shadow-lg rounded-lg min-h-screen max-h-min flex flex-col">

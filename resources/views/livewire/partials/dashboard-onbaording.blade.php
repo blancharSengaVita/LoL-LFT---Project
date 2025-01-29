@@ -186,7 +186,7 @@ on(['renderOnboarding' => function () {
 }]);
 ?>
 
-<article
+<section
     x-data="{
     openAccordion: $wire.entangle('openAccordion'),
     openModal: $wire.entangle('openModal'),
@@ -490,4 +490,4 @@ on(['renderOnboarding' => function () {
             </div>
         </div>
     </div>
-</article>
+</section>

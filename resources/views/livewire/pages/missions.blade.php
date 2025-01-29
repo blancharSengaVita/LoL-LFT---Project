@@ -27,12 +27,9 @@ mount(function () {
 
 <main class="lg:pl-72 h-full">
     <x-slot name="h1">
-        {{ $user->game_name }}
+        {{ 'Missions' }}
     </x-slot>
     <section class="h-full">
-        <h2 class="sr-only">
-            Missions
-        </h2>
         <!--
         This example requires updating your template:
 

@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class SendInvitationToJoinLoLLFT implements ShouldQueue
 {
@@ -32,8 +33,6 @@ class SendInvitationToJoinLoLLFT implements ShouldQueue
      */
     public function handle(): void
     {
-
-
             Notification::route('mail', $this->email)->notify(new SendInvitation($this->email, $this->username, $this->user));
     }
 }

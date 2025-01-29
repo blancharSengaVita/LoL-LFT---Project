@@ -71,7 +71,7 @@ on(['newBio' => function () {
 }]);
 ?>
 
-<article x-data="{
+<section x-data="{
 open: $wire.entangle('open'),
 bioDisplayed : $wire.entangle('bioDisplayed'),
 displayedOnce : $wire.entangle('displayedOnce'),
@@ -142,4 +142,4 @@ displayedOnce : $wire.entangle('displayedOnce'),
             </div>
         </div>
     </div>
-</article>
+</section>

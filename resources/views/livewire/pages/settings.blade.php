@@ -122,7 +122,7 @@ rules([
     'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
     'level' =>  'required',
     'nationality' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
-    'birthday' => Auth::user()->account_type !== 'team' ? 'required' : 'required|date',
+    'birthday' => Auth::user()->account_type !== 'team' ? 'required' : 'required|date|before_or_equal:today',
 ])->messages([
     'level.required' => 'Votre niveau est requis',
     'nationality.required' => 'Votre nationalité est requis',
@@ -132,6 +132,7 @@ rules([
     'username.string' => 'Votre nom doit être composé de lettre',
     'birthday.required' => 'Votre date de naissance est requis',
     'birthday.date' => 'Votre date de naissance ne correspond pas au format',
+    'birthday.before_or_equal' => 'La date doit être une date antérieure ou égale à aujourd\'hui.',
     'bio.required' => 'Votre bio est requis',
     'job.required' => 'Votre job est requis',
     'region.required' => 'Votre region est requis',
@@ -207,7 +208,7 @@ $cancelProfilePicture = function () {
 
 <main class="lg:pl-72 h-full">
     <x-slot name="h1">
-        {{ $user->game_name }}
+        Paramètre
     </x-slot>
     <section class="h-full">
         <!--

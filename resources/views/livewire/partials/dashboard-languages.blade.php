@@ -199,7 +199,7 @@ deleteModal: $wire.entangle('deleteModal'),
 displayed:$wire.entangle('displayed'),
 displayedOnce:$wire.entangle('displayedOnce'),
 }">
-    <article class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6"  x-cloak x-show="displayed && displayedOnce">
+    <section class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6"  x-cloak x-show="displayed && displayedOnce">
         <div
             class="flex justify-between gap-x-4 pb-1 items-center sm:flex-nowrap">
             <h3 class="text-base font-semibold leading-6 text-gray-900">{{'Langues'}}</h3>
@@ -289,7 +289,7 @@ displayedOnce:$wire.entangle('displayedOnce'),
                 </div>
             @endif
         </div>
-    </article>
+    </section>
     {{-- MODAL SETTINGS DE LA SECTION  --}}
     <div x-cloak x-show="openModal" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!--
