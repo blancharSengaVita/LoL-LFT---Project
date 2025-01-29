@@ -32,6 +32,8 @@ class SendInvitationToJoinLoLLFT implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->user->notify(new SendInvitation($this->email, $this->username, $this->user));
+
+
+            Notification::route('mail', $this->email)->notify(new SendInvitation($this->email, $this->username, $this->user));
     }
 }
