@@ -110,7 +110,7 @@ mount(function () {
     if ($this->type !== 'team') {
         rules(fn() => [
             'nationality' => 'required',
-            'birthday' => 'required|date',
+            'birthday' => 'required|date|before_or_equal:today',
         ]);
     }
 });
@@ -122,7 +122,7 @@ rules([
     'profilPicture' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:5120',
     'level' =>  'required',
     'nationality' => Auth::user()->account_type !== 'team' ? 'required' : 'nullable',
-    'birthday' => Auth::user()->account_type !== 'team' ? 'required' : 'required|date|before_or_equal:today',
+    'birthday' => Auth::user()->account_type !== 'team' ? 'required|date|before_or_equal:today' : 'nullable',
 ])->messages([
     'level.required' => 'Votre niveau est requis',
     'nationality.required' => 'Votre nationalité est requis',

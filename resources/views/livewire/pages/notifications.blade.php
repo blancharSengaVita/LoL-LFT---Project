@@ -147,7 +147,7 @@ $acceptNotificationTeam = function (Notification $notification){
     <x-slot name="h1">
         {{ 'Notification' }}
     </x-slot>
-    <section class="h-full">
+    <div class="h-full">
         <!--
         This example requires updating your template:
 
@@ -222,7 +222,7 @@ $acceptNotificationTeam = function (Notification $notification){
                 </ul>
             </div>
         </div>
-    </section>
+    </div>
 </main>
 
 
