@@ -280,7 +280,15 @@ $saveMyLftPost = function () {
 };
 
 $isRealRole = computed(function () {
-	return in_array($this->user->job, ['Top', 'Jungle', 'Mid', 'ADC', 'Support']);
+	return in_array($this->user->job, ['Top', 'Jungle', 'Mid', 'ADC', 'Support','Head coach',
+        'Assistant coach',
+        'Manager',
+        'Analyst',
+        'Head of operations',
+        'Performance coach',
+        'Recruiter',
+        'Scout',
+        'Other', 'Team', 'Undefined', 'Fill']);
 });
 ?>
 
@@ -325,7 +333,7 @@ $isRealRole = computed(function () {
                 </div>
                 <div>
                     <p class="text-gray-900 flex items-center gap-x-1">
-                        {{ $user->job }} @if($this->isRealRole)
+                        {{ __('jobs.' . $user->job) }} @if($this->isRealRole)
                             <img class="flex items-center h-4" src="{{Vite::asset('resources/images/'. $user->job .'.svg') }}" alt="">
                         @endif · {{ __('levels.'.$user->level) }} @if($user->level)
                             <img class="flex items-center h-4" src="{{ Vite::asset('resources/images/'. $user->level .'.svg') }}" alt="">

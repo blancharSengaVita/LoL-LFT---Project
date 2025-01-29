@@ -73,7 +73,15 @@ $sendLftInvitation = function ($userId) {
     Toaster::success('Demande envoyé');
 };
 $isRealRole = computed(function () {
-    return in_array($this->user->job, ['Top', 'Jungle', 'Mid', 'ADC', 'Support']);
+    return in_array($this->user->job, ['Top', 'Jungle', 'Mid', 'ADC', 'Support','Head coach',
+        'Assistant coach',
+        'Manager',
+        'Analyst',
+        'Head of operations',
+        'Performance coach',
+        'Recruiter',
+        'Scout',
+        'Other', 'Team','Undefined', 'Fill']);
 });
 ?>
 

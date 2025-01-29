@@ -208,7 +208,15 @@ $newConversation = function ($userId) {
 };
 
 $isRealRole = computed(function ($role) {
-	return in_array($role, ['Top', 'Jungle', 'Mid', 'ADC', 'Support']);
+	return in_array($role, ['Top', 'Jungle', 'Mid', 'ADC', 'Support','Head coach',
+        'Assistant coach',
+        'Manager',
+        'Analyst',
+        'Head of operations',
+        'Performance coach',
+        'Recruiter',
+        'Scout',
+        'Other', 'Team', 'Undefined', 'Fill']);
 });
 ?>
 
@@ -525,8 +533,8 @@ $isRealRole = computed(function ($role) {
 
                                             <p class="truncate font-sans text-sm leading-5 text-gray-900 lg:mb-4 mb-4 flex items-center gap-x-1">
                                                 {{(__('jobs.' . $post->user->job))}} @if($this->isRealRole($post->user->job))
-                                                    <img class="flex items-center h-4" src="{{Vite::asset('resources/images/'. $user->job .'.svg') }}" alt="">
-                                                @endif · {{ __('levels.' . $post->user->level ) }}@if($user->level)
+                                                    <img class="flex items-center h-4" src="{{Vite::asset('resources/images/'. $post->user->job .'.svg') }}" alt="">
+                                                @endif · {{ __('levels.' . $post->user->level ) }}@if($post->user->level)
                                                     <img class="flex items-center h-4" src="{{ Vite::asset('resources/images/'. $post->user->level.'.svg') }}" alt="">
                                                 @endif
                                             </p>
