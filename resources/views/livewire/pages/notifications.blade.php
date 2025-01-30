@@ -77,7 +77,7 @@ $acceptNotification = function (Notification $notification){
     if(!$this->conversation) {
 		$this->conversation = Conversation::createOrFirst([
 			'user_one_id' => Auth::id(),
-			'user_two_id' => $this->user->id,
+			'user_two_id' => $notification->from,
 		]);
 	}
 
