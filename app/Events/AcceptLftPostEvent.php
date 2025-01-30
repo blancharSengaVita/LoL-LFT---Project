@@ -34,9 +34,9 @@ class AcceptLftPostEvent implements ShouldBroadcast
         $newMessage->color = 'green';
         $newMessage->save();
 
-        $this->message = $message;
-        $this->user_id = $user_id;
-        $this->conversation = $conversation_id;
+//        $this->message = $message;
+//        $this->user_id = $user_id;
+//        $this->conversation = $conversation_id;
     }
 
     /**

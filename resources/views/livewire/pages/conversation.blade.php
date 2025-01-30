@@ -108,15 +108,16 @@ $listenForLftInvitation = function ($data) {
                                     ' . htmlspecialchars($data['message']) . '
                                 </div>
                             </div>';
-	} else {
-		$this->convos[] = '<div class="message flex justify-start mb-4">
-                        <div
-                            class="ml-2 py-2 px-3 border-gray-200 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
-                        >'
-			. htmlspecialchars($data['message']) .
-			'</div>
-                    </div>';
 	}
+//	else {
+//		$this->convos[] = '<div class="message flex justify-start mb-4">
+//                        <div
+//                            class="ml-2 py-2 px-3 border-gray-200 bg-gray-200 border rounded-br-lg rounded-tr-lg rounded-tl-lg text-gray-900 text-sm max-w-96"
+//                        >'
+//			. htmlspecialchars($data['message']) .
+//			'</div>
+//                    </div>';
+//	}
 	$this->dispatch('message-sent')->self();
 };
 

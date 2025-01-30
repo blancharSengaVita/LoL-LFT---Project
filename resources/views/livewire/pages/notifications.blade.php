@@ -84,7 +84,7 @@ $acceptNotification = function (Notification $notification){
 	$user = User::find($notification->from);
 	$this->message = 'Demande LFT accepté !';
     AcceptLftPostEvent::dispatch(Auth::user()->id, $this->message, $this->conversation->id);
-    $this->message = '';
+//    $this->message = '';
 	$notification->delete();
     $this->renderChange();
     Toaster::success('Demande accepté');
@@ -136,7 +136,7 @@ $acceptNotificationTeam = function (Notification $notification){
     $user = User::find($notification->from);
     $this->message = 'Demande de recrutement accepté !';
     AcceptLftPostEvent::dispatch(Auth::user()->id, $this->message, $this->conversation->id);
-    $this->message = '';
+//    $this->message = '';
     $notification->delete();
 	$this->renderChange();
     $this->redirect(route('conversation', ['conversation' => $this->conversation->id], absolute: false), navigate: true);
